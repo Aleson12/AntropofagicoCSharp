@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Analysis; // biblioteca para trabalhar com DataFrame
 using Microsoft.ML;
+using System.Drawing;
 
 namespace AntropofagicoCSharp
 
@@ -41,6 +42,59 @@ namespace AntropofagicoCSharp
         public Form1()
         {
             InitializeComponent();
+            manipulacaoDaEspessuraDaBorda();
+        }
+
+        private void manipulacaoDaEspessuraDaBorda()
+        {
+            int borderWidth = 1;
+            var borderPen = new Pen(Color.Green, borderWidth);
+
+            groupBox1.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox1.Width - 1, groupBox1.Height - 1));
+            };
+            groupBox2.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox2.Width - 1, groupBox2.Height - 1));
+            };
+            groupBox3.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox3.Width - 1, groupBox3.Height - 1));
+            };
+            groupBox4.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox4.Width - 1, groupBox4.Height - 1));
+            };
+            groupBox5.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox5.Width - 1, groupBox5.Height - 1));
+            };
+            groupBox6.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox6.Width - 1, groupBox6.Height - 1));
+            };
+        }
+
+        private void button1_Click(object sender, EventArgs e) // filtrar arquivos txt da pasta
+        {
+
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            DialogResult result = fbd.ShowDialog(); // exibe, efetivamente, as pastas do diretório local para serem selecionadas   
+
+            if (result == DialogResult.OK) // se o usuário selecionar uma pasta
+            {
+                Diretorio = fbd.SelectedPath; // a variável "diretorio" receberá o caminho da pasta
+
+                for (int i = 0; i <= Diretorio.Length; i++)
+                {
+
+
+                }
+            }
+
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -59,6 +113,26 @@ namespace AntropofagicoCSharp
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox5_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
         {
 
         }

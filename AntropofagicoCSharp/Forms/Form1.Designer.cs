@@ -118,7 +118,7 @@
             label2.TabIndex = 3;
             label2.Text = "Diretório:";
             label2.TextAlign = ContentAlignment.MiddleCenter;
-            label2.Click += label2_Click;
+            
             // 
             // maskedTextBox1
             // 
@@ -138,7 +138,7 @@
             label1.TabIndex = 2;
             label1.Text = "Leitura | Exibição dos arquivos txt";
             label1.TextAlign = ContentAlignment.MiddleCenter;
-            label1.Click += label1_Click;
+            
             // 
             // label3
             // 
@@ -243,7 +243,7 @@
             groupBox5.Size = new Size(519, 142);
             groupBox5.TabIndex = 3;
             groupBox5.TabStop = false;
-            groupBox5.Enter += groupBox5_Enter;
+            
             // 
             // button2
             // 
@@ -257,7 +257,7 @@
             button2.TabIndex = 7;
             button2.Text = "Abrir";
             button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
+           
             // 
             // label10
             // 

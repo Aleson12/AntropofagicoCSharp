@@ -43,10 +43,12 @@ namespace AntropofagicoCSharp
         {
             InitializeComponent();
             manipulacaoDaEspessuraDaBorda();
+
         }
 
         private void manipulacaoDaEspessuraDaBorda()
         {
+
             int borderWidth = 1;
             var borderPen = new Pen(Color.Green, borderWidth);
 
@@ -58,14 +60,7 @@ namespace AntropofagicoCSharp
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox2.Width - 1, groupBox2.Height - 1));
             };
-            groupBox3.Paint += (sender, e) =>
-            {
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox3.Width - 1, groupBox3.Height - 1));
-            };
-            groupBox4.Paint += (sender, e) =>
-            {
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox4.Width - 1, groupBox4.Height - 1));
-            };
+
             groupBox5.Paint += (sender, e) =>
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox5.Width - 1, groupBox5.Height - 1));
@@ -73,6 +68,16 @@ namespace AntropofagicoCSharp
             groupBox6.Paint += (sender, e) =>
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox6.Width - 1, groupBox6.Height - 1));
+            };
+            groupBox3.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox3.Width - 1, groupBox3.Height - 1));
+
+            };
+            groupBox4.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox4.Width - 1, groupBox4.Height - 1));
+
             };
         }
 
@@ -95,5 +100,10 @@ namespace AntropofagicoCSharp
 
 
         }
+
+
+
+
+
     }
 }

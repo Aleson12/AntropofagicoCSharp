@@ -28,123 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox1 = new GroupBox();
-            Button_Abrir0 = new Button();
-            label4 = new Label();
-            groupBox2 = new GroupBox();
-            label2 = new Label();
-            maskedTextBox1 = new MaskedTextBox();
             label1 = new Label();
             label3 = new Label();
             label5 = new Label();
-            groupBox3 = new GroupBox();
-            label6 = new Label();
-            groupBox4 = new GroupBox();
-            label7 = new Label();
-            maskedTextBox2 = new MaskedTextBox();
             label8 = new Label();
             groupBox5 = new GroupBox();
             button2 = new Button();
             label10 = new Label();
             maskedTextBox3 = new MaskedTextBox();
+            panel1 = new Panel();
             groupBox6 = new GroupBox();
-            label11 = new Label();
+            label9 = new Label();
             button1 = new Button();
-            groupBox1.SuspendLayout();
-            groupBox3.SuspendLayout();
+            groupBox1 = new GroupBox();
+            groupBox3 = new GroupBox();
+            label4 = new Label();
+            label2 = new Label();
+            maskedTextBox1 = new MaskedTextBox();
+            button3 = new Button();
+            groupBox2 = new GroupBox();
+            groupBox4 = new GroupBox();
+            label7 = new Label();
+            maskedTextBox2 = new MaskedTextBox();
+            label6 = new Label();
             groupBox5.SuspendLayout();
             groupBox6.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
-            // 
-            // groupBox1
-            // 
-            groupBox1.BackColor = SystemColors.ControlLightLight;
-            groupBox1.Controls.Add(Button_Abrir0);
-            groupBox1.Controls.Add(label4);
-            groupBox1.Controls.Add(groupBox2);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(maskedTextBox1);
-            groupBox1.FlatStyle = FlatStyle.Popup;
-            groupBox1.ForeColor = Color.LimeGreen;
-            groupBox1.Location = new Point(21, 112);
-            groupBox1.Margin = new Padding(5, 6, 5, 6);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(3, 4, 3, 4);
-            groupBox1.Size = new Size(525, 402);
-            groupBox1.TabIndex = 3;
-            groupBox1.TabStop = false;
-            // 
-            // Button_Abrir0
-            // 
-            Button_Abrir0.BackColor = Color.Green;
-            Button_Abrir0.Cursor = Cursors.Hand;
-            Button_Abrir0.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Button_Abrir0.ForeColor = Color.BlanchedAlmond;
-            Button_Abrir0.Location = new Point(21, 348);
-            Button_Abrir0.Name = "Button_Abrir0";
-            Button_Abrir0.Size = new Size(482, 47);
-            Button_Abrir0.TabIndex = 7;
-            Button_Abrir0.Text = "Abrir";
-            Button_Abrir0.UseVisualStyleBackColor = false;
-            Button_Abrir0.Click += button1_Click;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.ForeColor = Color.Black;
-            label4.Location = new Point(177, 92);
-            label4.Name = "label4";
-            label4.Size = new Size(164, 21);
-            label4.TabIndex = 6;
-            label4.Text = "Conteúdo do diretório";
-            // 
-            // groupBox2
-            // 
-            groupBox2.Location = new Point(21, 116);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(482, 214);
-            groupBox2.TabIndex = 4;
-            groupBox2.TabStop = false;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.Black;
-            label2.Location = new Point(6, 32);
-            label2.Name = "label2";
-            label2.Size = new Size(72, 20);
-            label2.TabIndex = 3;
-            label2.Text = "Diretório:";
-            label2.TextAlign = ContentAlignment.MiddleCenter;
-            
-            // 
-            // maskedTextBox1
-            // 
-            maskedTextBox1.Location = new Point(84, 32);
-            maskedTextBox1.Margin = new Padding(3, 4, 3, 4);
-            maskedTextBox1.Name = "maskedTextBox1";
-            maskedTextBox1.Size = new Size(419, 23);
-            maskedTextBox1.TabIndex = 0;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(159, 72);
+            label1.Location = new Point(200, 85);
             label1.Name = "label1";
             label1.Size = new Size(240, 21);
             label1.TabIndex = 2;
             label1.Text = "Leitura | Exibição dos arquivos txt";
             label1.TextAlign = ContentAlignment.MiddleCenter;
-            
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Verdana", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(410, 9);
+            label3.Location = new Point(465, 9);
             label3.Name = "label3";
             label3.Size = new Size(345, 23);
             label3.TabIndex = 3;
@@ -152,76 +80,22 @@
             // 
             // label5
             // 
+            label5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label5.AutoEllipsis = true;
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(771, 72);
+            label5.Location = new Point(854, 90);
             label5.Name = "label5";
             label5.Size = new Size(189, 21);
             label5.TabIndex = 4;
             label5.Text = "Gerar | Exibir arquivos csv";
             label5.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // groupBox3
-            // 
-            groupBox3.BackColor = SystemColors.ControlLightLight;
-            groupBox3.Controls.Add(label6);
-            groupBox3.Controls.Add(groupBox4);
-            groupBox3.Controls.Add(label7);
-            groupBox3.Controls.Add(maskedTextBox2);
-            groupBox3.FlatStyle = FlatStyle.Popup;
-            groupBox3.ForeColor = Color.LimeGreen;
-            groupBox3.Location = new Point(585, 112);
-            groupBox3.Margin = new Padding(5, 6, 5, 6);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Padding = new Padding(3, 4, 3, 4);
-            groupBox3.Size = new Size(559, 402);
-            groupBox3.TabIndex = 5;
-            groupBox3.TabStop = false;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.ForeColor = Color.Black;
-            label6.Location = new Point(211, 92);
-            label6.Name = "label6";
-            label6.Size = new Size(164, 21);
-            label6.TabIndex = 6;
-            label6.Text = "Conteúdo do diretório";
-            // 
-            // groupBox4
-            // 
-            groupBox4.Location = new Point(21, 116);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(514, 259);
-            groupBox4.TabIndex = 4;
-            groupBox4.TabStop = false;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label7.ForeColor = Color.Black;
-            label7.Location = new Point(6, 32);
-            label7.Name = "label7";
-            label7.Size = new Size(72, 20);
-            label7.TabIndex = 3;
-            label7.Text = "Diretório:";
-            label7.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // maskedTextBox2
-            // 
-            maskedTextBox2.Location = new Point(84, 32);
-            maskedTextBox2.Margin = new Padding(3, 4, 3, 4);
-            maskedTextBox2.Name = "maskedTextBox2";
-            maskedTextBox2.Size = new Size(451, 23);
-            maskedTextBox2.TabIndex = 0;
-            // 
             // label8
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label8.Location = new Point(135, 546);
+            label8.Location = new Point(181, 536);
             label8.Name = "label8";
             label8.Size = new Size(288, 21);
             label8.TabIndex = 6;
@@ -236,14 +110,16 @@
             groupBox5.Controls.Add(maskedTextBox3);
             groupBox5.FlatStyle = FlatStyle.Popup;
             groupBox5.ForeColor = Color.LimeGreen;
-            groupBox5.Location = new Point(27, 586);
+            groupBox5.ImeMode = ImeMode.On;
+            groupBox5.Location = new Point(47, 557);
             groupBox5.Margin = new Padding(5, 6, 5, 6);
+            groupBox5.MaximumSize = new Size(565, 150);
+            groupBox5.MinimumSize = new Size(565, 150);
             groupBox5.Name = "groupBox5";
             groupBox5.Padding = new Padding(3, 4, 3, 4);
-            groupBox5.Size = new Size(519, 142);
+            groupBox5.Size = new Size(565, 150);
             groupBox5.TabIndex = 3;
             groupBox5.TabStop = false;
-            
             // 
             // button2
             // 
@@ -251,13 +127,12 @@
             button2.Cursor = Cursors.Hand;
             button2.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button2.ForeColor = Color.BlanchedAlmond;
-            button2.Location = new Point(6, 80);
+            button2.Location = new Point(6, 78);
             button2.Name = "button2";
-            button2.Size = new Size(497, 47);
-            button2.TabIndex = 7;
+            button2.Size = new Size(547, 47);
+            button2.TabIndex = 4;
             button2.Text = "Abrir";
             button2.UseVisualStyleBackColor = false;
-           
             // 
             // label10
             // 
@@ -276,95 +151,246 @@
             maskedTextBox3.Location = new Point(84, 32);
             maskedTextBox3.Margin = new Padding(3, 4, 3, 4);
             maskedTextBox3.Name = "maskedTextBox3";
-            maskedTextBox3.Size = new Size(413, 23);
-            maskedTextBox3.TabIndex = 0;
+            maskedTextBox3.Size = new Size(451, 23);
+            maskedTextBox3.TabIndex = 3;
+            // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.AutoSize = true;
+            panel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel1.BackColor = Color.Transparent;
+            panel1.ForeColor = Color.Black;
+            panel1.Location = new Point(21, 539);
+            panel1.MaximumSize = new Size(1230, 200);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(0, 0);
+            panel1.TabIndex = 8;
             // 
             // groupBox6
             // 
-            groupBox6.Controls.Add(label11);
+            groupBox6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox6.AutoSize = true;
+            groupBox6.BackColor = SystemColors.ControlLightLight;
+            groupBox6.Controls.Add(label9);
             groupBox6.Controls.Add(button1);
-            groupBox6.Location = new Point(585, 586);
+            groupBox6.FlatStyle = FlatStyle.Popup;
+            groupBox6.ForeColor = Color.LimeGreen;
+            groupBox6.ImeMode = ImeMode.On;
+            groupBox6.Location = new Point(663, 557);
+            groupBox6.Margin = new Padding(5, 6, 5, 6);
+            groupBox6.MinimumSize = new Size(565, 150);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(559, 142);
-            groupBox6.TabIndex = 7;
+            groupBox6.Padding = new Padding(3, 4, 3, 4);
+            groupBox6.Size = new Size(565, 150);
+            groupBox6.TabIndex = 10;
             groupBox6.TabStop = false;
             // 
-            // label11
+            // label9
             // 
-            label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label11.Location = new Point(143, 32);
-            label11.Name = "label11";
-            label11.Size = new Size(277, 21);
-            label11.TabIndex = 8;
-            label11.Text = "Aplicar PCA | Plotar os dados com PCA";
-            label11.TextAlign = ContentAlignment.MiddleCenter;
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label9.ForeColor = Color.Black;
+            label9.Location = new Point(157, 20);
+            label9.Name = "label9";
+            label9.Size = new Size(257, 21);
+            label9.TabIndex = 7;
+            label9.Text = "Aplicar PCA | Plotar dados pelo PCA";
+            label9.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // button1
             // 
+            button1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            button1.AutoSize = true;
             button1.BackColor = Color.Green;
             button1.Cursor = Cursors.Hand;
-            button1.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold);
+            button1.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button1.ForeColor = Color.BlanchedAlmond;
-            button1.Location = new Point(6, 80);
+            button1.Location = new Point(26, 78);
+            button1.MinimumSize = new Size(497, 47);
             button1.Name = "button1";
-            button1.Size = new Size(547, 47);
-            button1.TabIndex = 0;
+            button1.Size = new Size(509, 47);
+            button1.TabIndex = 4;
             button1.Text = "Abrir";
             button1.UseVisualStyleBackColor = false;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(groupBox3);
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(maskedTextBox1);
+            groupBox1.Controls.Add(button3);
+            groupBox1.Location = new Point(47, 109);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(559, 412);
+            groupBox1.TabIndex = 11;
+            groupBox1.TabStop = false;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Location = new Point(28, 113);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(507, 206);
+            groupBox3.TabIndex = 9;
+            groupBox3.TabStop = false;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(187, 89);
+            label4.Name = "label4";
+            label4.Size = new Size(164, 21);
+            label4.TabIndex = 8;
+            label4.Text = "Conteúdo do diretório";
+            label4.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.Black;
+            label2.Location = new Point(6, 39);
+            label2.Name = "label2";
+            label2.Size = new Size(72, 20);
+            label2.TabIndex = 7;
+            label2.Text = "Diretório:";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // maskedTextBox1
+            // 
+            maskedTextBox1.Location = new Point(84, 39);
+            maskedTextBox1.Margin = new Padding(3, 4, 3, 4);
+            maskedTextBox1.Name = "maskedTextBox1";
+            maskedTextBox1.Size = new Size(451, 23);
+            maskedTextBox1.TabIndex = 6;
+            // 
+            // button3
+            // 
+            button3.BackColor = Color.Green;
+            button3.Cursor = Cursors.Hand;
+            button3.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button3.ForeColor = Color.BlanchedAlmond;
+            button3.Location = new Point(6, 349);
+            button3.Name = "button3";
+            button3.Size = new Size(547, 47);
+            button3.TabIndex = 5;
+            button3.Text = "Abrir";
+            button3.UseVisualStyleBackColor = false;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.AutoSize = true;
+            groupBox2.Controls.Add(groupBox4);
+            groupBox2.Controls.Add(label7);
+            groupBox2.Controls.Add(maskedTextBox2);
+            groupBox2.Controls.Add(label6);
+            groupBox2.Location = new Point(663, 108);
+            groupBox2.MinimumSize = new Size(559, 413);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(559, 413);
+            groupBox2.TabIndex = 12;
+            groupBox2.TabStop = false;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox4.AutoSize = true;
+            groupBox4.Location = new Point(26, 103);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(507, 288);
+            groupBox4.TabIndex = 13;
+            groupBox4.TabStop = false;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.ForeColor = Color.Black;
+            label7.Location = new Point(6, 37);
+            label7.Name = "label7";
+            label7.Size = new Size(72, 20);
+            label7.TabIndex = 12;
+            label7.Text = "Diretório:";
+            label7.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // maskedTextBox2
+            // 
+            maskedTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            maskedTextBox2.Location = new Point(84, 34);
+            maskedTextBox2.Margin = new Padding(3, 4, 3, 4);
+            maskedTextBox2.Name = "maskedTextBox2";
+            maskedTextBox2.Size = new Size(451, 23);
+            maskedTextBox2.TabIndex = 11;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(204, 79);
+            label6.Name = "label6";
+            label6.Size = new Size(164, 21);
+            label6.TabIndex = 9;
+            label6.Text = "Conteúdo do diretório";
+            label6.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(1179, 743);
+            ClientSize = new Size(1305, 743);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
             Controls.Add(groupBox6);
-            Controls.Add(groupBox5);
             Controls.Add(label8);
+            Controls.Add(panel1);
             Controls.Add(label5);
-            Controls.Add(groupBox3);
+            Controls.Add(groupBox5);
             Controls.Add(label3);
             Controls.Add(label1);
-            Controls.Add(groupBox1);
             Font = new Font("Sitka Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
+            RightToLeftLayout = true;
             Text = "Form1";
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
             groupBox6.ResumeLayout(false);
             groupBox6.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private GroupBox groupBox1;
         private Label label1;
-        private MaskedTextBox maskedTextBox1;
-        private Label label2;
-        private GroupBox groupBox2;
-        private Button Button_Abrir0;
-        private Label label4;
         private Label label3;
         private Label label5;
-        private GroupBox groupBox3;
-        private Label label6;
-        private GroupBox groupBox4;
-        private Label label7;
-        private MaskedTextBox maskedTextBox2;
         private Label label8;
         private GroupBox groupBox5;
         private Button button2;
         private Label label10;
         private MaskedTextBox maskedTextBox3;
+        private Panel panel1;
         private GroupBox groupBox6;
+        private Label label9;
         private Button button1;
-        private Label label11;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
+        private Button button3;
+        private Label label4;
+        private Label label2;
+        private MaskedTextBox maskedTextBox1;
+        private Label label6;
+        private Label label7;
+        private MaskedTextBox maskedTextBox2;
+        private GroupBox groupBox3;
+        private GroupBox groupBox4;
     }
 }

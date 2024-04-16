@@ -79,7 +79,7 @@
             // 
             // label9
             // 
-            label9.AutoSize = true;
+            label9.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label9.ForeColor = Color.Black;
             label9.Location = new Point(163, 32);
@@ -130,7 +130,6 @@
             // 
             label5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label5.AutoEllipsis = true;
-            label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label5.Location = new Point(857, 85);
             label5.Name = "label5";
@@ -328,7 +327,7 @@
             // 
             // label6
             // 
-            label6.AutoSize = true;
+            label6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label6.Location = new Point(204, 79);
             label6.Name = "label6";
@@ -370,7 +369,6 @@
             RightToLeftLayout = true;
             Text = "Form1";
             groupBox6.ResumeLayout(false);
-            groupBox6.PerformLayout();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
             groupBox1.ResumeLayout(false);

@@ -81,9 +81,8 @@ namespace AntropofagicoCSharp
             };
         }
 
-        private void button3_Click(object sender, EventArgs e) // filtrar arquivos txt da pasta
+        private void button3_Click_1(object sender, EventArgs e)
         {
-
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             DialogResult result = fbd.ShowDialog(); // exibe, efetivamente, as pastas do diretório local para serem selecionadas   
@@ -97,8 +96,6 @@ namespace AntropofagicoCSharp
 
                 }
             }
-
-
         }
     }
 }

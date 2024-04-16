@@ -278,6 +278,7 @@
             button3.TabIndex = 5;
             button3.Text = "Abrir";
             button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click_1;
             // 
             // groupBox2
             // 

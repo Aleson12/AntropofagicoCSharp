@@ -81,7 +81,7 @@ namespace AntropofagicoCSharp
             };
         }
 
-        private void button1_Click(object sender, EventArgs e) // filtrar arquivos txt da pasta
+        private void button3_Click(object sender, EventArgs e) // filtrar arquivos txt da pasta
         {
 
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -100,10 +100,5 @@ namespace AntropofagicoCSharp
 
 
         }
-
-
-
-
-
     }
 }

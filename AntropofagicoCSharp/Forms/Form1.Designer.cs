@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             groupBox6 = new GroupBox();
             label9 = new Label();
             button1 = new Button();
@@ -362,6 +363,7 @@
             Controls.Add(label3);
             Controls.Add(label1);
             Font = new Font("Sitka Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 4, 3, 4);
             MinimumSize = new Size(1333, 820);
             Name = "Form1";

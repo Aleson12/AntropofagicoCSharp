@@ -127,10 +127,9 @@
             button1.Location = new Point(6, 67);
             button1.Name = "button1";
             button1.Size = new Size(552, 47);
-            button1.TabIndex = 6;
+            button1.TabIndex = 7;
             button1.Text = "Abrir";
             button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
             // 
             // groupBox2
             // 
@@ -163,7 +162,7 @@
             groupBox4.Location = new Point(6, 110);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(552, 451);
-            groupBox4.TabIndex = 13;
+            groupBox4.TabIndex = 6;
             groupBox4.TabStop = false;
             // 
             // label7
@@ -260,6 +259,7 @@
             // maskedTextBox1
             // 
             maskedTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            maskedTextBox1.Font = new Font("Bookman Old Style", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             maskedTextBox1.Location = new Point(84, 39);
             maskedTextBox1.Margin = new Padding(3, 4, 3, 4);
             maskedTextBox1.Name = "maskedTextBox1";
@@ -398,7 +398,7 @@
             Font = new Font("Sitka Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 4, 3, 4);
-            MinimumSize = new Size(1200, 820);
+            MinimumSize = new Size(1200, 846);
             Name = "Form1";
             RightToLeftLayout = true;
             Text = "Form1";

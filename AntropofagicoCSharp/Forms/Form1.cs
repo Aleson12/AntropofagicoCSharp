@@ -42,15 +42,33 @@ namespace AntropofagicoCSharp
         public Form1()
         {
             InitializeComponent();
-            manipulacaoDaEspessuraDaBorda();
+            DefCorBorda();
 
         }
 
-        private void manipulacaoDaEspessuraDaBorda()
+        private void button3_Click_1(object sender, EventArgs e)
         {
+            FolderBrowserDialog fbd = new FolderBrowserDialog(); // objeto instanciado da classe que permite selecionar uma pasta do diretório local
 
-            int borderWidth = 1;
-            var borderPen = new Pen(Color.Green, borderWidth);
+            DialogResult result = fbd.ShowDialog(); // exibe, efetivamente, as pastas do diretório local para serem selecionadas, 
+            // e insere na variável "result" OK ou False, se o usuário tiver selecionado uma pasta ou não, respectivamente 
+
+            if (result == DialogResult.OK) // se o usuário selecionar uma pasta
+            {
+                Diretorio = fbd.SelectedPath; // a variável "diretorio" receberá o caminho da pasta
+
+                maskedTextBox1.Text = $"{Diretorio}\\".Replace("/", "\\"); // inserindo na caixa de entrada de texto o Path da pasta selecionada, e, também, definindo o padrão de barras para todos os sistemas operacionais
+
+
+
+            }
+        }
+
+        private void DefCorBorda() // este método faz com que as bordas de alguns componentes sejam da cor verde
+        { 
+
+            int borderWidth = 1; // definindo a largura da borda (sua espessura)
+            var borderPen = new Pen(Color.Green, borderWidth); // definindo sua cor 
 
             groupBox1.Paint += (sender, e) =>
             {
@@ -80,28 +98,6 @@ namespace AntropofagicoCSharp
 
             };
         }
-
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog(); // objeto instanciado da classe que permite selecionar uma pasta do diretório local
-
-            DialogResult result = fbd.ShowDialog(); // exibe, efetivamente, as pastas do diretório local para serem selecionadas, 
-            // e insere na variável "result" OK ou False, se o usuário tiver selecionado uma pasta ou não, respectivamente 
-
-            if (result == DialogResult.OK) // se o usuário selecionar uma pasta
-            {
-                Diretorio = fbd.SelectedPath; // a variável "diretorio" receberá o caminho da pasta
-
-                for (int i = 0; i <= Diretorio.Length; i++)
-                {
-
-                }
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
+

@@ -118,13 +118,15 @@
             // 
             // label3
             // 
-            label3.AutoSize = true;
+            label3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label3.AutoEllipsis = true;
             label3.Font = new Font("Verdana", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label3.Location = new Point(476, 21);
             label3.Name = "label3";
             label3.Size = new Size(345, 23);
             label3.TabIndex = 3;
             label3.Text = "Análise de Componentes Principais";
+            label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label5
             // 
@@ -300,7 +302,7 @@
             groupBox4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBox4.Location = new Point(26, 114);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(521, 206);
+            groupBox4.Size = new Size(521, 259);
             groupBox4.TabIndex = 13;
             groupBox4.TabStop = false;
             // 

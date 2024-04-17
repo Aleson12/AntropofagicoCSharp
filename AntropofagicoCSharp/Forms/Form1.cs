@@ -83,9 +83,10 @@ namespace AntropofagicoCSharp
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            FolderBrowserDialog fbd = new FolderBrowserDialog(); // objeto instanciado da classe que permite selecionar uma pasta do diretório local
 
-            DialogResult result = fbd.ShowDialog(); // exibe, efetivamente, as pastas do diretório local para serem selecionadas   
+            DialogResult result = fbd.ShowDialog(); // exibe, efetivamente, as pastas do diretório local para serem selecionadas, 
+            // e insere na variável "result" OK ou False, se o usuário tiver selecionado uma pasta ou não, respectivamente 
 
             if (result == DialogResult.OK) // se o usuário selecionar uma pasta
             {
@@ -96,6 +97,11 @@ namespace AntropofagicoCSharp
 
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

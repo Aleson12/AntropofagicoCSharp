@@ -1,4 +1,7 @@
 
+// "PascalCase" para nomes de classes, métodos, variáveis globais, Listas e Vetores (globais ou locais);
+// "camelCase" para nomes de variáveis locais
+
 // importação das bibliotecas necessárias:
 
 using System;
@@ -59,8 +62,37 @@ namespace AntropofagicoCSharp
 
                 maskedTextBox1.Text = $"{Diretorio}\\".Replace("/", "\\"); // inserindo na caixa de entrada de texto o Path da pasta selecionada, e, também, definindo o padrão de barras para todos os sistemas operacionais
 
+                string[] CaminhoDeCadaArquivo = Directory.GetFiles(Diretorio); // extraindo o caminho de cada arquivo da variável "Diretorio" (que contém o caminho da pasta selecionada) e inserindo no vetor "CaminhoDeCadaArquivo"
+                List<string> ArquivoComExtensao = new List<string>();
 
+                foreach (string caminho in CaminhoDeCadaArquivo) // para cada caminho de arquivo,
+                {
+                    ArquivoComExtensao.Add(Path.GetFileName(caminho)); // extraindo apenas o nome dele (do arquivo) *junto com a sua extensão*
+                }
 
+                foreach (string arquivo in ArquivoComExtensao)
+                {
+                    string apenasNomeDoArquivo = Path.GetFileNameWithoutExtension(arquivo); // obtendo apenas o nome do arquivo
+                    string apenasExtensao = Path.GetExtension(arquivo); // obtendo apenas a extensão do arquivo
+
+                    if (apenasExtensao == ".txt") // se a extensão for ".txt", 
+                    {
+                        Lista_de_arquivos_txt_da_pasta.Add(apenasNomeDoArquivo); // adicione cada um dos arquivos - sem extensão - na lista
+
+                        string caminhoDosArquivosComBarraInvertida = $"{Diretorio}/{arquivo}".Replace("/", "\\");
+
+                    }
+
+                    List<string> ArquivosComBarraInvertida = new List<string>();
+
+                    ArquivosComBarraInvertida.Add(arquivo);
+
+                    foreach (string a in ArquivosComBarraInvertida)
+                    {
+                        groupBox3.Text = a;
+                    }
+
+                }
             }
         }
 

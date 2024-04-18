@@ -58,41 +58,13 @@ namespace AntropofagicoCSharp
 
             if (result == DialogResult.OK) // se o usuário selecionar uma pasta
             {
-                Diretorio = fbd.SelectedPath; // a variável "diretorio" receberá o caminho da pasta
-
-                maskedTextBox1.Text = $"{Diretorio}\\".Replace("/", "\\"); // inserindo na caixa de entrada de texto o Path da pasta selecionada, e, também, definindo o padrão de barras para todos os sistemas operacionais
-
-                string[] CaminhoDeCadaArquivo = Directory.GetFiles(Diretorio); // extraindo o caminho de cada arquivo da variável "Diretorio" (que contém o caminho da pasta selecionada) e inserindo no vetor "CaminhoDeCadaArquivo"
-                List<string> ArquivoComExtensao = new List<string>();
-
-                foreach (string caminho in CaminhoDeCadaArquivo) // para cada caminho de arquivo,
+                richTextBox1.Clear();
+                Diretorio = fbd.SelectedPath; 
+                var aleson = Directory.GetFiles(Diretorio);
+                aleson.ToList().ForEach(arquivo =>
                 {
-                    ArquivoComExtensao.Add(Path.GetFileName(caminho)); // extraindo apenas o nome dele (do arquivo) *junto com a sua extensão*
-                }
-
-                foreach (string arquivo in ArquivoComExtensao)
-                {
-                    string apenasNomeDoArquivo = Path.GetFileNameWithoutExtension(arquivo); // obtendo apenas o nome do arquivo
-                    string apenasExtensao = Path.GetExtension(arquivo); // obtendo apenas a extensão do arquivo
-
-                    if (apenasExtensao == ".txt") // se a extensão for ".txt", 
-                    {
-                        Lista_de_arquivos_txt_da_pasta.Add(apenasNomeDoArquivo); // adicione cada um dos arquivos - sem extensão - na lista
-
-                        string caminhoDosArquivosComBarraInvertida = $"{Diretorio}/{arquivo}".Replace("/", "\\");
-
-                    }
-
-                    List<string> ArquivosComBarraInvertida = new List<string>();
-
-                    ArquivosComBarraInvertida.Add(arquivo);
-
-                    foreach (string a in ArquivosComBarraInvertida)
-                    {
-                        groupBox3.Text = a;
-                    }
-
-                }
+                    richTextBox1.AppendText(arquivo + "\n");
+                });
             }
         }
 
@@ -119,11 +91,7 @@ namespace AntropofagicoCSharp
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox6.Width - 1, groupBox6.Height - 1));
             };
-            groupBox3.Paint += (sender, e) =>
-            {
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox3.Width - 1, groupBox3.Height - 1));
-
-            };
+            
             groupBox4.Paint += (sender, e) =>
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox4.Width - 1, groupBox4.Height - 1));

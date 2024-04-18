@@ -42,7 +42,6 @@
             label5 = new Label();
             panel4 = new Panel();
             groupBox1 = new GroupBox();
-            groupBox3 = new GroupBox();
             label4 = new Label();
             label2 = new Label();
             maskedTextBox1 = new MaskedTextBox();
@@ -55,6 +54,7 @@
             label10 = new Label();
             maskedTextBox3 = new MaskedTextBox();
             tableLayoutPanel1 = new TableLayoutPanel();
+            richTextBox1 = new RichTextBox();
             panel3.SuspendLayout();
             groupBox6.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -213,7 +213,7 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox1.Controls.Add(groupBox3);
+            groupBox1.Controls.Add(richTextBox1);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(maskedTextBox1);
@@ -223,15 +223,6 @@
             groupBox1.Size = new Size(564, 567);
             groupBox1.TabIndex = 11;
             groupBox1.TabStop = false;
-            // 
-            // groupBox3
-            // 
-            groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox3.Location = new Point(6, 113);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(552, 395);
-            groupBox3.TabIndex = 9;
-            groupBox3.TabStop = false;
             // 
             // label4
             // 
@@ -387,6 +378,14 @@
             tableLayoutPanel1.Size = new Size(1160, 760);
             tableLayoutPanel1.TabIndex = 16;
             // 
+            // richTextBox1
+            // 
+            richTextBox1.Location = new Point(6, 110);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(550, 398);
+            richTextBox1.TabIndex = 9;
+            richTextBox1.Text = "";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 18F);
@@ -429,7 +428,6 @@
         private Label label5;
         private Panel panel4;
         private GroupBox groupBox1;
-        private GroupBox groupBox3;
         private Label label4;
         private Label label2;
         private MaskedTextBox maskedTextBox1;
@@ -443,5 +441,6 @@
         private MaskedTextBox maskedTextBox3;
         private TableLayoutPanel tableLayoutPanel1;
         private Label label11;
+        private RichTextBox richTextBox1;
     }
 }

@@ -72,6 +72,27 @@ namespace AntropofagicoCSharp
                         richTextBox1.AppendText(arquivo + "\n"); // o arquivo será exibido no "richTextBox1"
                     }
                 });
+
+                // criando a janela modal: 
+         
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result1;
+                string message = "Os arquivos estão com o nome Rom e extensão .TXT?";
+                string title = "Nome e extensão do(s) arquivo(s)";
+
+                result1 = MessageBox.Show(message, title, buttons);
+
+                if (result1 == DialogResult.OK)
+                {
+                    // AgrupandoOsTxtsPorClasse();
+                }
+                else
+                {
+                    // InterfaceRenomearArquivo.Main();
+                }
+                
+
+
             }
         }
 

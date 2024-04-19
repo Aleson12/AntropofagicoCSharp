@@ -35,6 +35,7 @@
             label9 = new Label();
             button1 = new Button();
             groupBox2 = new GroupBox();
+            richTextBox2 = new RichTextBox();
             label11 = new Label();
             label7 = new Label();
             maskedTextBox2 = new MaskedTextBox();
@@ -54,7 +55,6 @@
             label10 = new Label();
             maskedTextBox3 = new MaskedTextBox();
             tableLayoutPanel1 = new TableLayoutPanel();
-            richTextBox2 = new RichTextBox();
             panel3.SuspendLayout();
             groupBox6.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -143,6 +143,15 @@
             groupBox2.Size = new Size(564, 567);
             groupBox2.TabIndex = 12;
             groupBox2.TabStop = false;
+            // 
+            // richTextBox2
+            // 
+            richTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            richTextBox2.Location = new Point(8, 110);
+            richTextBox2.Name = "richTextBox2";
+            richTextBox2.Size = new Size(550, 451);
+            richTextBox2.TabIndex = 15;
+            richTextBox2.Text = "";
             // 
             // label11
             // 
@@ -346,7 +355,7 @@
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label10.ForeColor = Color.Black;
-            label10.Location = new Point(6, 54);
+            label10.Location = new Point(6, 51);
             label10.Name = "label10";
             label10.Size = new Size(72, 20);
             label10.TabIndex = 3;
@@ -356,10 +365,10 @@
             // maskedTextBox3
             // 
             maskedTextBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            maskedTextBox3.Location = new Point(82, 54);
+            maskedTextBox3.Location = new Point(84, 51);
             maskedTextBox3.Margin = new Padding(3, 4, 3, 4);
             maskedTextBox3.Name = "maskedTextBox3";
-            maskedTextBox3.Size = new Size(474, 23);
+            maskedTextBox3.Size = new Size(472, 23);
             maskedTextBox3.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -377,15 +386,6 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(1160, 760);
             tableLayoutPanel1.TabIndex = 16;
-            // 
-            // richTextBox2
-            // 
-            richTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            richTextBox2.Location = new Point(8, 110);
-            richTextBox2.Name = "richTextBox2";
-            richTextBox2.Size = new Size(550, 451);
-            richTextBox2.TabIndex = 15;
-            richTextBox2.Text = "";
             // 
             // Form1
             // 

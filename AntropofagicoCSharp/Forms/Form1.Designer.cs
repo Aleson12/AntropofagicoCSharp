@@ -36,12 +36,12 @@
             button1 = new Button();
             groupBox2 = new GroupBox();
             label11 = new Label();
-            groupBox4 = new GroupBox();
             label7 = new Label();
             maskedTextBox2 = new MaskedTextBox();
             label5 = new Label();
             panel4 = new Panel();
             groupBox1 = new GroupBox();
+            richTextBox1 = new RichTextBox();
             label4 = new Label();
             label2 = new Label();
             maskedTextBox1 = new MaskedTextBox();
@@ -54,7 +54,7 @@
             label10 = new Label();
             maskedTextBox3 = new MaskedTextBox();
             tableLayoutPanel1 = new TableLayoutPanel();
-            richTextBox1 = new RichTextBox();
+            richTextBox2 = new RichTextBox();
             panel3.SuspendLayout();
             groupBox6.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -96,11 +96,11 @@
             groupBox6.Controls.Add(button1);
             groupBox6.ForeColor = Color.LimeGreen;
             groupBox6.ImeMode = ImeMode.NoControl;
-            groupBox6.Location = new Point(7, 627);
+            groupBox6.Location = new Point(7, 614);
             groupBox6.Margin = new Padding(5, 6, 5, 6);
             groupBox6.Name = "groupBox6";
             groupBox6.Padding = new Padding(3, 4, 3, 4);
-            groupBox6.Size = new Size(564, 121);
+            groupBox6.Size = new Size(564, 134);
             groupBox6.TabIndex = 10;
             groupBox6.TabStop = false;
             // 
@@ -109,7 +109,7 @@
             label9.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label9.ForeColor = Color.Black;
-            label9.Location = new Point(163, 20);
+            label9.Location = new Point(163, 33);
             label9.Name = "label9";
             label9.Size = new Size(267, 23);
             label9.TabIndex = 7;
@@ -124,7 +124,7 @@
             button1.Cursor = Cursors.Hand;
             button1.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button1.ForeColor = Color.BlanchedAlmond;
-            button1.Location = new Point(6, 67);
+            button1.Location = new Point(6, 80);
             button1.Name = "button1";
             button1.Size = new Size(552, 47);
             button1.TabIndex = 7;
@@ -134,8 +134,8 @@
             // groupBox2
             // 
             groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Controls.Add(richTextBox2);
             groupBox2.Controls.Add(label11);
-            groupBox2.Controls.Add(groupBox4);
             groupBox2.Controls.Add(label7);
             groupBox2.Controls.Add(maskedTextBox2);
             groupBox2.Location = new Point(7, 38);
@@ -155,15 +155,6 @@
             label11.TabIndex = 14;
             label11.Text = "Conteúdo do diretório";
             label11.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // groupBox4
-            // 
-            groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox4.Location = new Point(6, 110);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(552, 451);
-            groupBox4.TabIndex = 6;
-            groupBox4.TabStop = false;
             // 
             // label7
             // 
@@ -223,6 +214,15 @@
             groupBox1.Size = new Size(564, 567);
             groupBox1.TabIndex = 11;
             groupBox1.TabStop = false;
+            // 
+            // richTextBox1
+            // 
+            richTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            richTextBox1.Location = new Point(6, 110);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(550, 398);
+            richTextBox1.TabIndex = 9;
+            richTextBox1.Text = "";
             // 
             // label4
             // 
@@ -307,11 +307,11 @@
             groupBox5.FlatStyle = FlatStyle.Popup;
             groupBox5.ForeColor = Color.LimeGreen;
             groupBox5.ImeMode = ImeMode.On;
-            groupBox5.Location = new Point(0, 627);
+            groupBox5.Location = new Point(5, 614);
             groupBox5.Margin = new Padding(5, 6, 5, 6);
             groupBox5.Name = "groupBox5";
             groupBox5.Padding = new Padding(3, 4, 3, 4);
-            groupBox5.Size = new Size(569, 121);
+            groupBox5.Size = new Size(564, 134);
             groupBox5.TabIndex = 3;
             groupBox5.TabStop = false;
             // 
@@ -322,9 +322,9 @@
             button2.Cursor = Cursors.Hand;
             button2.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button2.ForeColor = Color.BlanchedAlmond;
-            button2.Location = new Point(6, 75);
+            button2.Location = new Point(6, 84);
             button2.Name = "button2";
-            button2.Size = new Size(557, 39);
+            button2.Size = new Size(552, 39);
             button2.TabIndex = 4;
             button2.Text = "Abrir";
             button2.UseVisualStyleBackColor = false;
@@ -334,9 +334,9 @@
             label8.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label8.ForeColor = Color.Black;
-            label8.Location = new Point(134, 20);
+            label8.Location = new Point(138, 20);
             label8.Name = "label8";
-            label8.Size = new Size(293, 21);
+            label8.Size = new Size(288, 21);
             label8.TabIndex = 6;
             label8.Text = "Gerar o arquivo csv com todos os dados";
             label8.TextAlign = ContentAlignment.MiddleCenter;
@@ -346,7 +346,7 @@
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label10.ForeColor = Color.Black;
-            label10.Location = new Point(6, 46);
+            label10.Location = new Point(6, 54);
             label10.Name = "label10";
             label10.Size = new Size(72, 20);
             label10.TabIndex = 3;
@@ -356,10 +356,10 @@
             // maskedTextBox3
             // 
             maskedTextBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            maskedTextBox3.Location = new Point(84, 45);
+            maskedTextBox3.Location = new Point(82, 54);
             maskedTextBox3.Margin = new Padding(3, 4, 3, 4);
             maskedTextBox3.Name = "maskedTextBox3";
-            maskedTextBox3.Size = new Size(479, 23);
+            maskedTextBox3.Size = new Size(474, 23);
             maskedTextBox3.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -378,13 +378,14 @@
             tableLayoutPanel1.Size = new Size(1160, 760);
             tableLayoutPanel1.TabIndex = 16;
             // 
-            // richTextBox1
+            // richTextBox2
             // 
-            richTextBox1.Location = new Point(6, 110);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(550, 398);
-            richTextBox1.TabIndex = 9;
-            richTextBox1.Text = "";
+            richTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            richTextBox2.Location = new Point(8, 110);
+            richTextBox2.Name = "richTextBox2";
+            richTextBox2.Size = new Size(550, 451);
+            richTextBox2.TabIndex = 15;
+            richTextBox2.Text = "";
             // 
             // Form1
             // 
@@ -422,7 +423,6 @@
         private Label label9;
         private Button button1;
         private GroupBox groupBox2;
-        private GroupBox groupBox4;
         private Label label7;
         private MaskedTextBox maskedTextBox2;
         private Label label5;
@@ -442,5 +442,6 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Label label11;
         private RichTextBox richTextBox1;
+        private RichTextBox richTextBox2;
     }
 }

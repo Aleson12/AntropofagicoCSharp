@@ -58,12 +58,19 @@ namespace AntropofagicoCSharp
 
             if (result == DialogResult.OK) // se o usuário selecionar uma pasta
             {
-                richTextBox1.Clear();
                 Diretorio = fbd.SelectedPath; 
-                var aleson = Directory.GetFiles(Diretorio);
-                aleson.ToList().ForEach(arquivo =>
-                {
-                    richTextBox1.AppendText(arquivo + "\n");
+
+                maskedTextBox1.Text = $"{Diretorio}\\".Replace("/", "\\"); // inserindo na caixa de entrada de texto o Path da pasta selecionada, e, também, definindo o padrão de barras para todos os sistemas operacionais
+                richTextBox1.Clear(); 
+      
+                var arquivos = Directory.GetFiles(Diretorio); // extraindo o caminho de cada arquivo em Diretorio e inserindo na variável "arquivos"
+
+                arquivos.ToList().ForEach(arquivo => // transformando a variável em uma lista e percorrendo-a
+                { 
+                    if (Path.GetExtension(arquivo) == ".txt") // se a extensão do arquivo corrente for .txt
+                    {
+                        richTextBox1.AppendText(arquivo + "\n"); // o arquivo será exibido no "richTextBox1"
+                    }
                 });
             }
         }
@@ -82,7 +89,10 @@ namespace AntropofagicoCSharp
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox2.Width - 1, groupBox2.Height - 1));
             };
-
+            richTextBox1.Paint += (sender, e) =>
+            {
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, richTextBox1.Width - 1, richTextBox1.Height - 1));
+            };
             groupBox5.Paint += (sender, e) =>
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox5.Width - 1, groupBox5.Height - 1));
@@ -92,11 +102,6 @@ namespace AntropofagicoCSharp
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox6.Width - 1, groupBox6.Height - 1));
             };
             
-            groupBox4.Paint += (sender, e) =>
-            {
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox4.Width - 1, groupBox4.Height - 1));
-
-            };
         }
     }
 }

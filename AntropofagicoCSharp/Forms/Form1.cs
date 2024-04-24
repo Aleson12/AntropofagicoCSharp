@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 using Microsoft.Data.Analysis; // biblioteca para trabalhar com DataFrame
 using Microsoft.ML;
 using System.Drawing;
+using System.Collections.Immutable;
+using System.Drawing.Drawing2D;
+using MathNet.Numerics.LinearAlgebra; // biblioteca instalada para trabalhar com Matrizes
+
 
 namespace AntropofagicoCSharp
 
@@ -30,17 +34,19 @@ namespace AntropofagicoCSharp
 
         // variáveis globais:
 
+        int Matriz;
         int dados;
         int DivisorParaMediaEQuantidadeDeColunasDaMatriz = 0;
         string Caminho_com_o_nome_do_arquivo_csv_final = "";
         string Pasta_dos_arquivos_csv_pos_tratamento = "";
-        string Numero_pos_hifen = "";
         string Compara_numero = "";
         string Compara_nome = "";
         string Nome_com_tipo = "";
+        string Numero_pos_hifen = "";
         string Nome_do_csv = "";
         string Nome_novo = "";
         string Diretorio = "";
+       
 
         public Form1()
         {
@@ -49,7 +55,44 @@ namespace AntropofagicoCSharp
 
         }
 
-        private void button3_Click_1(object sender, EventArgs e)
+        private void AgrupandoOsTxtsPorClasse()
+        {
+            Lista_de_arquivos_txt_da_pasta.Add("null 1-1");
+            Lista_de_arquivos_txt_da_pasta.Sort();
+
+            foreach (string arquivo_txt in Lista_de_arquivos_txt_da_pasta)
+            {
+
+                string NomeArquivo_txt = Path.GetFileName(arquivo_txt);
+
+                string[] partes = NomeArquivo_txt.Split('-');
+
+                Nome_com_tipo = partes[0];
+                Numero_pos_hifen = partes[1];
+
+                if (Nome_com_tipo != Compara_nome)
+                {
+                    Compara_nome = Nome_com_tipo;
+                    if (Lista_dos_arquivos_agrupados.Count != 0)
+                    {
+                        ProcessamentoDosTxtsAgrupados();
+                        Lista_dos_arquivos_agrupados.Clear(); 
+                    }
+                } else if (Nome_com_tipo == Compara_nome)
+                {
+                    Lista_dos_arquivos_agrupados.Add(NomeArquivo_txt);
+                } else if (Nome_com_tipo != "null1")
+                {
+                    Nome_do_csv = Nome_com_tipo;
+                }
+                else
+                {
+                    break; 
+                }
+            }
+        }
+
+        private void button3_Click_1(object sender, EventArgs e) // filtrarArquivosTxtsDaPasta
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog(); // objeto instanciado da classe que permite selecionar uma pasta do diretório local
 
@@ -69,30 +112,25 @@ namespace AntropofagicoCSharp
                 { 
                     if (Path.GetExtension(arquivo) == ".txt") // se a extensão do arquivo corrente for .txt
                     {
+                        Lista_de_arquivos_txt_da_pasta.Add(arquivo);
                         richTextBox1.AppendText(arquivo + "\n"); // o arquivo será exibido no "richTextBox1"
                     }
                 });
 
                 // criando a janela modal: 
          
-                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-                DialogResult result1;
-                string message = "Os arquivos estão com o nome Rom e extensão .TXT?";
-                string title = "Nome e extensão do(s) arquivo(s)";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo; // criando botão de "sim" e de "não"
 
-                result1 = MessageBox.Show(message, title, buttons);
+                DialogResult result1 = MessageBox.Show("Os arquivos estão com o nome Rom e extensão .TXT?", "Nome e extensão do(s) arquivo(s)", buttons);
 
-                if (result1 == DialogResult.OK)
+                if (result1 == DialogResult.Yes)
                 {
-                    // AgrupandoOsTxtsPorClasse();
+                     AgrupandoOsTxtsPorClasse();
                 }
                 else
                 {
                     // InterfaceRenomearArquivo.Main();
                 }
-                
-
-
             }
         }
 
@@ -122,8 +160,25 @@ namespace AntropofagicoCSharp
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, groupBox6.Width - 1, groupBox6.Height - 1));
             };
+        }
+
+        private void ProcessamentoDosTxtsAgrupados()
+        {
+            int divisorParaMediaEQuantidadeDeColunasDaMatriz = Lista_dos_arquivos_agrupados.Count;
+
+            int linhas = 2048;
+            int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz;
+
+            // criação de matriz com 2048 linhas e "n" colunas, preenchida apenas com zeros
+
+            Matrix<double> matriz = Matrix<double>.Build.Dense(linhas, colunas);
+
+
+
+
             
         }
+
     }
 }
 

@@ -109,7 +109,7 @@
             label9.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label9.ForeColor = Color.Black;
-            label9.Location = new Point(163, 33);
+            label9.Location = new Point(145, 32);
             label9.Name = "label9";
             label9.Size = new Size(267, 23);
             label9.TabIndex = 7;
@@ -124,9 +124,9 @@
             button1.Cursor = Cursors.Hand;
             button1.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button1.ForeColor = Color.BlanchedAlmond;
-            button1.Location = new Point(6, 80);
+            button1.Location = new Point(8, 84);
             button1.Name = "button1";
-            button1.Size = new Size(552, 47);
+            button1.Size = new Size(550, 39);
             button1.TabIndex = 7;
             button1.Text = "Abrir";
             button1.UseVisualStyleBackColor = false;

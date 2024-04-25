@@ -15,7 +15,8 @@ using System.Drawing;
 using System.Collections.Immutable;
 using System.Drawing.Drawing2D;
 using MathNet.Numerics.LinearAlgebra; // biblioteca instalada para trabalhar com Matrizes
-
+using CsvHelper; // biblioteca para ler (e manipular) arquivos csv
+using CsvHelper.Configuration;
 
 namespace AntropofagicoCSharp
 
@@ -34,9 +35,7 @@ namespace AntropofagicoCSharp
 
         // variáveis globais:
 
-        int Matriz;
         int dados;
-        int DivisorParaMediaEQuantidadeDeColunasDaMatriz = 0;
         string Caminho_com_o_nome_do_arquivo_csv_final = "";
         string Pasta_dos_arquivos_csv_pos_tratamento = "";
         string Compara_numero = "";
@@ -47,7 +46,6 @@ namespace AntropofagicoCSharp
         string Nome_novo = "";
         string Diretorio = "";
        
-
         public Form1()
         {
             InitializeComponent();
@@ -57,26 +55,26 @@ namespace AntropofagicoCSharp
 
         private void AgrupandoOsTxtsPorClasse()
         {
-            Lista_de_arquivos_txt_da_pasta.Add("null 1-1");
-            Lista_de_arquivos_txt_da_pasta.Sort();
+            Lista_de_arquivos_txt_da_pasta.Add("null 1-1"); // adicionando um valor na lista para que a repetição pare
+            Lista_de_arquivos_txt_da_pasta.Sort(); // ordenando a lista alfabeticamente
 
             foreach (string arquivo_txt in Lista_de_arquivos_txt_da_pasta)
             {
 
-                string NomeArquivo_txt = Path.GetFileName(arquivo_txt);
+                string NomeArquivo_txt = Path.GetFileNameWithoutExtension(arquivo_txt); // extraindo apenas o nome do arquivo com a sua extensão
 
-                string[] partes = NomeArquivo_txt.Split('-');
+                string[] partes = NomeArquivo_txt.Split('-'); // dividindo o nome do arquivo pelo hífen
 
-                Nome_com_tipo = partes[0];
-                Numero_pos_hifen = partes[1];
+                Nome_com_tipo = partes[0]; // nome do arquivo
+                Numero_pos_hifen = partes[1]; // número após o hífen (sem a extensão do arquivo)
 
-                if (Nome_com_tipo != Compara_nome)
+                if (Nome_com_tipo != Compara_nome) 
                 {
                     Compara_nome = Nome_com_tipo;
                     if (Lista_dos_arquivos_agrupados.Count != 0)
                     {
                         ProcessamentoDosTxtsAgrupados();
-                        Lista_dos_arquivos_agrupados.Clear(); 
+                        Lista_dos_arquivos_agrupados.Clear(); // limpa a lista
                     }
                 } else if (Nome_com_tipo == Compara_nome)
                 {
@@ -89,7 +87,9 @@ namespace AntropofagicoCSharp
                 {
                     break; 
                 }
+
             }
+
         }
 
         private void button3_Click_1(object sender, EventArgs e) // filtrarArquivosTxtsDaPasta
@@ -167,18 +167,39 @@ namespace AntropofagicoCSharp
             int divisorParaMediaEQuantidadeDeColunasDaMatriz = Lista_dos_arquivos_agrupados.Count;
 
             int linhas = 2048;
-            int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz;
+            int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
 
             // criação de matriz com 2048 linhas e "n" colunas, preenchida apenas com zeros
 
             Matrix<double> matriz = Matrix<double>.Build.Dense(linhas, colunas);
 
+             var listaEnumerada = Lista_dos_arquivos_agrupados.Select((value, index) => new {Index = index, Value = value}); // lendo cada elemento da lista e o seu respectivo índice
 
+            // percorrendo a lista e extraindo o seu elemento/valor e índice:
 
+            foreach (var item in listaEnumerada) // percorrendo a lista
+            {
+                var colunaIndice = item.Index; // extraindo o índice
+                var arquivoValor = item.Value; // extraindo o valor
 
-            
+                string nomeDoArquivoTxtComCaminho = (Diretorio + "\\" + arquivoValor + ".txt").ToString();
+
+                // configuração - opcional - do arquivo csv
+                var config = new CsvConfiguration(System.Globalization.CultureInfo.CurrentCulture)
+                {
+                    Delimiter = ";", // o separador entre os valores será o ponto-e-vírgula
+                    HasHeaderRecord = false // sem cabeçalho
+                };
+
+                using (var leitor = new StreamReader(nomeDoArquivoTxtComCaminho))
+                using (var csv = new CsvReader(leitor, config)); // "csv" recebe o nome do arquivo e a configuração personalizada para ele
+                
+
+                
+
+            }
+
         }
 
     }
 }
-

@@ -53,6 +53,8 @@ namespace AntropofagicoCSharp
 
         }
 
+        
+
         private void AgrupandoOsTxtsPorClasse()
         {
             Lista_de_arquivos_txt_da_pasta.Add("null 1-1"); // adicionando um valor na lista para que a repetição pare

@@ -149,6 +149,7 @@
             richTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox2.Location = new Point(8, 110);
             richTextBox2.Name = "richTextBox2";
+            richTextBox2.ReadOnly = true;
             richTextBox2.Size = new Size(550, 451);
             richTextBox2.TabIndex = 15;
             richTextBox2.Text = "";
@@ -229,6 +230,7 @@
             richTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBox1.Location = new Point(6, 110);
             richTextBox1.Name = "richTextBox1";
+            richTextBox1.ReadOnly = true;
             richTextBox1.Size = new Size(550, 398);
             richTextBox1.TabIndex = 9;
             richTextBox1.Text = "";
@@ -398,7 +400,7 @@
             Font = new Font("Sitka Text", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 4, 3, 4);
-            MinimumSize = new Size(1200, 846);
+            MinimumSize = new Size(1078, 846);
             Name = "Form1";
             RightToLeftLayout = true;
             Text = "Form1";

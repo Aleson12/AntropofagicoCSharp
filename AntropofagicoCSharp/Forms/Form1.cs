@@ -4,6 +4,8 @@
 
 // importação das bibliotecas necessárias:
 
+using System.IO;
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,9 @@ using System.Drawing.Drawing2D;
 using MathNet.Numerics.LinearAlgebra; // biblioteca instalada para trabalhar com Matrizes
 using CsvHelper; // biblioteca para ler (e manipular) arquivos csv
 using CsvHelper.Configuration;
+using System.Data;
 
 namespace AntropofagicoCSharp
-
 {
     public partial class Form1 : Form
     {
@@ -53,8 +55,6 @@ namespace AntropofagicoCSharp
 
         }
 
-        
-
         private void AgrupandoOsTxtsPorClasse()
         {
             Lista_de_arquivos_txt_da_pasta.Add("null 1-1"); // adicionando um valor na lista para que a repetição pare
@@ -70,7 +70,7 @@ namespace AntropofagicoCSharp
                 Nome_com_tipo = partes[0]; // nome do arquivo
                 Numero_pos_hifen = partes[1]; // número após o hífen (sem a extensão do arquivo)
 
-                if (Nome_com_tipo != Compara_nome) 
+                if (Nome_com_tipo != Compara_nome)
                 {
                     Compara_nome = Nome_com_tipo;
                     if (Lista_dos_arquivos_agrupados.Count != 0)
@@ -78,20 +78,25 @@ namespace AntropofagicoCSharp
                         ProcessamentoDosTxtsAgrupados();
                         Lista_dos_arquivos_agrupados.Clear(); // limpa a lista
                     }
-                } else if (Nome_com_tipo == Compara_nome)
+                }
+                else if (Nome_com_tipo == Compara_nome)
                 {
                     Lista_dos_arquivos_agrupados.Add(NomeArquivo_txt);
-                } else if (Nome_com_tipo != "null1")
+                }
+                else if (Nome_com_tipo != "null1")
                 {
                     Nome_do_csv = Nome_com_tipo;
                 }
                 else
                 {
-                    break; 
+                    break;
                 }
 
             }
+        
+            
 
+        
         }
 
         private void button3_Click_1(object sender, EventArgs e) // filtrarArquivosTxtsDaPasta
@@ -103,7 +108,7 @@ namespace AntropofagicoCSharp
 
             if (result == DialogResult.OK) // se o usuário selecionar uma pasta
             {
-                Diretorio = fbd.SelectedPath; 
+                Diretorio = fbd.SelectedPath; // o caminho da pasta selecionada é inserido na variável global "Diretorio"
 
                 maskedTextBox1.Text = $"{Diretorio}\\".Replace("/", "\\"); // inserindo na caixa de entrada de texto o Path da pasta selecionada, e, também, definindo o padrão de barras para todos os sistemas operacionais
                 richTextBox1.Clear(); 
@@ -115,13 +120,13 @@ namespace AntropofagicoCSharp
                     if (Path.GetExtension(arquivo) == ".txt") // se a extensão do arquivo corrente for .txt
                     {
                         Lista_de_arquivos_txt_da_pasta.Add(arquivo);
-                        richTextBox1.AppendText(arquivo + "\n"); // o arquivo será exibido no "richTextBox1"
+                        richTextBox1.AppendText(arquivo + "\n"); // o arquivo será exibido no "richTextBox1" um abaixo do outro
                     }
                 });
 
                 // criando a janela modal: 
          
-                MessageBoxButtons buttons = MessageBoxButtons.YesNo; // criando botão de "sim" e de "não"
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo; // criando botão de "sim" ou "não"
 
                 DialogResult result1 = MessageBox.Show("Os arquivos estão com o nome Rom e extensão .TXT?", "Nome e extensão do(s) arquivo(s)", buttons);
 
@@ -166,6 +171,9 @@ namespace AntropofagicoCSharp
 
         private void ProcessamentoDosTxtsAgrupados()
         {
+
+            Console.WriteLine(Lista_dos_arquivos_agrupados); 
+
             int divisorParaMediaEQuantidadeDeColunasDaMatriz = Lista_dos_arquivos_agrupados.Count;
 
             int linhas = 2048;
@@ -193,15 +201,36 @@ namespace AntropofagicoCSharp
                     HasHeaderRecord = false // sem cabeçalho
                 };
 
+                List<string> lista_de_arquivos_em_linha_csv = new List<string>();
+
                 using (var leitor = new StreamReader(nomeDoArquivoTxtComCaminho))
-                using (var csv = new CsvReader(leitor, config)); // "csv" recebe o nome do arquivo e a configuração personalizada para ele
-                
+                using (var csv = new CsvReader(leitor, config)) // "csv" recebe o nome do arquivo e a configuração personalizada para ele
+                {
+                    while (csv.Read()) {
 
-                
+                        // Constrói a linha atual do CSV
+                        string linhaAtual = "";
 
+                        // Obtém o número de campos na linha atual
+                        int numCampos = csv.Parser.Count;
+
+                        // Itera sobre os campos da linha atual
+                        for (int i = 0; i < numCampos; i++)
+                        {
+                            // Adiciona o campo à linha atual
+                            linhaAtual += csv.GetField<string>(i);
+
+                            // Adiciona uma vírgula se não for o último campo
+                            if (i < numCampos - 1)
+                            {
+                                linhaAtual += ";";
+                            }
+                        }
+                        // Adiciona a linha atual à lista
+                        lista_de_arquivos_em_linha_csv.Add(linhaAtual);
+                    }
+                }
             }
-
         }
-
     }
 }

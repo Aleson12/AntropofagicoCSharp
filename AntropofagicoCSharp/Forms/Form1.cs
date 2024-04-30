@@ -20,6 +20,7 @@ using MathNet.Numerics.LinearAlgebra; // biblioteca instalada para trabalhar com
 using CsvHelper; // biblioteca para ler (e manipular) arquivos csv
 using CsvHelper.Configuration;
 using System.Data;
+using System.Reflection.Metadata;
 
 namespace AntropofagicoCSharp
 {
@@ -27,8 +28,10 @@ namespace AntropofagicoCSharp
     {
         // declaração de listas:
 
+        List<string> Lista_de_caminhos_dos_arquivos_txt_da_pasta = new List<string>();
         List<string> Lista_de_arquivos_txt_da_pasta = new List<string>();
         List<string> Lista_dos_arquivos_agrupados = new List<string>();
+
         List<string> Lista_nomecsv = new List<string>();
 
         // declaração de um vetor:
@@ -57,15 +60,21 @@ namespace AntropofagicoCSharp
 
         private void AgrupandoOsTxtsPorClasse()
         {
-            Lista_de_arquivos_txt_da_pasta.Add("null 1-1"); // adicionando um valor na lista para que a repetição pare
-            Lista_de_arquivos_txt_da_pasta.Sort(); // ordenando a lista alfabeticamente
+            // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
+            Lista_de_caminhos_dos_arquivos_txt_da_pasta.ForEach(caminho => {
+                if (Path.GetDirectoryName(caminho) != " ")
+                {
+                    Lista_de_arquivos_txt_da_pasta.Add(Path.GetFileNameWithoutExtension(caminho));
+                }  
+            });
 
+            Lista_de_arquivos_txt_da_pasta.Sort(); // ordenando a lista de arquivos alfabeticamente
+            Lista_de_arquivos_txt_da_pasta.Add("null 1-1"); // adicionando um valor ao final da lista para que a repetição pare
+
+            // para cada arquivo .txt na lista de arquivos .txt
             foreach (string arquivo_txt in Lista_de_arquivos_txt_da_pasta)
             {
-
-                string NomeArquivo_txt = Path.GetFileNameWithoutExtension(arquivo_txt); // extraindo apenas o nome do arquivo com a sua extensão
-
-                string[] partes = NomeArquivo_txt.Split('-'); // dividindo o nome do arquivo pelo hífen
+                string[] partes = arquivo_txt.Split('-'); // dividindo o nome do arquivo pelo hífen
 
                 Nome_com_tipo = partes[0]; // nome do arquivo
                 Numero_pos_hifen = partes[1]; // número após o hífen (sem a extensão do arquivo)
@@ -81,7 +90,7 @@ namespace AntropofagicoCSharp
                 }
                 else if (Nome_com_tipo == Compara_nome)
                 {
-                    Lista_dos_arquivos_agrupados.Add(NomeArquivo_txt);
+                    Lista_dos_arquivos_agrupados.Add(arquivo_txt);
                 }
                 else if (Nome_com_tipo != "null1")
                 {
@@ -91,12 +100,7 @@ namespace AntropofagicoCSharp
                 {
                     break;
                 }
-
             }
-        
-            
-
-        
         }
 
         private void button3_Click_1(object sender, EventArgs e) // filtrarArquivosTxtsDaPasta
@@ -119,7 +123,7 @@ namespace AntropofagicoCSharp
                 { 
                     if (Path.GetExtension(arquivo) == ".txt") // se a extensão do arquivo corrente for .txt
                     {
-                        Lista_de_arquivos_txt_da_pasta.Add(arquivo);
+                        Lista_de_caminhos_dos_arquivos_txt_da_pasta.Add(arquivo);
                         richTextBox1.AppendText(arquivo + "\n"); // o arquivo será exibido no "richTextBox1" um abaixo do outro
                     }
                 });

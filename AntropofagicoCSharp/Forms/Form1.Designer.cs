@@ -93,9 +93,9 @@
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.Black;
-            label4.Location = new Point(177, 92);
+            label4.Location = new Point(156, 85);
             label4.Name = "label4";
-            label4.Size = new Size(164, 21);
+            label4.Size = new Size(210, 28);
             label4.TabIndex = 6;
             label4.Text = "Conteúdo do diretório";
             // 
@@ -114,39 +114,37 @@
             label2.ForeColor = Color.Black;
             label2.Location = new Point(6, 32);
             label2.Name = "label2";
-            label2.Size = new Size(72, 20);
+            label2.Size = new Size(91, 25);
             label2.TabIndex = 3;
             label2.Text = "Diretório:";
             label2.TextAlign = ContentAlignment.MiddleCenter;
-            label2.Click += label2_Click;
             // 
             // maskedTextBox1
             // 
-            maskedTextBox1.Location = new Point(84, 32);
+            maskedTextBox1.Location = new Point(103, 32);
             maskedTextBox1.Margin = new Padding(3, 4, 3, 4);
             maskedTextBox1.Name = "maskedTextBox1";
-            maskedTextBox1.Size = new Size(419, 23);
+            maskedTextBox1.Size = new Size(400, 26);
             maskedTextBox1.TabIndex = 0;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(159, 72);
+            label1.Location = new Point(145, 72);
             label1.Name = "label1";
-            label1.Size = new Size(240, 21);
+            label1.Size = new Size(303, 28);
             label1.TabIndex = 2;
             label1.Text = "Leitura | Exibição dos arquivos txt";
             label1.TextAlign = ContentAlignment.MiddleCenter;
-            label1.Click += label1_Click;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Verdana", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(410, 9);
+            label3.Location = new Point(364, 9);
             label3.Name = "label3";
-            label3.Size = new Size(345, 23);
+            label3.Size = new Size(427, 29);
             label3.TabIndex = 3;
             label3.Text = "Análise de Componentes Principais";
             // 
@@ -154,9 +152,9 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(771, 72);
+            label5.Location = new Point(755, 72);
             label5.Name = "label5";
-            label5.Size = new Size(189, 21);
+            label5.Size = new Size(235, 28);
             label5.TabIndex = 4;
             label5.Text = "Gerar | Exibir arquivos csv";
             label5.TextAlign = ContentAlignment.MiddleCenter;
@@ -183,9 +181,9 @@
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.Black;
-            label6.Location = new Point(211, 92);
+            label6.Location = new Point(186, 85);
             label6.Name = "label6";
-            label6.Size = new Size(164, 21);
+            label6.Size = new Size(210, 28);
             label6.TabIndex = 6;
             label6.Text = "Conteúdo do diretório";
             // 
@@ -204,26 +202,26 @@
             label7.ForeColor = Color.Black;
             label7.Location = new Point(6, 32);
             label7.Name = "label7";
-            label7.Size = new Size(72, 20);
+            label7.Size = new Size(91, 25);
             label7.TabIndex = 3;
             label7.Text = "Diretório:";
             label7.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // maskedTextBox2
             // 
-            maskedTextBox2.Location = new Point(84, 32);
+            maskedTextBox2.Location = new Point(103, 32);
             maskedTextBox2.Margin = new Padding(3, 4, 3, 4);
             maskedTextBox2.Name = "maskedTextBox2";
-            maskedTextBox2.Size = new Size(451, 23);
+            maskedTextBox2.Size = new Size(432, 26);
             maskedTextBox2.TabIndex = 0;
             // 
             // label8
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label8.Location = new Point(135, 546);
+            label8.Location = new Point(111, 543);
             label8.Name = "label8";
-            label8.Size = new Size(288, 21);
+            label8.Size = new Size(364, 28);
             label8.TabIndex = 6;
             label8.Text = "Gerar o arquivo csv com todos os dados";
             label8.TextAlign = ContentAlignment.MiddleCenter;
@@ -243,7 +241,6 @@
             groupBox5.Size = new Size(519, 142);
             groupBox5.TabIndex = 3;
             groupBox5.TabStop = false;
-            groupBox5.Enter += groupBox5_Enter;
             // 
             // button2
             // 
@@ -257,7 +254,6 @@
             button2.TabIndex = 7;
             button2.Text = "Abrir";
             button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
             // 
             // label10
             // 
@@ -266,17 +262,17 @@
             label10.ForeColor = Color.Black;
             label10.Location = new Point(6, 33);
             label10.Name = "label10";
-            label10.Size = new Size(72, 20);
+            label10.Size = new Size(91, 25);
             label10.TabIndex = 3;
             label10.Text = "Diretório:";
             label10.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // maskedTextBox3
             // 
-            maskedTextBox3.Location = new Point(84, 32);
+            maskedTextBox3.Location = new Point(97, 32);
             maskedTextBox3.Margin = new Padding(3, 4, 3, 4);
             maskedTextBox3.Name = "maskedTextBox3";
-            maskedTextBox3.Size = new Size(413, 23);
+            maskedTextBox3.Size = new Size(400, 26);
             maskedTextBox3.TabIndex = 0;
             // 
             // groupBox6
@@ -293,9 +289,9 @@
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label11.Location = new Point(143, 32);
+            label11.Location = new Point(110, 33);
             label11.Name = "label11";
-            label11.Size = new Size(277, 21);
+            label11.Size = new Size(349, 28);
             label11.TabIndex = 8;
             label11.Text = "Aplicar PCA | Plotar os dados com PCA";
             label11.TextAlign = ContentAlignment.MiddleCenter;
@@ -315,10 +311,11 @@
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 18F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(1179, 743);
+            ClientSize = new Size(1179, 762);
             Controls.Add(groupBox6);
             Controls.Add(groupBox5);
             Controls.Add(label8);

@@ -21,6 +21,7 @@ using CsvHelper; // biblioteca para ler (e manipular) arquivos csv
 using CsvHelper.Configuration;
 using System.Data;
 using System.Reflection.Metadata;
+using System.Linq; // LINQ
 
 namespace AntropofagicoCSharp
 {
@@ -29,9 +30,9 @@ namespace AntropofagicoCSharp
         // declaração de listas:
 
         List<string> Lista_de_caminhos_dos_arquivos_txt_da_pasta = new List<string>();
-        List<string> Lista_de_arquivos_txt_da_pasta = new List<string>();
+        List<string> Lista_de_arquivos_txt_da_pasta = new List<string>();  // lista de .txt's não ordenada 
+        List<string> Lista_ordenada_de_arquivos_txt_da_pasta = new List<string>(); // lista de .txt's ordenada numericamente 
         List<string> Lista_dos_arquivos_agrupados = new List<string>();
-
         List<string> Lista_nomecsv = new List<string>();
 
         // declaração de um vetor:
@@ -50,7 +51,9 @@ namespace AntropofagicoCSharp
         string Nome_do_csv = "";
         string Nome_novo = "";
         string Diretorio = "";
-       
+
+        private bool validaPrimeiroCaso = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -63,17 +66,39 @@ namespace AntropofagicoCSharp
             // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
             Lista_de_caminhos_dos_arquivos_txt_da_pasta.ForEach(caminho => {
                 if (Path.GetDirectoryName(caminho) != " ")
-                {
-                    Lista_de_arquivos_txt_da_pasta.Add(Path.GetFileNameWithoutExtension(caminho));
-                }  
+
+                Lista_de_arquivos_txt_da_pasta.Add(Path.GetFileNameWithoutExtension(caminho));
+                Lista_ordenada_de_arquivos_txt_da_pasta = Lista_de_arquivos_txt_da_pasta.OrderBy(str => GetNumero(str)).ToList();
+
+
             });
 
-            Lista_de_arquivos_txt_da_pasta.Sort(); // ordenando a lista de arquivos alfabeticamente
-            Lista_de_arquivos_txt_da_pasta.Add("null 1-1"); // adicionando um valor ao final da lista para que a repetição pare
-
-            // para cada arquivo .txt na lista de arquivos .txt
-            foreach (string arquivo_txt in Lista_de_arquivos_txt_da_pasta)
+            static int GetNumero(string str) // método para obter o número do arquivo .txt
             {
+                string[] partes = str.Split('-');
+
+                if (partes.Length >= 2 && partes[0].StartsWith("Rom"))
+                {
+                    int numero;
+
+                    if (int.TryParse(partes[0].Substring(3), out numero))
+                    {
+                        return numero;
+                    }
+
+                }
+
+                return int.MaxValue; 
+
+            }
+
+            Lista_ordenada_de_arquivos_txt_da_pasta.Add("null 1-1"); // adicionando um valor ao final da lista para que a repetição pare
+
+            foreach (string arquivo_txt in Lista_ordenada_de_arquivos_txt_da_pasta) // para cada arquivo .txt na lista de arquivos .txt
+            {
+
+                //Console.WriteLine(arquivo_txt);
+
                 string[] partes = arquivo_txt.Split('-'); // dividindo o nome do arquivo pelo hífen
 
                 Nome_com_tipo = partes[0]; // nome do arquivo
@@ -82,11 +107,18 @@ namespace AntropofagicoCSharp
                 if (Nome_com_tipo != Compara_nome)
                 {
                     Compara_nome = Nome_com_tipo;
+
+                    
                     if (Lista_dos_arquivos_agrupados.Count != 0)
                     {
                         ProcessamentoDosTxtsAgrupados();
-                        Lista_dos_arquivos_agrupados.Clear(); // limpa a lista
+                        Lista_ordenada_de_arquivos_txt_da_pasta.Clear(); // limpa a lista
                     }
+
+                    if (!validaPrimeiroCaso)
+                        Lista_dos_arquivos_agrupados.Add(arquivo_txt);
+                    validaPrimeiroCaso = true;
+                    
                 }
                 else if (Nome_com_tipo == Compara_nome)
                 {

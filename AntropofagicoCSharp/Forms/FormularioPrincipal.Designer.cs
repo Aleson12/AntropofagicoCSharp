@@ -1,6 +1,6 @@
 ﻿namespace AntropofagicoCSharp
 {
-    partial class Form1
+    partial class FormularioPrincipal
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormularioPrincipal));
             label3 = new Label();
             panel3 = new Panel();
             groupBox6 = new GroupBox();
             label9 = new Label();
-            button1 = new Button();
+            btnAplicarPCA = new Button();
             groupBox2 = new GroupBox();
             richTextBox2 = new RichTextBox();
             label11 = new Label();
@@ -46,11 +46,11 @@
             label4 = new Label();
             label2 = new Label();
             maskedTextBox1 = new MaskedTextBox();
-            button3 = new Button();
+            btn3 = new Button();
             label1 = new Label();
             panel1 = new Panel();
             groupBox5 = new GroupBox();
-            button2 = new Button();
+            btnCSV = new Button();
             label8 = new Label();
             label10 = new Label();
             maskedTextBox3 = new MaskedTextBox();
@@ -93,7 +93,7 @@
             groupBox6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBox6.BackColor = SystemColors.ControlLightLight;
             groupBox6.Controls.Add(label9);
-            groupBox6.Controls.Add(button1);
+            groupBox6.Controls.Add(btnAplicarPCA);
             groupBox6.ForeColor = Color.LimeGreen;
             groupBox6.ImeMode = ImeMode.NoControl;
             groupBox6.Location = new Point(7, 614);
@@ -116,20 +116,20 @@
             label9.Text = "Aplicar PCA | Plotar dados pelo PCA";
             label9.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // btnAplicarPCA
             // 
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            button1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            button1.BackColor = Color.Green;
-            button1.Cursor = Cursors.Hand;
-            button1.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.ForeColor = Color.BlanchedAlmond;
-            button1.Location = new Point(8, 84);
-            button1.Name = "button1";
-            button1.Size = new Size(550, 39);
-            button1.TabIndex = 7;
-            button1.Text = "Abrir";
-            button1.UseVisualStyleBackColor = false;
+            btnAplicarPCA.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnAplicarPCA.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnAplicarPCA.BackColor = Color.Green;
+            btnAplicarPCA.Cursor = Cursors.Hand;
+            btnAplicarPCA.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAplicarPCA.ForeColor = Color.BlanchedAlmond;
+            btnAplicarPCA.Location = new Point(8, 84);
+            btnAplicarPCA.Name = "btnAplicarPCA";
+            btnAplicarPCA.Size = new Size(550, 39);
+            btnAplicarPCA.TabIndex = 7;
+            btnAplicarPCA.Text = "Aplicar";
+            btnAplicarPCA.UseVisualStyleBackColor = false;
             // 
             // groupBox2
             // 
@@ -218,7 +218,7 @@
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(maskedTextBox1);
-            groupBox1.Controls.Add(button3);
+            groupBox1.Controls.Add(btn3);
             groupBox1.Location = new Point(5, 38);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(564, 567);
@@ -268,20 +268,20 @@
             maskedTextBox1.Size = new Size(472, 23);
             maskedTextBox1.TabIndex = 1;
             // 
-            // button3
+            // btn3
             // 
-            button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            button3.BackColor = Color.Green;
-            button3.Cursor = Cursors.Hand;
-            button3.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button3.ForeColor = Color.BlanchedAlmond;
-            button3.Location = new Point(6, 514);
-            button3.Name = "button3";
-            button3.Size = new Size(552, 47);
-            button3.TabIndex = 2;
-            button3.Text = "Abrir";
-            button3.UseVisualStyleBackColor = false;
-            button3.Click += button3_Click_1;
+            btn3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btn3.BackColor = Color.Green;
+            btn3.Cursor = Cursors.Hand;
+            btn3.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn3.ForeColor = Color.BlanchedAlmond;
+            btn3.Location = new Point(6, 514);
+            btn3.Name = "btn3";
+            btn3.Size = new Size(552, 47);
+            btn3.TabIndex = 2;
+            btn3.Text = "Abrir";
+            btn3.UseVisualStyleBackColor = false;
+            btn3.Click += btn3_Click;
             // 
             // label1
             // 
@@ -311,7 +311,7 @@
             // 
             groupBox5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             groupBox5.BackColor = SystemColors.ControlLightLight;
-            groupBox5.Controls.Add(button2);
+            groupBox5.Controls.Add(btnCSV);
             groupBox5.Controls.Add(label8);
             groupBox5.Controls.Add(label10);
             groupBox5.Controls.Add(maskedTextBox3);
@@ -326,19 +326,19 @@
             groupBox5.TabIndex = 3;
             groupBox5.TabStop = false;
             // 
-            // button2
+            // btnCSV
             // 
-            button2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            button2.BackColor = Color.Green;
-            button2.Cursor = Cursors.Hand;
-            button2.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.ForeColor = Color.BlanchedAlmond;
-            button2.Location = new Point(6, 84);
-            button2.Name = "button2";
-            button2.Size = new Size(552, 39);
-            button2.TabIndex = 4;
-            button2.Text = "Abrir";
-            button2.UseVisualStyleBackColor = false;
+            btnCSV.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnCSV.BackColor = Color.Green;
+            btnCSV.Cursor = Cursors.Hand;
+            btnCSV.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCSV.ForeColor = Color.BlanchedAlmond;
+            btnCSV.Location = new Point(6, 84);
+            btnCSV.Name = "btnCSV";
+            btnCSV.Size = new Size(552, 39);
+            btnCSV.TabIndex = 4;
+            btnCSV.Text = "Gerar";
+            btnCSV.UseVisualStyleBackColor = false;
             // 
             // label8
             // 
@@ -389,7 +389,7 @@
             tableLayoutPanel1.Size = new Size(1160, 760);
             tableLayoutPanel1.TabIndex = 16;
             // 
-            // Form1
+            // FormularioPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -401,9 +401,10 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 4, 3, 4);
             MinimumSize = new Size(1078, 846);
-            Name = "Form1";
+            Name = "FormularioPrincipal";
             RightToLeftLayout = true;
             Text = "Form1";
+            Load += FormularioPrincipal_Load;
             panel3.ResumeLayout(false);
             groupBox6.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
@@ -423,7 +424,7 @@
         private Panel panel3;
         private GroupBox groupBox6;
         private Label label9;
-        private Button button1;
+        private Button btnAplicarPCA;
         private GroupBox groupBox2;
         private Label label7;
         private MaskedTextBox maskedTextBox2;
@@ -433,11 +434,11 @@
         private Label label4;
         private Label label2;
         private MaskedTextBox maskedTextBox1;
-        private Button button3;
+        private Button btn3;
         private Label label1;
         private Panel panel1;
         private GroupBox groupBox5;
-        private Button button2;
+        private Button btnCSV;
         private Label label8;
         private Label label10;
         private MaskedTextBox maskedTextBox3;

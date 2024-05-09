@@ -28,7 +28,7 @@ namespace AntropofagicoCSharp
         /// </summary>
         /// <param name="diretorio"></param>
         /// <returns></returns>
-        public static List<string> FiltrarArquivosTxt(string diretorio )
+        public static List<string> FiltrarArquivosTxt(string diretorio)
         {
             CaminhosDosArquivosTxtDaPasta = new List<string>();
 
@@ -71,10 +71,13 @@ namespace AntropofagicoCSharp
 
             ArquivosTxtDaPastaOrdenados.ForEach(arquivoOrdenado => {
 
+                string[] partes = arquivoOrdenado.Split('-'); // dividindo o nome do arquivo pelo hífen
+
+                nomeComTipo = partes[0]; // nome do arquivo
+
                 if (nomeComTipo != comparaNome)
                 {
                     comparaNome = nomeComTipo;
-
 
                     if (ArquivosAgrupados.Count != 0)
                     {
@@ -164,7 +167,8 @@ namespace AntropofagicoCSharp
                     }
                 }
 
-                valoresDeCadaTxtComoLista = ArquivosEmLinhaCsv.ConvertAll(arquivoValor => int.Parse(arquivoValor));
+                valoresDeCadaTxtComoLista = ArquivosEmLinhaCsv.ConvertAll(arquivoValor => 
+                int.Parse(arquivoValor.Split(';')[1])); // obtém o valor da coluna de índice 1 após o ponto-e-vírgula
 
               //  valoresDeCadaTxtComoLista = ArquivosEmLinhaCsv.Select(arquivoValor => arquivoValor[1]).ToList();
 

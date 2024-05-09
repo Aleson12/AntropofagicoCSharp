@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,11 +14,10 @@ namespace AntropofagicoCSharp
     public static class Arquivo
     {
         #region propriedades
-        private static List<string> ArquivosTxtDaPasta;
-        private static List<string> CaminhosDosArquivosTxtDaPasta; 
-        private static List<string> ArquivosTxtDaPastaOrdenados;
-        private static List<string> ArquivosAgrupados;
-
+        private static List<string> arquivosTxtsDaPasta;
+        private static List<string> caminhosDosArquivosTxtDaPasta; 
+        private static List<string> arquivosTxtsDaPastaOrdenados;
+        private static List<string> arquivosAgrupados;
 
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
 
@@ -30,12 +30,12 @@ namespace AntropofagicoCSharp
         /// <returns></returns>
         public static List<string> FiltrarArquivosTxt(string diretorio)
         {
-            CaminhosDosArquivosTxtDaPasta = new List<string>();
+            caminhosDosArquivosTxtDaPasta = new List<string>();
 
-               CaminhosDosArquivosTxtDaPasta = Directory.GetFiles(diretorio)
+            caminhosDosArquivosTxtDaPasta = Directory.GetFiles(diretorio)
                         // Filtra apenas os arquivos com extensão ".txt"
                         .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList() ;
-            return CaminhosDosArquivosTxtDaPasta;
+            return caminhosDosArquivosTxtDaPasta;
 
         }
 
@@ -45,31 +45,31 @@ namespace AntropofagicoCSharp
         /// <param name="Diretorio"></param>
         public static void  AgrupandoOsTxtsPorClasse()
         {
-            ArquivosTxtDaPasta = new List<string>();
-            ArquivosTxtDaPastaOrdenados = new List<string>();
-            ArquivosAgrupados = new List<string>();
+            arquivosTxtsDaPasta = new List<string>();
+            arquivosTxtsDaPastaOrdenados = new List<string>();
+            arquivosAgrupados = new List<string>();
 
             string nome_do_csv = string.Empty;
             string[] partes; // vai receber as duas partes de um nome de arquivo separados pelo hífen
             string nomeComTipo = string.Empty; // nome do arquivo
             string numeroPosHifen = string.Empty; // número após o hífen (sem a extensão do arquivo)
-            string comparaNome = string.Empty; 
+            string comparaNome = string.Empty;
 
             // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
-            CaminhosDosArquivosTxtDaPasta.ToList().ForEach(caminho =>
+            caminhosDosArquivosTxtDaPasta.ToList().ForEach(caminho =>
             {
 
                 if (Path.GetDirectoryName(caminho) != " ")
 
-                ArquivosTxtDaPasta.Add(Path.GetFileNameWithoutExtension(caminho)); // pega o arquivo sem a extensão
-                
-                ArquivosTxtDaPastaOrdenados = ArquivosTxtDaPasta.OrderBy(arquivo => RecuperarNumeracaoDeNomeDeArquivo(arquivo)).ToList(); // ordenando a lista crescentemente de acordo com o número de cada arquivo
+                    arquivosTxtsDaPasta.Add(Path.GetFileNameWithoutExtension(caminho)); // pega o arquivo sem a extensão
+
+                arquivosTxtsDaPastaOrdenados = arquivosTxtsDaPasta.OrderBy(arquivo => RecuperarNumeracaoDeNomeDeArquivo(arquivo)).ToList(); // ordenando a lista crescentemente de acordo com o número de cada arquivo
 
             });
 
-            ArquivosTxtDaPastaOrdenados.Add("null 1-1"); // adicionando um valor ao final da lista para que a repetição pare
+            arquivosTxtsDaPastaOrdenados.Add("null 1-1"); // adicionando um valor ao final da lista para que a repetição pare
 
-            ArquivosTxtDaPastaOrdenados.ForEach(arquivoOrdenado => {
+            arquivosTxtsDaPastaOrdenados.ForEach(arquivoOrdenado => {
 
                 string[] partes = arquivoOrdenado.Split('-'); // dividindo o nome do arquivo pelo hífen
 
@@ -79,26 +79,25 @@ namespace AntropofagicoCSharp
                 {
                     comparaNome = nomeComTipo;
 
-                    if (ArquivosAgrupados.Count != 0)
+                    if (arquivosAgrupados.Count != 0)
                     {
                         ProcessamentoDosTxtsAgrupados();
-                        ArquivosAgrupados.Clear(); // limpa a lista
+                        arquivosAgrupados.Clear(); // limpa a lista
                     }
 
                      if (!_validaPrimeiroCaso)
-                        ArquivosAgrupados.Add(arquivoOrdenado);
+                        arquivosAgrupados.Add(arquivoOrdenado);
                   //  _validaPrimeiroCaso = true;
 
                 }
                 else if (nomeComTipo == comparaNome)
                 {
-                    ArquivosAgrupados.Add(arquivoOrdenado);
+                    arquivosAgrupados.Add(arquivoOrdenado);
                 }
                 else if (nomeComTipo != "null1")
                 {
                     nome_do_csv = nomeComTipo;
                 }
-               
             });
 
         }
@@ -108,7 +107,7 @@ namespace AntropofagicoCSharp
         /// </summary>
         private static void ProcessamentoDosTxtsAgrupados()
         {
-            int divisorParaMediaEQuantidadeDeColunasDaMatriz = ArquivosAgrupados.Count;
+            int divisorParaMediaEQuantidadeDeColunasDaMatriz = arquivosAgrupados.Count;
 
             int linhas = 2048;
             int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
@@ -116,7 +115,7 @@ namespace AntropofagicoCSharp
             // criação de matriz com 2048 linhas e "n" colunas, preenchida apenas com zeros
             double[,] matriz = new double[linhas, colunas];
 
-            var listaEnumerada = ArquivosAgrupados.Select((valor ,indice) => new { Index = indice, Value = valor  }); // lendo cada elemento da lista e o seu respectivo índice
+            var listaEnumerada = arquivosAgrupados.Select((valor ,indice) => new { Index = indice, Value = valor  }); // lendo cada elemento da lista e o seu respectivo índice
 
             List<int> valoresDeCadaTxtComoLista = new List<int>();
 
@@ -164,15 +163,22 @@ namespace AntropofagicoCSharp
                         }
                         // adiciona a linha atual à lista
                         ArquivosEmLinhaCsv.Add(linhaAtual);
+                    
                     }
                 }
 
                 valoresDeCadaTxtComoLista = ArquivosEmLinhaCsv.ConvertAll(arquivoValor => 
                 int.Parse(arquivoValor.Split(';')[1])); // obtém o valor da coluna de índice 1 após o ponto-e-vírgula
 
-              //  valoresDeCadaTxtComoLista = ArquivosEmLinhaCsv.Select(arquivoValor => arquivoValor[1]).ToList();
+                // obtendo o valor e seu respectivo índice de cada elemento da lista
+                for (int i = 0; i <= valoresDeCadaTxtComoLista.Count; i++)
+                {
+                    int valorDeCadaLinha = valoresDeCadaTxtComoLista[i]; // valor
+                    int linha = i; // índice
 
-
+                    _ = matriz[linha, valorDeCadaLinha]; 
+                }
+  
             }
         }
 

@@ -87,7 +87,7 @@ namespace AntropofagicoCSharp
 
                      if (!_validaPrimeiroCaso)
                         ArquivosAgrupados.Add(arquivoOrdenado);
-                    _validaPrimeiroCaso = true;
+                  //  _validaPrimeiroCaso = true;
 
                 }
                 else if (nomeComTipo == comparaNome)

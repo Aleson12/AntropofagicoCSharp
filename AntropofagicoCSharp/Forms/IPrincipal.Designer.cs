@@ -1,6 +1,6 @@
 ﻿namespace AntropofagicoCSharp
 {
-    partial class FormularioPrincipal
+    partial class IPrincipal
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,32 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormularioPrincipal));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IPrincipal));
             label3 = new Label();
             panel3 = new Panel();
             groupBox6 = new GroupBox();
             label9 = new Label();
             btnAplicarPCA = new Button();
             groupBox2 = new GroupBox();
-            richTextBox2 = new RichTextBox();
+            rtx_RichTextBox2 = new RichTextBox();
             label11 = new Label();
             label7 = new Label();
-            maskedTextBox2 = new MaskedTextBox();
+            mtx_MaskedTextBox2 = new MaskedTextBox();
             label5 = new Label();
             panel4 = new Panel();
             groupBox1 = new GroupBox();
-            richTextBox1 = new RichTextBox();
+            rtx_RichTextBox1 = new RichTextBox();
             label4 = new Label();
             label2 = new Label();
-            maskedTextBox1 = new MaskedTextBox();
-            btn3 = new Button();
+            mtx_MaskedTextBox1 = new MaskedTextBox();
+            btnAbrir = new Button();
             label1 = new Label();
             panel1 = new Panel();
             groupBox5 = new GroupBox();
             btnCSV = new Button();
             label8 = new Label();
             label10 = new Label();
-            maskedTextBox3 = new MaskedTextBox();
+            mtx_MaskedTextBox3 = new MaskedTextBox();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel3.SuspendLayout();
             groupBox6.SuspendLayout();
@@ -134,25 +134,25 @@
             // groupBox2
             // 
             groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox2.Controls.Add(richTextBox2);
+            groupBox2.Controls.Add(rtx_RichTextBox2);
             groupBox2.Controls.Add(label11);
             groupBox2.Controls.Add(label7);
-            groupBox2.Controls.Add(maskedTextBox2);
+            groupBox2.Controls.Add(mtx_MaskedTextBox2);
             groupBox2.Location = new Point(7, 38);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(564, 567);
             groupBox2.TabIndex = 12;
             groupBox2.TabStop = false;
             // 
-            // richTextBox2
+            // rtx_RichTextBox2
             // 
-            richTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            richTextBox2.Location = new Point(8, 110);
-            richTextBox2.Name = "richTextBox2";
-            richTextBox2.ReadOnly = true;
-            richTextBox2.Size = new Size(550, 451);
-            richTextBox2.TabIndex = 15;
-            richTextBox2.Text = "";
+            rtx_RichTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            rtx_RichTextBox2.Location = new Point(8, 110);
+            rtx_RichTextBox2.Name = "rtx_RichTextBox2";
+            rtx_RichTextBox2.ReadOnly = true;
+            rtx_RichTextBox2.Size = new Size(550, 451);
+            rtx_RichTextBox2.TabIndex = 15;
+            rtx_RichTextBox2.Text = "";
             // 
             // label11
             // 
@@ -178,14 +178,14 @@
             label7.Text = "Diretório:";
             label7.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // maskedTextBox2
+            // mtx_MaskedTextBox2
             // 
-            maskedTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            maskedTextBox2.Location = new Point(84, 38);
-            maskedTextBox2.Margin = new Padding(3, 4, 3, 4);
-            maskedTextBox2.Name = "maskedTextBox2";
-            maskedTextBox2.Size = new Size(474, 23);
-            maskedTextBox2.TabIndex = 5;
+            mtx_MaskedTextBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            mtx_MaskedTextBox2.Location = new Point(84, 38);
+            mtx_MaskedTextBox2.Margin = new Padding(3, 4, 3, 4);
+            mtx_MaskedTextBox2.Name = "mtx_MaskedTextBox2";
+            mtx_MaskedTextBox2.Size = new Size(474, 23);
+            mtx_MaskedTextBox2.TabIndex = 5;
             // 
             // label5
             // 
@@ -214,26 +214,26 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox1.Controls.Add(richTextBox1);
+            groupBox1.Controls.Add(rtx_RichTextBox1);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(maskedTextBox1);
-            groupBox1.Controls.Add(btn3);
+            groupBox1.Controls.Add(mtx_MaskedTextBox1);
+            groupBox1.Controls.Add(btnAbrir);
             groupBox1.Location = new Point(5, 38);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(564, 567);
             groupBox1.TabIndex = 11;
             groupBox1.TabStop = false;
             // 
-            // richTextBox1
+            // rtx_RichTextBox1
             // 
-            richTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            richTextBox1.Location = new Point(6, 110);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.ReadOnly = true;
-            richTextBox1.Size = new Size(550, 398);
-            richTextBox1.TabIndex = 9;
-            richTextBox1.Text = "";
+            rtx_RichTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            rtx_RichTextBox1.Location = new Point(6, 110);
+            rtx_RichTextBox1.Name = "rtx_RichTextBox1";
+            rtx_RichTextBox1.ReadOnly = true;
+            rtx_RichTextBox1.Size = new Size(550, 398);
+            rtx_RichTextBox1.TabIndex = 9;
+            rtx_RichTextBox1.Text = "";
             // 
             // label4
             // 
@@ -258,30 +258,30 @@
             label2.Text = "Diretório:";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // maskedTextBox1
+            // mtx_MaskedTextBox1
             // 
-            maskedTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            maskedTextBox1.Font = new Font("Bookman Old Style", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            maskedTextBox1.Location = new Point(84, 39);
-            maskedTextBox1.Margin = new Padding(3, 4, 3, 4);
-            maskedTextBox1.Name = "maskedTextBox1";
-            maskedTextBox1.Size = new Size(472, 23);
-            maskedTextBox1.TabIndex = 1;
+            mtx_MaskedTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            mtx_MaskedTextBox1.Font = new Font("Bookman Old Style", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            mtx_MaskedTextBox1.Location = new Point(84, 39);
+            mtx_MaskedTextBox1.Margin = new Padding(3, 4, 3, 4);
+            mtx_MaskedTextBox1.Name = "mtx_MaskedTextBox1";
+            mtx_MaskedTextBox1.Size = new Size(472, 23);
+            mtx_MaskedTextBox1.TabIndex = 1;
             // 
-            // btn3
+            // btnAbrir
             // 
-            btn3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btn3.BackColor = Color.Green;
-            btn3.Cursor = Cursors.Hand;
-            btn3.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn3.ForeColor = Color.BlanchedAlmond;
-            btn3.Location = new Point(6, 514);
-            btn3.Name = "btn3";
-            btn3.Size = new Size(552, 47);
-            btn3.TabIndex = 2;
-            btn3.Text = "Abrir";
-            btn3.UseVisualStyleBackColor = false;
-            btn3.Click += btn3_Click;
+            btnAbrir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnAbrir.BackColor = Color.Green;
+            btnAbrir.Cursor = Cursors.Hand;
+            btnAbrir.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAbrir.ForeColor = Color.BlanchedAlmond;
+            btnAbrir.Location = new Point(6, 514);
+            btnAbrir.Name = "btnAbrir";
+            btnAbrir.Size = new Size(552, 47);
+            btnAbrir.TabIndex = 2;
+            btnAbrir.Text = "Abrir";
+            btnAbrir.UseVisualStyleBackColor = false;
+            btnAbrir.Click += btnAbrir_Click;
             // 
             // label1
             // 
@@ -314,7 +314,7 @@
             groupBox5.Controls.Add(btnCSV);
             groupBox5.Controls.Add(label8);
             groupBox5.Controls.Add(label10);
-            groupBox5.Controls.Add(maskedTextBox3);
+            groupBox5.Controls.Add(mtx_MaskedTextBox3);
             groupBox5.FlatStyle = FlatStyle.Popup;
             groupBox5.ForeColor = Color.LimeGreen;
             groupBox5.ImeMode = ImeMode.On;
@@ -364,14 +364,14 @@
             label10.Text = "Diretório:";
             label10.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // maskedTextBox3
+            // mtx_MaskedTextBox3
             // 
-            maskedTextBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            maskedTextBox3.Location = new Point(84, 51);
-            maskedTextBox3.Margin = new Padding(3, 4, 3, 4);
-            maskedTextBox3.Name = "maskedTextBox3";
-            maskedTextBox3.Size = new Size(472, 23);
-            maskedTextBox3.TabIndex = 3;
+            mtx_MaskedTextBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            mtx_MaskedTextBox3.Location = new Point(84, 51);
+            mtx_MaskedTextBox3.Margin = new Padding(3, 4, 3, 4);
+            mtx_MaskedTextBox3.Name = "mtx_MaskedTextBox3";
+            mtx_MaskedTextBox3.Size = new Size(472, 23);
+            mtx_MaskedTextBox3.TabIndex = 3;
             // 
             // tableLayoutPanel1
             // 
@@ -389,7 +389,7 @@
             tableLayoutPanel1.Size = new Size(1160, 760);
             tableLayoutPanel1.TabIndex = 16;
             // 
-            // FormularioPrincipal
+            // IPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -401,7 +401,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 4, 3, 4);
             MinimumSize = new Size(1078, 846);
-            Name = "FormularioPrincipal";
+            Name = "IPrincipal";
             RightToLeftLayout = true;
             Text = "Form1";
             Load += FormularioPrincipal_Load;
@@ -427,24 +427,24 @@
         private Button btnAplicarPCA;
         private GroupBox groupBox2;
         private Label label7;
-        private MaskedTextBox maskedTextBox2;
+        private MaskedTextBox mtx_MaskedTextBox2;
         private Label label5;
         private Panel panel4;
         private GroupBox groupBox1;
         private Label label4;
         private Label label2;
-        private MaskedTextBox maskedTextBox1;
-        private Button btn3;
+        private MaskedTextBox mtx_MaskedTextBox1;
+        private Button btnAbrir;
         private Label label1;
         private Panel panel1;
         private GroupBox groupBox5;
         private Button btnCSV;
         private Label label8;
         private Label label10;
-        private MaskedTextBox maskedTextBox3;
+        private MaskedTextBox mtx_MaskedTextBox3;
         private TableLayoutPanel tableLayoutPanel1;
         private Label label11;
-        private RichTextBox richTextBox1;
-        private RichTextBox richTextBox2;
+        private RichTextBox rtx_RichTextBox1;
+        private RichTextBox rtx_RichTextBox2;
     }
 }

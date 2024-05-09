@@ -14,25 +14,25 @@ namespace AntropofagicoCSharp
     {
         #region propriedades
         private static List<string> ArquivosTxtDaPasta;
-        private static List<string> CaminhosDosArquivosTxtDaPasta; // mudar p tipo List (aqui e na interface principal)
-        private static List<string> OrdenadaDeArquivosTxtDaPasta;
+        private static List<string> CaminhosDosArquivosTxtDaPasta; 
+        private static List<string> ArquivosTxtDaPastaOrdenados;
         private static List<string> ArquivosAgrupados;
 
 
-        private static bool validaPrimeiroCaso = false;
+        private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
 
         #endregion propriedades
         #region Metodos
         /// <summary>
-        /// 
+        /// obtém o caminho de cada arquivo do diretório (com a extensão .txt) transformando em uma Lista
         /// </summary>
-        /// <param name="Diretorio"></param>
+        /// <param name="diretorio"></param>
         /// <returns></returns>
-        public static List<string> FiltrarArquivosTxt(string Diretorio )
+        public static List<string> FiltrarArquivosTxt(string diretorio )
         {
             CaminhosDosArquivosTxtDaPasta = new List<string>();
 
-               CaminhosDosArquivosTxtDaPasta = Directory.GetFiles(Diretorio)
+               CaminhosDosArquivosTxtDaPasta = Directory.GetFiles(diretorio)
                         // Filtra apenas os arquivos com extensão ".txt"
                         .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList() ;
             return CaminhosDosArquivosTxtDaPasta;
@@ -46,12 +46,11 @@ namespace AntropofagicoCSharp
         public static void  AgrupandoOsTxtsPorClasse()
         {
             ArquivosTxtDaPasta = new List<string>();
-            OrdenadaDeArquivosTxtDaPasta = new List<string>();
+            ArquivosTxtDaPastaOrdenados = new List<string>();
             ArquivosAgrupados = new List<string>();
 
-
-            string Nome_do_csv = string.Empty;
-            string[] partes; // dividindo o nome do arquivo pelo hífen
+            string nome_do_csv = string.Empty;
+            string[] partes; // vai receber as duas partes de um nome de arquivo separados pelo hífen
             string nomeComTipo = string.Empty; // nome do arquivo
             string numeroPosHifen = string.Empty; // número após o hífen (sem a extensão do arquivo)
             string comparaNome = string.Empty; 
@@ -59,17 +58,18 @@ namespace AntropofagicoCSharp
             // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
             CaminhosDosArquivosTxtDaPasta.ToList().ForEach(caminho =>
             {
+
                 if (Path.GetDirectoryName(caminho) != " ")
 
-                ArquivosTxtDaPasta.Add(Path.GetFileNameWithoutExtension(caminho));
-                OrdenadaDeArquivosTxtDaPasta = OrdenadaDeArquivosTxtDaPasta.OrderBy(arquivo => RecuperarNumeracaoDeNomeDeArquivo(arquivo)).ToList(); // ordenando a lista crescentemente de acordo com o número de cada arquivo
-
+                ArquivosTxtDaPasta.Add(Path.GetFileNameWithoutExtension(caminho)); // pega o arquivo sem a extensão
+                
+                ArquivosTxtDaPastaOrdenados = ArquivosTxtDaPasta.OrderBy(arquivo => RecuperarNumeracaoDeNomeDeArquivo(arquivo)).ToList(); // ordenando a lista crescentemente de acordo com o número de cada arquivo
 
             });
 
-            OrdenadaDeArquivosTxtDaPasta.Add("null 1-1"); // adicionando um valor ao final da lista para que a repetição pare
+            ArquivosTxtDaPastaOrdenados.Add("null 1-1"); // adicionando um valor ao final da lista para que a repetição pare
 
-            OrdenadaDeArquivosTxtDaPasta.ForEach(arquivoOrdenado => {
+            ArquivosTxtDaPastaOrdenados.ForEach(arquivoOrdenado => {
 
                 if (nomeComTipo != comparaNome)
                 {
@@ -82,9 +82,9 @@ namespace AntropofagicoCSharp
                         ArquivosAgrupados.Clear(); // limpa a lista
                     }
 
-                     if (!validaPrimeiroCaso)
+                     if (!_validaPrimeiroCaso)
                         ArquivosAgrupados.Add(arquivoOrdenado);
-                    validaPrimeiroCaso = true;
+                    _validaPrimeiroCaso = true;
 
                 }
                 else if (nomeComTipo == comparaNome)
@@ -93,7 +93,7 @@ namespace AntropofagicoCSharp
                 }
                 else if (nomeComTipo != "null1")
                 {
-                    Nome_do_csv = nomeComTipo;
+                    nome_do_csv = nomeComTipo;
                 }
                
             });
@@ -115,15 +115,16 @@ namespace AntropofagicoCSharp
 
             var listaEnumerada = ArquivosAgrupados.Select((valor ,indice) => new { Index = indice, Value = valor  }); // lendo cada elemento da lista e o seu respectivo índice
 
+            List<int> valoresDeCadaTxtComoLista = new List<int>();
+
             // percorrendo a lista e extraindo o seu elemento/valor e índice:
 
-            
             foreach (var item in listaEnumerada) // percorrendo a lista
             {
                 var colunaIndice = item.Index; // extraindo o índice
                 var arquivoValor = item.Value; // extraindo o valor
 
-                string nomeDoArquivoTxtComCaminho = (FormularioPrincipal.Diretorio + "\\" + arquivoValor + ".txt").ToString();
+                string nomeDoArquivoTxtComCaminho = (IPrincipal.diretorio + "\\" + arquivoValor + ".txt").ToString();
 
                 // configuração - opcional - do arquivo csv
                 CsvConfiguration configuracao = new CsvConfiguration(CultureInfo.CurrentCulture)
@@ -162,6 +163,12 @@ namespace AntropofagicoCSharp
                         ArquivosEmLinhaCsv.Add(linhaAtual);
                     }
                 }
+
+                valoresDeCadaTxtComoLista = ArquivosEmLinhaCsv.ConvertAll(arquivoValor => int.Parse(arquivoValor));
+
+              //  valoresDeCadaTxtComoLista = ArquivosEmLinhaCsv.Select(arquivoValor => arquivoValor[1]).ToList();
+
+
             }
         }
 
@@ -188,5 +195,4 @@ namespace AntropofagicoCSharp
         }
         #endregion Metodos
     }
-} 
-
+}

@@ -15,9 +15,10 @@ namespace AntropofagicoCSharp
     {
         #region propriedades
         private static List<string> arquivosTxtsDaPasta;
-        private static List<string> caminhosDosArquivosTxtDaPasta; 
+        private static List<string> caminhosDosArquivosTxtDaPasta;
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
+        private static List<string> mediaDosValoresDaMatriz;
 
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
 
@@ -111,7 +112,9 @@ namespace AntropofagicoCSharp
 
             int linhas = 2048;
             int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
+            
             int colunaDaMatriz = 0;
+            
             // criação de matriz com 2048 linhas e "n" colunas, preenchida apenas com zeros
             double[,] matriz = new double[linhas, colunas];
 
@@ -171,7 +174,7 @@ namespace AntropofagicoCSharp
                 int.Parse(arquivoValor.Split(';')[1])); // obtém o valor da coluna de índice 1 após o ponto-e-vírgula
 
                 // obtendo o valor e seu respectivo índice de cada elemento da lista
-                for (int i = 0; i <= valorDeCadaTxtComoLista.Count;i++)
+                for (int i = 0; i < valorDeCadaTxtComoLista.Count;i++)
                 {
                     
                     int valorDeCadaLinha = valorDeCadaTxtComoLista[i]; // obtendo cada valor isoladamente
@@ -180,9 +183,36 @@ namespace AntropofagicoCSharp
 
                 }
                 
+                GerarSomenteUmArquivoPorClasse(matriz); // passando a matriz como parâmetro para este
+                // método para que ele seja capaz de manipulá-lo sem ter que definir a matriz como global
+
                 colunaDaMatriz += 1;
 
+                
             }
+        }
+            
+        private static void GerarSomenteUmArquivoPorClasse(double[,] matriz)
+        {
+            double valor = 0;
+
+            int linhas = matriz.GetLength(0); // obtendo a quantidade de linhas
+            int colunas = matriz.GetLength(1); // obtendo a quantidade de colunas
+
+            for (int i = 0; i < linhas; i++)
+            {
+                for (int j = 0; j < colunas; j++)
+                {
+                    valor += matriz[i,j];
+                }
+
+                if (valor > 0.00)
+                {
+                //    mediaDosValoresDaMatriz.Add();
+                }
+
+            }
+
         }
 
         /// <summary>

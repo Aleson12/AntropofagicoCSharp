@@ -111,13 +111,13 @@ namespace AntropofagicoCSharp
 
             int linhas = 2048;
             int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
-
+            int colunaDaMatriz = 0;
             // criação de matriz com 2048 linhas e "n" colunas, preenchida apenas com zeros
             double[,] matriz = new double[linhas, colunas];
 
             var listaEnumerada = arquivosAgrupados.Select((valor ,indice) => new { Index = indice, Value = valor  }); // lendo cada elemento da lista e o seu respectivo índice
 
-            List<int> valoresDeCadaTxtComoLista = new List<int>();
+            List<int> valorDeCadaTxtComoLista = new List<int>();
 
             // percorrendo a lista e extraindo o seu elemento/valor e índice:
 
@@ -167,18 +167,21 @@ namespace AntropofagicoCSharp
                     }
                 }
 
-                valoresDeCadaTxtComoLista = ArquivosEmLinhaCsv.ConvertAll(arquivoValor => 
+                valorDeCadaTxtComoLista = ArquivosEmLinhaCsv.ConvertAll(arquivoValor => 
                 int.Parse(arquivoValor.Split(';')[1])); // obtém o valor da coluna de índice 1 após o ponto-e-vírgula
 
                 // obtendo o valor e seu respectivo índice de cada elemento da lista
-                for (int i = 0; i <= valoresDeCadaTxtComoLista.Count; i++)
+                for (int i = 0; i <= valorDeCadaTxtComoLista.Count;i++)
                 {
-                    int valorDeCadaLinha = valoresDeCadaTxtComoLista[i]; // valor
-                    int linha = i; // índice
+                    
+                    int valorDeCadaLinha = valorDeCadaTxtComoLista[i]; // obtendo cada valor isoladamente
+                             
+                    matriz[i, colunaDaMatriz] = valorDeCadaLinha; // inserindo na matriz os novos valores
 
-                    _ = matriz[linha, valorDeCadaLinha]; 
                 }
-  
+                
+                colunaDaMatriz += 1;
+
             }
         }
 

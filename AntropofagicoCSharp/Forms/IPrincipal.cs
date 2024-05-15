@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace AntropofagicoCSharp
 {
     public partial class IPrincipal : Form
@@ -25,6 +27,9 @@ namespace AntropofagicoCSharp
 
                 if (MessageBox.Show("Os arquivos estão com o nome Rom e extensão .TXT?", "Nome e extensão do(s) arquivo(s)", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     Arquivo.AgrupandoOsTxtsPorClasse();
+                     mtx_MaskedTextBox2.Clear(); // limpa o campo de texto
+                     mtx_MaskedTextBox2.Text = Arquivo.caminhoDaPastaDosArquivosCSVPosTratamento; // insere no campo o caminho de diretório onde estão os arquivos tratados
+
 
 
             }
@@ -61,3 +66,4 @@ namespace AntropofagicoCSharp
         }
     }
 }
+

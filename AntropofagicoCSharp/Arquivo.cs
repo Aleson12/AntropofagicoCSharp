@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,9 +19,10 @@ namespace AntropofagicoCSharp
         private static List<string> caminhosDosArquivosTxtDaPasta;
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
-        private static List<string> mediaDosValoresDaMatriz;
+        private static List<double> mediaDosValoresDaMatriz;
 
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
+        public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
 
         #endregion propriedades
         #region Metodos
@@ -194,6 +196,11 @@ namespace AntropofagicoCSharp
             
         private static void GerarSomenteUmArquivoPorClasse(double[,] matriz)
         {
+
+            mediaDosValoresDaMatriz = new List<double>(); // instanciando o objeto dessa Lista para que 
+            // ela possa ser manipulada e não ocorrer o erro
+            // "System.NullReferenceException: 'Object reference not set to an instance of an object.'"
+
             double valor = 0;
 
             int linhas = matriz.GetLength(0); // obtendo a quantidade de linhas
@@ -202,17 +209,22 @@ namespace AntropofagicoCSharp
             for (int i = 0; i < linhas; i++)
             {
                 for (int j = 0; j < colunas; j++)
-                {
                     valor += matriz[i,j];
-                }
 
                 if (valor > 0.00)
                 {
-                //    mediaDosValoresDaMatriz.Add();
+                    var a = (valor / colunas);
+                    var resultadoArredondado = Math.Round(a, 5); // arredondando o resultado da divisão para cinco casas decimais
+                    mediaDosValoresDaMatriz.Add(resultadoArredondado);
                 }
-
+                else
+                    mediaDosValoresDaMatriz.Add(0.0000);
+                valor = 0;
             }
 
+            caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{IPrincipal.diretorio}\\Roms\\");
+            Directory.CreateDirectory(caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
+            
         }
 
         /// <summary>

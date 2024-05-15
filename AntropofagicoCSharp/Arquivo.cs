@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace AntropofagicoCSharp
 {
@@ -23,6 +24,7 @@ namespace AntropofagicoCSharp
 
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
         public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
+//        private static string nome_do_csv = string.Empty;
 
         #endregion propriedades
         #region Metodos
@@ -96,13 +98,13 @@ namespace AntropofagicoCSharp
                 else if (nomeComTipo == comparaNome)
                 {
                     arquivosAgrupados.Add(arquivoOrdenado);
+
                 }
                 else if (nomeComTipo != "null1")
                 {
                     nome_do_csv = nomeComTipo;
                 }
             });
-
         }
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace AntropofagicoCSharp
 
             int linhas = 2048;
             int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
-            
+            string nomeDoArquivoCsv = string.Empty;
             int colunaDaMatriz = 0;
             
             // criação de matriz com 2048 linhas e "n" colunas, preenchida apenas com zeros
@@ -130,6 +132,8 @@ namespace AntropofagicoCSharp
             {
                 var colunaIndice = item.Index; // extraindo o índice
                 var arquivoValor = item.Value; // extraindo o valor
+
+                nomeDoArquivoCsv = arquivoValor.ToString().Split('-')[0];
 
                 string nomeDoArquivoTxtComCaminho = (IPrincipal.diretorio + "\\" + arquivoValor + ".txt").ToString();
 
@@ -184,19 +188,19 @@ namespace AntropofagicoCSharp
                     matriz[i, colunaDaMatriz] = valorDeCadaLinha; // inserindo na matriz os novos valores
 
                 }
-                
-                GerarSomenteUmArquivoPorClasse(matriz); // passando a matriz como parâmetro para este
-                // método para que ele seja capaz de manipulá-lo sem ter que definir a matriz como global
+               
+            }
+
+                GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz como parâmetro para este
+                                                                          // método para que ele seja capaz de manipulá-lo sem ter que definir a matriz como global
 
                 colunaDaMatriz += 1;
-
-                
-            }
         }
             
-        private static void GerarSomenteUmArquivoPorClasse(double[,] matriz)
+        private static void GerarSomenteUmArquivoPorClasse(double[,] matriz, string nomeDoArquivoCsv)
         {
-
+            string caminhoComNomeDoCsv = string.Empty;
+            
             mediaDosValoresDaMatriz = new List<double>(); // instanciando o objeto dessa Lista para que 
             // ela possa ser manipulada e não ocorrer o erro
             // "System.NullReferenceException: 'Object reference not set to an instance of an object.'"
@@ -224,7 +228,11 @@ namespace AntropofagicoCSharp
 
             caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{IPrincipal.diretorio}\\Roms\\");
             Directory.CreateDirectory(caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
-            
+
+            // transformando cada valor número da lista em string, substituindo o ponto por vírgula, transformando tudo em uma lista e inserindo na nova variável
+            List<string> mediaDosValoresDaMatrizComoString = mediaDosValoresDaMatriz.Select(valor => valor.ToString().Replace(".",",")).ToList();
+            caminhoComNomeDoCsv = ($"{caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv");
+
         }
 
         /// <summary>

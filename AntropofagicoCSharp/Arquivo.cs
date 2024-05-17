@@ -24,7 +24,7 @@ namespace AntropofagicoCSharp
 
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
         public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
-        public static string caminhoComNomeDoCsv;
+        public static string caminhosCsv;
         
         #endregion propriedades
         #region Metodos
@@ -201,6 +201,8 @@ namespace AntropofagicoCSharp
             // ela possa ser manipulada e não ocorrer o erro
             // "System.NullReferenceException: 'Object reference not set to an instance of an object.'"
 
+            string caminhoComNomeDoCsv;
+
             double valor = 0;
 
             int linhas = matriz.GetLength(0); // obtendo a quantidade de linhas
@@ -220,6 +222,7 @@ namespace AntropofagicoCSharp
                 else
                     mediaDosValoresDaMatriz.Add(0.0000);
                 valor = 0;
+
             }
 
             caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{IPrincipal.diretorio}\\Roms\\");
@@ -228,18 +231,20 @@ namespace AntropofagicoCSharp
             // transformando cada valor número da lista em string, substituindo o ponto por vírgula, transformando tudo em uma lista e inserindo na nova variável
           //  List<string> mediaDosValoresDaMatrizComoString = mediaDosValoresDaMatriz.Select(valor => valor.ToString().Replace(".",",")).ToList();
             
-            caminhoComNomeDoCsv = $"{caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"; // criando o caminho onde está o arquivo csv para ser escrito
+            caminhoComNomeDoCsv = ($"{caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"); // criando o caminho onde está o arquivo csv para ser escrito
 
             // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
             using (StreamWriter writer = new StreamWriter(caminhoComNomeDoCsv))
             {
                 foreach (double vlr in mediaDosValoresDaMatriz)
-                {
                     writer.WriteLine($"{vlr}".Replace('.', ','));
-                }
             }
+
+            // criada uma nova variável que irá receber cada valor da variável "caminhoComNomeDoCsv" e 
+            // concatenar com uma quebra de linha
+            caminhosCsv += caminhoComNomeDoCsv + '\n';
         }
-           
+
         /// <summary>
         /// 
         /// </summary>

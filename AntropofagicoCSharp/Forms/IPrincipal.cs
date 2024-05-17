@@ -30,7 +30,7 @@ namespace AntropofagicoCSharp
                     Arquivo.AgrupandoOsTxtsPorClasse();
                      mtx_MaskedTextBox2.Clear(); // limpa o campo de texto
                      mtx_MaskedTextBox2.Text = Arquivo.caminhoDaPastaDosArquivosCSVPosTratamento; // insere no campo o caminho de diretório onde estão os arquivos tratados
-                     rtx_RichTextBox2.Text = Arquivo.caminhoComNomeDoCsv;
+                     rtx_RichTextBox2.Text = Arquivo.caminhosCsv; // exibindo cada caminho de arquivo csv no richTextBox
             }
         }
 

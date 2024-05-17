@@ -25,7 +25,7 @@ namespace AntropofagicoCSharp
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
         public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
         public static string caminhosCsv;
-        
+
         #endregion propriedades
         #region Metodos
         /// <summary>
@@ -39,7 +39,7 @@ namespace AntropofagicoCSharp
 
             caminhosDosArquivosTxtDaPasta = Directory.GetFiles(diretorio)
                         // Filtra apenas os arquivos com extensão ".txt"
-                        .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList() ;
+                        .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList();
             return caminhosDosArquivosTxtDaPasta;
 
         }
@@ -48,7 +48,7 @@ namespace AntropofagicoCSharp
         /// 
         /// </summary>
         /// <param name="Diretorio"></param>
-        public static void  AgrupandoOsTxtsPorClasse()
+        public static void AgrupandoOsTxtsPorClasse()
         {
             arquivosTxtsDaPasta = new List<string>();
             arquivosTxtsDaPastaOrdenados = new List<string>();
@@ -74,7 +74,8 @@ namespace AntropofagicoCSharp
 
             arquivosTxtsDaPastaOrdenados.Add("null 1-1"); // adicionando um valor ao final da lista para que a repetição pare
 
-            arquivosTxtsDaPastaOrdenados.ForEach(arquivoOrdenado => {
+            arquivosTxtsDaPastaOrdenados.ForEach(arquivoOrdenado =>
+            {
 
                 string[] partes = arquivoOrdenado.Split('-'); // dividindo o nome do arquivo pelo hífen
 
@@ -90,9 +91,9 @@ namespace AntropofagicoCSharp
                         arquivosAgrupados.Clear(); // limpa a lista
                     }
 
-                     if (!_validaPrimeiroCaso)
+                    if (!_validaPrimeiroCaso)
                         arquivosAgrupados.Add(arquivoOrdenado);
-                  //  _validaPrimeiroCaso = true;
+                    //  _validaPrimeiroCaso = true;
 
                 }
                 else if (nomeComTipo == comparaNome)
@@ -110,6 +111,28 @@ namespace AntropofagicoCSharp
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="nomeDoArquivo"></param>
+        /// <returns></returns>
+        private static int RecuperarNumeracaoDeNomeDeArquivo(string nomeDoArquivo) // método para obter o número do arquivo .txt
+        {
+            string[] partesDoNomeDoArquivo = nomeDoArquivo.Split('-'); // divide a string em duas partes, tendo como delimitador, o hífen
+
+            if (partesDoNomeDoArquivo.Length >= 2 && partesDoNomeDoArquivo[0].StartsWith("Rom")) // se o tamanho do array for igual a dois ou maior E a string iniciar com a palavra "Rom"
+            {
+                int numero; // variável criada para receber o valor de cada arquivo 
+
+                if (int.TryParse(partesDoNomeDoArquivo[0].Substring(3), out numero)) // o valor na terceira posição é transformado em inteiro e inserido na variável "numero"
+                    return numero; // retorna o número de cada arquivo
+
+            }
+
+            return int.MaxValue; // indica que não foi possível obter um número válido do texto fornecido
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static void ProcessamentoDosTxtsAgrupados()
         {
             int divisorParaMediaEQuantidadeDeColunasDaMatriz = arquivosAgrupados.Count;
@@ -118,11 +141,11 @@ namespace AntropofagicoCSharp
             int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
             string nomeDoArquivoCsv = string.Empty;
             int colunaDaMatriz = 0;
-            
+
             // criação de matriz com 2048 linhas e "n" colunas, preenchida apenas com zeros
             double[,] matriz = new double[linhas, colunas];
 
-            var listaEnumerada = arquivosAgrupados.Select((valor ,indice) => new { Index = indice, Value = valor  }); // lendo cada elemento da lista e o seu respectivo índice
+            var listaEnumerada = arquivosAgrupados.Select((valor, indice) => new { Index = indice, Value = valor }); // lendo cada elemento da lista e o seu respectivo índice
 
             List<int> valorDeCadaTxtComoLista = new List<int>();
 
@@ -157,7 +180,7 @@ namespace AntropofagicoCSharp
 
                         // obtém o número de campos na linha atual
                         int numeroDeCampos = _arquivoCsv.Parser.Count;
-                        
+
                         // itera sobre os campos da linha atual
                         for (int i = 0; i < numeroDeCampos; i++)
                         {
@@ -166,37 +189,37 @@ namespace AntropofagicoCSharp
 
                             // Adiciona um ponto-e-vírgula se não for o último campo
                             if (i < numeroDeCampos - 1)
-                            
+
                                 linhaAtual += ";";
-                            
+
                         }
                         // adiciona a linha atual à lista
                         ArquivosEmLinhaCsv.Add(linhaAtual);
-                    
+
                     }
                 }
 
-                valorDeCadaTxtComoLista = ArquivosEmLinhaCsv.ConvertAll(arquivoValor => 
+                valorDeCadaTxtComoLista = ArquivosEmLinhaCsv.ConvertAll(arquivoValor =>
                 int.Parse(arquivoValor.Split(';')[1])); // obtém o valor da coluna de índice 1 após o ponto-e-vírgula
 
                 // obtendo o valor e seu respectivo índice de cada elemento da lista
-                for (int i = 0; i < valorDeCadaTxtComoLista.Count;i++)
+                for (int i = 0; i < valorDeCadaTxtComoLista.Count; i++)
                 {
-                    
+
                     int valorDeCadaLinha = valorDeCadaTxtComoLista[i]; // obtendo cada valor isoladamente
-                             
+
                     matriz[i, colunaDaMatriz] = valorDeCadaLinha; // inserindo na matriz os novos valores
 
                 }
-               
+
             }
 
             GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetro para este método para que ele seja capaz de manipulá-los
             colunaDaMatriz += 1;
         }
-        
+
         private static void GerarSomenteUmArquivoPorClasse(double[,] matriz, string nomeDoArquivoCsv)
-        {           
+        {
             mediaDosValoresDaMatriz = new List<double>(); // instanciando o objeto dessa Lista para que 
             // ela possa ser manipulada e não ocorrer o erro
             // "System.NullReferenceException: 'Object reference not set to an instance of an object.'"
@@ -211,7 +234,7 @@ namespace AntropofagicoCSharp
             for (int i = 0; i < linhas; i++)
             {
                 for (int j = 0; j < colunas; j++)
-                    valor += matriz[i,j];
+                    valor += matriz[i, j];
 
                 if (valor > 0.00)
                 {
@@ -229,9 +252,9 @@ namespace AntropofagicoCSharp
             Directory.CreateDirectory(caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
 
             // transformando cada valor número da lista em string, substituindo o ponto por vírgula, transformando tudo em uma lista e inserindo na nova variável
-          //  List<string> mediaDosValoresDaMatrizComoString = mediaDosValoresDaMatriz.Select(valor => valor.ToString().Replace(".",",")).ToList();
-            
-            caminhoComNomeDoCsv = ($"{caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"); // criando o caminho onde está o arquivo csv para ser escrito
+            //  List<string> mediaDosValoresDaMatrizComoString = mediaDosValoresDaMatriz.Select(valor => valor.ToString().Replace(".",",")).ToList();
+
+            caminhoComNomeDoCsv = Path.Combine($"{caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"); // criando o caminho onde está o arquivo csv para ser escrito
 
             // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
             using (StreamWriter writer = new StreamWriter(caminhoComNomeDoCsv))
@@ -243,29 +266,47 @@ namespace AntropofagicoCSharp
             // criada uma nova variável que irá receber cada valor da variável "caminhoComNomeDoCsv" e 
             // concatenar com uma quebra de linha
             caminhosCsv += caminhoComNomeDoCsv + '\n';
+
+            mediaDosValoresDaMatriz.Clear();
+
+            GeraMatrizFinal();
+
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nomeDoArquivo"></param>
-        /// <returns></returns>
-        private static int RecuperarNumeracaoDeNomeDeArquivo(string nomeDoArquivo) // método para obter o número do arquivo .txt
+        private static void GeraMatrizFinal()
         {
-            string[] partesDoNomeDoArquivo = nomeDoArquivo.Split('-'); // divide a string em duas partes, tendo como delimitador, o hífen
+            List<string> listaDeArquivosDaPastaCsv = new List<string>();
 
-            if (partesDoNomeDoArquivo.Length >= 2 && partesDoNomeDoArquivo[0].StartsWith("Rom")) // se o tamanho do array for igual a dois ou maior E a string iniciar com a palavra "Rom"
+            int maiorValor = 1;
+
+            string[] caminhosDosArquivosCsvCriados = Directory.GetFiles(caminhoDaPastaDosArquivosCSVPosTratamento);
+
+            foreach (string arquivoCsv in caminhosDosArquivosCsvCriados)
             {
-                int numero; // variável criada para receber o valor de cada arquivo 
+                string nomeCsv = Path.GetFileName(arquivoCsv);
 
-                if (int.TryParse(partesDoNomeDoArquivo[0].Substring(3), out numero)) // o valor na terceira posição é transformado em inteiro e inserido na variável "numero"
-                    return numero; // retorna o número de cada arquivo
+                if (Path.GetExtension(nomeCsv) == ".csv")
                 
+                    listaDeArquivosDaPastaCsv.Add(nomeCsv);
+                
+                Dictionary<int, string> dicionarioComTodaAMatriz = new Dictionary<int, string>();
+
+                listaDeArquivosDaPastaCsv.ForEach(nomeCsv =>
+                {
+
+                    string[] nomeExtensao = nomeCsv.Split('.');
+ /*                  int[] romNumero = nomeExtensao[0].Split("Rom").Select(int.Parse).ToArray();
+
+                    if (maiorValor < romNumero[1])
+                    {
+
+                    }
+                    */
+                });
+
             }
-
-            return int.MaxValue; // indica que não foi possível obter um número válido do texto fornecido
-
         }
         #endregion Metodos
     }
 }
+

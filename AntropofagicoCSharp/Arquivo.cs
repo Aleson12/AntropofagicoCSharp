@@ -24,8 +24,8 @@ namespace AntropofagicoCSharp
 
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
         public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
-//        private static string nome_do_csv = string.Empty;
-
+        public static string caminhoComNomeDoCsv;
+        
         #endregion propriedades
         #region Metodos
         /// <summary>
@@ -191,16 +191,12 @@ namespace AntropofagicoCSharp
                
             }
 
-                GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz como parâmetro para este
-                                                                          // método para que ele seja capaz de manipulá-lo sem ter que definir a matriz como global
-
-                colunaDaMatriz += 1;
+            GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetro para este método para que ele seja capaz de manipulá-los
+            colunaDaMatriz += 1;
         }
-            
+        
         private static void GerarSomenteUmArquivoPorClasse(double[,] matriz, string nomeDoArquivoCsv)
-        {
-            string caminhoComNomeDoCsv = string.Empty;
-            
+        {           
             mediaDosValoresDaMatriz = new List<double>(); // instanciando o objeto dessa Lista para que 
             // ela possa ser manipulada e não ocorrer o erro
             // "System.NullReferenceException: 'Object reference not set to an instance of an object.'"
@@ -230,11 +226,20 @@ namespace AntropofagicoCSharp
             Directory.CreateDirectory(caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
 
             // transformando cada valor número da lista em string, substituindo o ponto por vírgula, transformando tudo em uma lista e inserindo na nova variável
-            List<string> mediaDosValoresDaMatrizComoString = mediaDosValoresDaMatriz.Select(valor => valor.ToString().Replace(".",",")).ToList();
-            caminhoComNomeDoCsv = ($"{caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv");
+          //  List<string> mediaDosValoresDaMatrizComoString = mediaDosValoresDaMatriz.Select(valor => valor.ToString().Replace(".",",")).ToList();
+            
+            caminhoComNomeDoCsv = $"{caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"; // criando o caminho onde está o arquivo csv para ser escrito
 
+            // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
+            using (StreamWriter writer = new StreamWriter(caminhoComNomeDoCsv))
+            {
+                foreach (double vlr in mediaDosValoresDaMatriz)
+                {
+                    writer.WriteLine($"{vlr}".Replace('.', ','));
+                }
+            }
         }
-
+           
         /// <summary>
         /// 
         /// </summary>

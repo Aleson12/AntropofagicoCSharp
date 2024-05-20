@@ -9,6 +9,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace AntropofagicoCSharp
 {
@@ -21,7 +23,9 @@ namespace AntropofagicoCSharp
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
         private static List<double> mediaDosValoresDaMatriz;
+        private static List<string> nomesCsv;
 
+        private static readonly int linhas = 2048;
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
         public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
         public static string caminhosCsv;
@@ -137,7 +141,6 @@ namespace AntropofagicoCSharp
         {
             int divisorParaMediaEQuantidadeDeColunasDaMatriz = arquivosAgrupados.Count;
 
-            int linhas = 2048;
             int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
             string nomeDoArquivoCsv = string.Empty;
             int colunaDaMatriz = 0;
@@ -275,38 +278,45 @@ namespace AntropofagicoCSharp
 
         private static void GeraMatrizFinal()
         {
-            List<string> listaDeArquivosDaPastaCsv = new List<string>();
+            List<string> arquivosDaPastaCsv = new List<string>();
+            nomesCsv = new List<string>();
+            
+            // no diretório especificado, extrair os arquivos .csv que estão lá e inserí-los numa lista
+            List<string> caminhosDosArquivosCsvCriados = Directory
+                .GetFiles(caminhoDaPastaDosArquivosCSVPosTratamento)
+                .Where(arquivo => Path.GetExtension(arquivo) == ".csv")
+                .ToList();
 
-            int maiorValor = 1;
+            // obtendo o maior número presente nos arquivos
+            int maiorNumeracaoNoNomeDoCsv = caminhosDosArquivosCsvCriados
+                .Select(arquivo => Regex.Match(Path.GetFileNameWithoutExtension(arquivo), @"Rom(\d+)", RegexOptions.IgnoreCase))
+                .Where(match => match.Success)
+                .Select(match => int.Parse(match.Groups[1].Value))
+                .DefaultIfEmpty(0)
+                .Max();
 
-            string[] caminhosDosArquivosCsvCriados = Directory.GetFiles(caminhoDaPastaDosArquivosCSVPosTratamento);
+            
+            string [,] MatrizComTodosCsv = new string[linhas, maiorNumeracaoNoNomeDoCsv];
 
-            foreach (string arquivoCsv in caminhosDosArquivosCsvCriados)
+            for (int i = 0; i < maiorNumeracaoNoNomeDoCsv + 1; i++)
             {
-                string nomeCsv = Path.GetFileName(arquivoCsv);
-
-                if (Path.GetExtension(nomeCsv) == ".csv")
-                
-                    listaDeArquivosDaPastaCsv.Add(nomeCsv);
-                
-                Dictionary<int, string> dicionarioComTodaAMatriz = new Dictionary<int, string>();
-
-                listaDeArquivosDaPastaCsv.ForEach(nomeCsv =>
+                // verificando cada arquivo
+                if (File.Exists($"{caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv"))
                 {
+                    MatrizComTodosCsv[1, i] = $"Rom{i}.csv";
 
-                    string[] nomeExtensao = nomeCsv.Split('.');
- /*                  int[] romNumero = nomeExtensao[0].Split("Rom").Select(int.Parse).ToArray();
+                //    List<int> quantidadeDeLinhasDoArquivo = new List<int>();
 
-                    if (maiorValor < romNumero[1])
-                    {
+             //      for (int linhas = 0; linhas < quantidadeDeLinhasDoArquivo.Count(); linhas++)
+                   {
+                    //    MatrizComTodosCsv[linhas+2, i] = quantidadeDeLinhasDoArquivo;
 
-                    }
-                    */
-                });
-
+                   }
+                }
+           
             }
         }
+
         #endregion Metodos
     }
 }
-

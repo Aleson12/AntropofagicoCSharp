@@ -43,11 +43,11 @@ namespace AntropofagicoCSharp
 
             grp_LeituraEExibicaoDosArquivosTxt.Paint += (sender, e) =>
             {
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, grp_LeituraEExibicaoDosArquivosTxt.Width - 1, grp_LeituraEExibicaoDosArquivosTxt.Height - 1));
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grp_LeituraEExibicaoDosArquivosTxt.Width - 1, grp_LeituraEExibicaoDosArquivosTxt.Height - 10));
             };
             grp_GerarEExibirArquivosCsv.Paint += (sender, e) =>
             {
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, grp_GerarEExibirArquivosCsv.Width - 1, grp_GerarEExibirArquivosCsv.Height - 1));
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grp_GerarEExibirArquivosCsv.Width - 1, grp_GerarEExibirArquivosCsv.Height - 10));
             };
             rtx_ArquivosTxt.Paint += (sender, e) =>
             {
@@ -55,11 +55,11 @@ namespace AntropofagicoCSharp
             };
             grp_GerarArquivoCsvComTodosDados.Paint += (sender, e) =>
             {
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, grp_GerarArquivoCsvComTodosDados.Width - 1, grp_GerarArquivoCsvComTodosDados.Height - 1));
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grp_GerarArquivoCsvComTodosDados.Width - 1, grp_GerarArquivoCsvComTodosDados.Height - 10));
             };
             grpAplicarEPlotarPCA.Paint += (sender, e) =>
             {
-                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, grpAplicarEPlotarPCA.Width - 1, grpAplicarEPlotarPCA.Height - 1));
+                e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grpAplicarEPlotarPCA.Width - 1, grpAplicarEPlotarPCA.Height - 10));
             };
         }
     }

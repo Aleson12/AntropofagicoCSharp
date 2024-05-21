@@ -29,6 +29,7 @@ namespace AntropofagicoCSharp
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
         public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
         public static string caminhosCsv;
+     //   private static string diretorio; 
 
         #endregion propriedades
         #region Metodos
@@ -41,7 +42,7 @@ namespace AntropofagicoCSharp
         {
             caminhosDosArquivosTxtDaPasta = new List<string>();
 
-            caminhosDosArquivosTxtDaPasta = Directory.GetFiles(diretorio)
+            caminhosDosArquivosTxtDaPasta =  Directory.GetFiles(diretorio)
                         // Filtra apenas os arquivos com extensão ".txt"
                         .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList();
             return caminhosDosArquivosTxtDaPasta;
@@ -101,14 +102,11 @@ namespace AntropofagicoCSharp
 
                 }
                 else if (nomeComTipo == comparaNome)
-                {
                     arquivosAgrupados.Add(arquivoOrdenado);
-
-                }
+ 
                 else if (nomeComTipo != "null1")
-                {
                     nome_do_csv = nomeComTipo;
-                }
+                
             });
         }
 
@@ -123,9 +121,7 @@ namespace AntropofagicoCSharp
 
             if (partesDoNomeDoArquivo.Length >= 2 && partesDoNomeDoArquivo[0].StartsWith("Rom")) // se o tamanho do array for igual a dois ou maior E a string iniciar com a palavra "Rom"
             {
-                int numero; // variável criada para receber o valor de cada arquivo 
-
-                if (int.TryParse(partesDoNomeDoArquivo[0].Substring(3), out numero)) // o valor na terceira posição é transformado em inteiro e inserido na variável "numero"
+                if (int.TryParse(partesDoNomeDoArquivo[0].Substring(3), out int numero)) // o valor na terceira posição é transformado em inteiro e inserido na variável "numero"
                     return numero; // retorna o número de cada arquivo
 
             }
@@ -161,7 +157,7 @@ namespace AntropofagicoCSharp
 
                 nomeDoArquivoCsv = arquivoValor.ToString().Split('-')[0];
 
-                string nomeDoArquivoTxtComCaminho = (IPrincipal.diretorio + "\\" + arquivoValor + ".txt").ToString();
+                string nomeDoArquivoTxtComCaminho = (FrmPrincipal.diretorio + "\\" + arquivoValor + ".txt").ToString();
 
                 // configuração - opcional - do arquivo csv
                 CsvConfiguration configuracao = new CsvConfiguration(CultureInfo.CurrentCulture)
@@ -251,7 +247,7 @@ namespace AntropofagicoCSharp
 
             }
 
-            caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{IPrincipal.diretorio}\\Roms\\");
+            caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{FrmPrincipal.diretorio}\\Roms\\");
             Directory.CreateDirectory(caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
 
             // transformando cada valor número da lista em string, substituindo o ponto por vírgula, transformando tudo em uma lista e inserindo na nova variável
@@ -278,6 +274,9 @@ namespace AntropofagicoCSharp
 
         private static void GeraMatrizFinal()
         {
+            bool ignorarCondicao = false; // variável do tipo booleano criada apenas para ignorar uma condição
+            string[] dados;
+            string caminhoComONomeDoArquivoCSVFinal = string.Empty;
             List<string> arquivosDaPastaCsv = new List<string>();
             nomesCsv = new List<string>();
             
@@ -295,7 +294,6 @@ namespace AntropofagicoCSharp
                 .DefaultIfEmpty(0)
                 .Max();
 
-            
             string [,] MatrizComTodosCsv = new string[linhas, maiorNumeracaoNoNomeDoCsv];
 
             for (int i = 0; i < maiorNumeracaoNoNomeDoCsv + 1; i++)
@@ -303,20 +301,26 @@ namespace AntropofagicoCSharp
                 // verificando cada arquivo
                 if (File.Exists($"{caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv"))
                 {
-                    MatrizComTodosCsv[1, i] = $"Rom{i}.csv";
+                    MatrizComTodosCsv[0, i] = $"Rom{i}.csv";
+                    int quantidadeDeLinhas = MatrizComTodosCsv.GetLength(0);
 
-                //    List<int> quantidadeDeLinhasDoArquivo = new List<int>();
+                    for (int linhas = 0; linhas < quantidadeDeLinhas; linhas++)
+                    {
+                      //  MatrizComTodosCsv[linhas + 2, i];
 
-             //      for (int linhas = 0; linhas < quantidadeDeLinhasDoArquivo.Count(); linhas++)
-                   {
-                    //    MatrizComTodosCsv[linhas+2, i] = quantidadeDeLinhasDoArquivo;
-
-                   }
+                    }
                 }
            
             }
-        }
 
+            caminhoComONomeDoArquivoCSVFinal = Path.Combine($"{FrmPrincipal.diretorio}\\MatrizFinal\\MatrizPCA.csv"); // criando novo caminho de diretório
+
+            // se o diretório já existir, ignore esta primeira condição
+            if (Directory.Exists(caminhoComONomeDoArquivoCSVFinal))
+                ignorarCondicao = true;                
+            else // se não, se o diretório ainda não existir, crie-o.
+                Directory.CreateDirectory(caminhoComONomeDoArquivoCSVFinal);             
+        }
         #endregion Metodos
     }
 }

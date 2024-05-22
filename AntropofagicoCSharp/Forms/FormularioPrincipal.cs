@@ -13,18 +13,6 @@ namespace AntropofagicoCSharp
             UseWaitCursor = false; // forçando o cursor do mouse a não ficar em estado de espera quando ele sobrepor os componentes da interface
         }
 
-        private void rtx_ArquivosTxt_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (!rtx_ArquivosTxt.ClientRectangle.Contains(e.Location))
-            {
-                rtx_ArquivosTxt.Capture = false;
-            }
-            else if (!rtx_ArquivosTxt.Capture)
-            {
-                rtx_ArquivosTxt.Capture = true;
-            }
-        }
-
         private void btnAbrir_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog selecionarPasta = new FolderBrowserDialog(); // objeto instanciado da classe que permite selecionar uma pasta do diretório local
@@ -40,9 +28,9 @@ namespace AntropofagicoCSharp
 
                 if (MessageBox.Show("Os arquivos estão com o nome Rom e extensão .TXT?", "Nome e extensão do(s) arquivo(s)", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     Arquivo.AgrupandoOsTxtsPorClasse();
-                     mtx_DiretorioArquivosCsv.Clear(); // limpa o campo de texto
-                     mtx_DiretorioArquivosCsv.Text = Arquivo.caminhoDaPastaDosArquivosCSVPosTratamento; // insere no campo o caminho de diretório onde estão os arquivos tratados
-                     rtx_ArquivosCsv.Text = Arquivo.caminhosCsv; // exibindo cada caminho de arquivo csv no richTextBox
+                mtx_DiretorioArquivosCsv.Clear(); // limpa o campo de texto
+                mtx_DiretorioArquivosCsv.Text = Arquivo.caminhoDaPastaDosArquivosCSVPosTratamento; // insere no campo o caminho de diretório onde estão os arquivos tratados
+                rtx_ArquivosCsv.Text = Arquivo.caminhosCsv; // exibindo cada caminho de arquivo csv no richTextBox
             }
         }
 
@@ -73,6 +61,11 @@ namespace AntropofagicoCSharp
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grpAplicarEPlotarPCA.Width - 1, grpAplicarEPlotarPCA.Height - 10));
             };
+        }
+
+        private void btn_GerarCSV_Click(object sender, EventArgs e)
+        {
+            Arquivo.GeraMatrizFinal();
         }
     }
 }

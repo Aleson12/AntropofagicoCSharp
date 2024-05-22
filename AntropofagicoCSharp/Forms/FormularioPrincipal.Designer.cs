@@ -245,7 +245,6 @@
             // rtx_ArquivosTxt
             // 
             rtx_ArquivosTxt.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            rtx_ArquivosTxt.Cursor = Cursors.Hand;
             rtx_ArquivosTxt.Location = new Point(6, 110);
             rtx_ArquivosTxt.Name = "rtx_ArquivosTxt";
             rtx_ArquivosTxt.ReadOnly = true;
@@ -374,6 +373,7 @@
             btn_GerarCSV.Text = "Gerar";
             btn_GerarCSV.UseVisualStyleBackColor = false;
             btn_GerarCSV.UseWaitCursor = true;
+            btn_GerarCSV.Click += btn_GerarCSV_Click;
             // 
             // lbl_GerarArquivoCSV
             // 

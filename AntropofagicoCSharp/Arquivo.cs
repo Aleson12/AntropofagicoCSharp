@@ -267,11 +267,9 @@ namespace AntropofagicoCSharp
 
             mediaDosValoresDaMatriz.Clear();
 
-     //       GeraMatrizFinal();
-
         }
 
-        private static void GeraMatrizFinal()
+        public static void GeraMatrizFinal()
         {
             bool ignorarCondicao = false; // variável do tipo booleano criada apenas para ignorar uma condição
             string[] dados;

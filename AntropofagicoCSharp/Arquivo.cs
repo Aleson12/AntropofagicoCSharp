@@ -317,11 +317,7 @@ namespace AntropofagicoCSharp
 
                 using (var streamWriter = new StreamWriter(Path.Combine(caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv))) // criando o arquivo em si
                 using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture)) // para ser possível escrever nele
-                {
                     streamWriter.Flush();
-                }
-
-
             }
             else // se o diretório já existir, ignore esta segunda condição
                 ignorarCondicao = false;
@@ -329,4 +325,3 @@ namespace AntropofagicoCSharp
         #endregion Metodos
     }
 }
-

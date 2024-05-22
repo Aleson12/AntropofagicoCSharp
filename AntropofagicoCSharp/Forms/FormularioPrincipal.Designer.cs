@@ -257,7 +257,7 @@
             // 
             lbl_ConteudoDoDiretorioTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lbl_ConteudoDoDiretorioTxt.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_ConteudoDoDiretorioTxt.Location = new Point(187, 89);
+            lbl_ConteudoDoDiretorioTxt.Location = new Point(186, 86);
             lbl_ConteudoDoDiretorioTxt.Name = "lbl_ConteudoDoDiretorioTxt";
             lbl_ConteudoDoDiretorioTxt.Size = new Size(164, 21);
             lbl_ConteudoDoDiretorioTxt.TabIndex = 8;
@@ -313,7 +313,7 @@
             // 
             lbl_LeituraExibicaoDosArquivosTxt.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lbl_LeituraExibicaoDosArquivosTxt.Font = new Font("Microsoft Sans Serif", 12F);
-            lbl_LeituraExibicaoDosArquivosTxt.Location = new Point(165, 14);
+            lbl_LeituraExibicaoDosArquivosTxt.Location = new Point(162, 11);
             lbl_LeituraExibicaoDosArquivosTxt.Name = "lbl_LeituraExibicaoDosArquivosTxt";
             lbl_LeituraExibicaoDosArquivosTxt.Size = new Size(240, 21);
             lbl_LeituraExibicaoDosArquivosTxt.TabIndex = 2;

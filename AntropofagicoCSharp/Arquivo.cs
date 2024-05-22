@@ -29,7 +29,6 @@ namespace AntropofagicoCSharp
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
         public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
         public static string caminhosCsv;
-     //   private static string diretorio; 
 
         #endregion propriedades
         #region Metodos
@@ -268,7 +267,7 @@ namespace AntropofagicoCSharp
 
             mediaDosValoresDaMatriz.Clear();
 
-            GeraMatrizFinal();
+     //       GeraMatrizFinal();
 
         }
 

@@ -75,6 +75,7 @@
             lbl_NomeDaAplicacao.TabIndex = 3;
             lbl_NomeDaAplicacao.Text = "Análise de Componentes Principais";
             lbl_NomeDaAplicacao.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_NomeDaAplicacao.UseWaitCursor = true;
             // 
             // pnl_Panel3
             // 
@@ -86,6 +87,7 @@
             pnl_Panel3.Name = "pnl_Panel3";
             pnl_Panel3.Size = new Size(574, 754);
             pnl_Panel3.TabIndex = 14;
+            pnl_Panel3.UseWaitCursor = true;
             // 
             // grpAplicarEPlotarPCA
             // 
@@ -103,6 +105,7 @@
             grpAplicarEPlotarPCA.Size = new Size(564, 134);
             grpAplicarEPlotarPCA.TabIndex = 10;
             grpAplicarEPlotarPCA.TabStop = false;
+            grpAplicarEPlotarPCA.UseWaitCursor = true;
             // 
             // lbl_AplicaPCA
             // 
@@ -115,6 +118,7 @@
             lbl_AplicaPCA.TabIndex = 7;
             lbl_AplicaPCA.Text = "Aplicar PCA | Plotar dados pelo PCA";
             lbl_AplicaPCA.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_AplicaPCA.UseWaitCursor = true;
             // 
             // btn_AplicarPCA
             // 
@@ -134,6 +138,7 @@
             btn_AplicarPCA.TabIndex = 7;
             btn_AplicarPCA.Text = "Aplicar";
             btn_AplicarPCA.UseVisualStyleBackColor = false;
+            btn_AplicarPCA.UseWaitCursor = true;
             // 
             // grp_GerarEExibirArquivosCsv
             // 
@@ -147,6 +152,7 @@
             grp_GerarEExibirArquivosCsv.Size = new Size(564, 567);
             grp_GerarEExibirArquivosCsv.TabIndex = 12;
             grp_GerarEExibirArquivosCsv.TabStop = false;
+            grp_GerarEExibirArquivosCsv.UseWaitCursor = true;
             // 
             // rtx_ArquivosCsv
             // 
@@ -157,6 +163,7 @@
             rtx_ArquivosCsv.Size = new Size(550, 451);
             rtx_ArquivosCsv.TabIndex = 15;
             rtx_ArquivosCsv.Text = "";
+            rtx_ArquivosCsv.UseWaitCursor = true;
             // 
             // lbl_ConteudoDoDiretorioCsv
             // 
@@ -169,6 +176,7 @@
             lbl_ConteudoDoDiretorioCsv.TabIndex = 14;
             lbl_ConteudoDoDiretorioCsv.Text = "Conteúdo do diretório";
             lbl_ConteudoDoDiretorioCsv.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_ConteudoDoDiretorioCsv.UseWaitCursor = true;
             // 
             // lbl_DiretorioDosArquivosCsv
             // 
@@ -181,6 +189,7 @@
             lbl_DiretorioDosArquivosCsv.TabIndex = 12;
             lbl_DiretorioDosArquivosCsv.Text = "Diretório:";
             lbl_DiretorioDosArquivosCsv.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_DiretorioDosArquivosCsv.UseWaitCursor = true;
             // 
             // mtx_DiretorioArquivosCsv
             // 
@@ -190,6 +199,7 @@
             mtx_DiretorioArquivosCsv.Name = "mtx_DiretorioArquivosCsv";
             mtx_DiretorioArquivosCsv.Size = new Size(474, 23);
             mtx_DiretorioArquivosCsv.TabIndex = 5;
+            mtx_DiretorioArquivosCsv.UseWaitCursor = true;
             // 
             // lbl_GerarExibirCSV
             // 
@@ -202,6 +212,7 @@
             lbl_GerarExibirCSV.TabIndex = 4;
             lbl_GerarExibirCSV.Text = "Gerar | Exibir arquivos csv";
             lbl_GerarExibirCSV.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_GerarExibirCSV.UseWaitCursor = true;
             // 
             // pnl_ComponentesLeituraDosArquivosTxtEMatrizFinal
             // 
@@ -214,6 +225,7 @@
             pnl_ComponentesLeituraDosArquivosTxtEMatrizFinal.Name = "pnl_ComponentesLeituraDosArquivosTxtEMatrizFinal";
             pnl_ComponentesLeituraDosArquivosTxtEMatrizFinal.Size = new Size(574, 754);
             pnl_ComponentesLeituraDosArquivosTxtEMatrizFinal.TabIndex = 15;
+            pnl_ComponentesLeituraDosArquivosTxtEMatrizFinal.UseWaitCursor = true;
             // 
             // grp_LeituraEExibicaoDosArquivosTxt
             // 
@@ -228,16 +240,19 @@
             grp_LeituraEExibicaoDosArquivosTxt.Size = new Size(564, 567);
             grp_LeituraEExibicaoDosArquivosTxt.TabIndex = 11;
             grp_LeituraEExibicaoDosArquivosTxt.TabStop = false;
+            grp_LeituraEExibicaoDosArquivosTxt.UseWaitCursor = true;
             // 
             // rtx_ArquivosTxt
             // 
             rtx_ArquivosTxt.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            rtx_ArquivosTxt.Cursor = Cursors.Hand;
             rtx_ArquivosTxt.Location = new Point(6, 110);
             rtx_ArquivosTxt.Name = "rtx_ArquivosTxt";
             rtx_ArquivosTxt.ReadOnly = true;
             rtx_ArquivosTxt.Size = new Size(550, 398);
             rtx_ArquivosTxt.TabIndex = 9;
             rtx_ArquivosTxt.Text = "";
+            rtx_ArquivosTxt.UseWaitCursor = true;
             // 
             // lbl_ConteudoDoDiretorioTxt
             // 
@@ -249,6 +264,7 @@
             lbl_ConteudoDoDiretorioTxt.TabIndex = 8;
             lbl_ConteudoDoDiretorioTxt.Text = "Conteúdo do diretório";
             lbl_ConteudoDoDiretorioTxt.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_ConteudoDoDiretorioTxt.UseWaitCursor = true;
             // 
             // lbl_DiretorioDosArquivosTxt
             // 
@@ -261,6 +277,7 @@
             lbl_DiretorioDosArquivosTxt.TabIndex = 7;
             lbl_DiretorioDosArquivosTxt.Text = "Diretório:";
             lbl_DiretorioDosArquivosTxt.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_DiretorioDosArquivosTxt.UseWaitCursor = true;
             // 
             // mtx_DiretorioArquivosTxt
             // 
@@ -271,6 +288,7 @@
             mtx_DiretorioArquivosTxt.Name = "mtx_DiretorioArquivosTxt";
             mtx_DiretorioArquivosTxt.Size = new Size(472, 23);
             mtx_DiretorioArquivosTxt.TabIndex = 1;
+            mtx_DiretorioArquivosTxt.UseWaitCursor = true;
             // 
             // btn_AbrirDiretorio
             // 
@@ -289,6 +307,7 @@
             btn_AbrirDiretorio.TabIndex = 2;
             btn_AbrirDiretorio.Text = "Abrir";
             btn_AbrirDiretorio.UseVisualStyleBackColor = false;
+            btn_AbrirDiretorio.UseWaitCursor = true;
             btn_AbrirDiretorio.Click += btnAbrir_Click;
             // 
             // lbl_LeituraExibicaoDosArquivosTxt
@@ -301,6 +320,7 @@
             lbl_LeituraExibicaoDosArquivosTxt.TabIndex = 2;
             lbl_LeituraExibicaoDosArquivosTxt.Text = "Leitura | Exibição dos arquivos txt";
             lbl_LeituraExibicaoDosArquivosTxt.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_LeituraExibicaoDosArquivosTxt.UseWaitCursor = true;
             // 
             // pnl_
             // 
@@ -314,6 +334,7 @@
             pnl_.Name = "pnl_";
             pnl_.Size = new Size(0, 0);
             pnl_.TabIndex = 8;
+            pnl_.UseWaitCursor = true;
             // 
             // grp_GerarArquivoCsvComTodosDados
             // 
@@ -333,6 +354,7 @@
             grp_GerarArquivoCsvComTodosDados.Size = new Size(564, 134);
             grp_GerarArquivoCsvComTodosDados.TabIndex = 3;
             grp_GerarArquivoCsvComTodosDados.TabStop = false;
+            grp_GerarArquivoCsvComTodosDados.UseWaitCursor = true;
             // 
             // btn_GerarCSV
             // 
@@ -351,6 +373,7 @@
             btn_GerarCSV.TabIndex = 4;
             btn_GerarCSV.Text = "Gerar";
             btn_GerarCSV.UseVisualStyleBackColor = false;
+            btn_GerarCSV.UseWaitCursor = true;
             // 
             // lbl_GerarArquivoCSV
             // 
@@ -363,6 +386,7 @@
             lbl_GerarArquivoCSV.TabIndex = 6;
             lbl_GerarArquivoCSV.Text = "Gerar o arquivo csv com todos os dados";
             lbl_GerarArquivoCSV.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_GerarArquivoCSV.UseWaitCursor = true;
             // 
             // lbl_DiretorioDaMatrizFinal
             // 
@@ -375,6 +399,7 @@
             lbl_DiretorioDaMatrizFinal.TabIndex = 3;
             lbl_DiretorioDaMatrizFinal.Text = "Diretório:";
             lbl_DiretorioDaMatrizFinal.TextAlign = ContentAlignment.MiddleCenter;
+            lbl_DiretorioDaMatrizFinal.UseWaitCursor = true;
             // 
             // mtx_DiretorioDoArquivoCsvFinal
             // 
@@ -384,6 +409,7 @@
             mtx_DiretorioDoArquivoCsvFinal.Name = "mtx_DiretorioDoArquivoCsvFinal";
             mtx_DiretorioDoArquivoCsvFinal.Size = new Size(472, 23);
             mtx_DiretorioDoArquivoCsvFinal.TabIndex = 3;
+            mtx_DiretorioDoArquivoCsvFinal.UseWaitCursor = true;
             // 
             // tlp_FundoDosComponentes
             // 
@@ -400,6 +426,7 @@
             tlp_FundoDosComponentes.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tlp_FundoDosComponentes.Size = new Size(1160, 760);
             tlp_FundoDosComponentes.TabIndex = 16;
+            tlp_FundoDosComponentes.UseWaitCursor = true;
             // 
             // FrmPrincipal
             // 
@@ -417,6 +444,7 @@
             RightToLeftLayout = true;
             Text = "Análise de Componentes Principais (PCA)";
             TopMost = true;
+            UseWaitCursor = true;
             Load += FormularioPrincipal_Load;
             pnl_Panel3.ResumeLayout(false);
             grpAplicarEPlotarPCA.ResumeLayout(false);

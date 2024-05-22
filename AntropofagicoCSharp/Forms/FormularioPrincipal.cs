@@ -9,8 +9,20 @@ namespace AntropofagicoCSharp
 
         public FrmPrincipal() // Interface Principal
         {
-            InitializeComponent();           
+            InitializeComponent();
+            UseWaitCursor = false; // forçando o cursor do mouse a não ficar em estado de espera quando ele sobrepor os componentes da interface
+        }
 
+        private void rtx_ArquivosTxt_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!rtx_ArquivosTxt.ClientRectangle.Contains(e.Location))
+            {
+                rtx_ArquivosTxt.Capture = false;
+            }
+            else if (!rtx_ArquivosTxt.Capture)
+            {
+                rtx_ArquivosTxt.Capture = true;
+            }
         }
 
         private void btnAbrir_Click(object sender, EventArgs e)
@@ -64,3 +76,4 @@ namespace AntropofagicoCSharp
         }
     }
 }
+

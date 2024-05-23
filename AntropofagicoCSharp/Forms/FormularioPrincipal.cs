@@ -29,10 +29,11 @@ namespace AntropofagicoCSharp
                 if (MessageBox.Show("Os arquivos estão com o nome Rom e extensão .TXT?", "Nome e extensão do(s) arquivo(s)", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     Arquivo.AgrupandoOsTxtsPorClasse();
                 mtx_DiretorioArquivosCsv.Clear(); // limpa o campo de texto
-                mtx_DiretorioArquivosCsv.Text = Arquivo.caminhoDaPastaDosArquivosCSVPosTratamento; // insere no campo o caminho de diretório onde estão os arquivos tratados
-                rtx_ArquivosCsv.Text = Arquivo.caminhosCsv; // exibindo cada caminho de arquivo csv no richTextBox
+                mtx_DiretorioArquivosCsv.Text = Arquivo._caminhoDaPastaDosArquivosCSVPosTratamento; // insere no campo o caminho de diretório onde estão os arquivos tratados
+                rtx_ArquivosCsv.Text = Arquivo._caminhosCsv; // exibindo cada caminho de arquivo csv no richTextBox
             }
         }
+
 
         private void FormularioPrincipal_Load(object sender, EventArgs e)
         {
@@ -66,6 +67,8 @@ namespace AntropofagicoCSharp
         private void btn_GerarCSV_Click(object sender, EventArgs e)
         {
             Arquivo.GeraMatrizFinal();
+            mtx_DiretorioDoArquivoCsvFinal.Clear();
+            mtx_DiretorioDoArquivoCsvFinal.Text = Arquivo._caminhoComONomeDoArquivoCSVFinal + "MatrizPCA.csv".ToString();
         }
     }
 }

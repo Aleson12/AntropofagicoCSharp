@@ -1,16 +1,8 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
+
 
 namespace AntropofagicoCSharp
 {
@@ -23,12 +15,13 @@ namespace AntropofagicoCSharp
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
         private static List<double> mediaDosValoresDaMatriz;
-        private static List<string> nomesCsv;
 
-        private static readonly int linhas = 2048;
+
+        private static readonly int _linhas = 2048;
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
-        public static string caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
-        public static string caminhosCsv;
+        public static string _caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
+        public static string _caminhosCsv;
+        public static string _caminhoComONomeDoArquivoCSVFinal;
 
         #endregion propriedades
         #region Metodos
@@ -41,7 +34,7 @@ namespace AntropofagicoCSharp
         {
             caminhosDosArquivosTxtDaPasta = new List<string>();
 
-            caminhosDosArquivosTxtDaPasta =  Directory.GetFiles(diretorio)
+            caminhosDosArquivosTxtDaPasta = Directory.GetFiles(diretorio)
                         // Filtra apenas os arquivos com extensão ".txt"
                         .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList();
             return caminhosDosArquivosTxtDaPasta;
@@ -102,10 +95,10 @@ namespace AntropofagicoCSharp
                 }
                 else if (nomeComTipo == comparaNome)
                     arquivosAgrupados.Add(arquivoOrdenado);
- 
+
                 else if (nomeComTipo != "null1")
                     nome_do_csv = nomeComTipo;
-                
+
             });
         }
 
@@ -141,7 +134,7 @@ namespace AntropofagicoCSharp
             int colunaDaMatriz = 0;
 
             // criação de matriz com 2048 linhas e "n" colunas, preenchida apenas com zeros
-            double[,] matriz = new double[linhas, colunas];
+            double[,] matriz = new double[_linhas, colunas];
 
             var listaEnumerada = arquivosAgrupados.Select((valor, indice) => new { Index = indice, Value = valor }); // lendo cada elemento da lista e o seu respectivo índice
 
@@ -246,10 +239,10 @@ namespace AntropofagicoCSharp
 
             }
 
-            caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{FrmPrincipal.diretorio}\\Roms\\");
-            Directory.CreateDirectory(caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
+            _caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{FrmPrincipal.diretorio}\\Roms\\");
+            Directory.CreateDirectory(_caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
 
-            caminhoComNomeDoCsv = Path.Combine($"{caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"); // criando o caminho onde está o arquivo csv para ser escrito
+            caminhoComNomeDoCsv = Path.Combine($"{_caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"); // criando o caminho onde está o arquivo csv para ser escrito
 
             // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
             using (StreamWriter writer = new StreamWriter(caminhoComNomeDoCsv))
@@ -260,7 +253,7 @@ namespace AntropofagicoCSharp
 
             // criada uma nova variável que irá receber cada valor da variável "caminhoComNomeDoCsv" e 
             // concatenar com uma quebra de linha
-            caminhosCsv += caminhoComNomeDoCsv + '\n';
+            _caminhosCsv += caminhoComNomeDoCsv + '\n';
 
             mediaDosValoresDaMatriz.Clear();
 
@@ -270,13 +263,13 @@ namespace AntropofagicoCSharp
         {
             bool ignorarCondicao = true; // variável do tipo booleano criada apenas para ignorar uma condição
             string[] dados;
-            string caminhoComONomeDoArquivoCSVFinal = string.Empty;
+            //string caminhoComONomeDoArquivoCSVFinal = string.Empty;
             List<string> arquivosDaPastaCsv = new List<string>();
-            nomesCsv = new List<string>();
+            
 
             // no diretório especificado, extrair os arquivos .csv que estão lá e inserí-los numa lista
             List<string> caminhosDosArquivosCsvCriados = Directory
-                .GetFiles(caminhoDaPastaDosArquivosCSVPosTratamento)
+                .GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento)
                 .Where(arquivo => Path.GetExtension(arquivo) == ".csv")
                 .ToList();
 
@@ -288,36 +281,61 @@ namespace AntropofagicoCSharp
                 .DefaultIfEmpty(0)
                 .Max();
 
-            string[,] MatrizComTodosCsv = new string[linhas, maiorNumeracaoNoNomeDoCsv];
+            string[,] MatrizComTodosCsv = new string[_linhas, maiorNumeracaoNoNomeDoCsv];
 
-            for (int i = 0; i < maiorNumeracaoNoNomeDoCsv; i++)
+          /*  for (int i = 0; i < maiorNumeracaoNoNomeDoCsv; i++)
             {
                 // verificando cada arquivo
-                if (File.Exists($"{caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv"))
+                if (File.Exists($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv"))
                 {
-                    MatrizComTodosCsv[0, i] = $"Rom{i}.csv"; // criando as colunas
+                    MatrizComTodosCsv[1, i] = $"Rom{i}.csv"; // criando as colunas
                     int quantidadeDeLinhas = MatrizComTodosCsv.GetLength(0); // obtendo a quantidade de linhas que cada coluna terá
 
                     for (int linhas = 0; linhas < quantidadeDeLinhas; linhas++) // percorrendo as linhas da coluna
                     {
-                        //   inserindo cada valor correspondente à linha da coluna
-                        //          MatrizComTodosCsv[linhas + 2, i] 
+                        // inserindo cada valor correspondente à linha da coluna
+                        //MatrizComTodosCsv[linhas + 2, i] 
+
+                        // ler cada linha da coluna e inserir o valor
+                        MatrizComTodosCsv[linhas, i] = "a";
+
 
                     }
                 }
 
-            }
+            }*/
 
-            caminhoComONomeDoArquivoCSVFinal = Path.Combine($"{FrmPrincipal.diretorio}\\MatrizFinal\\"); // criando novo caminho de diretório
+            _caminhoComONomeDoArquivoCSVFinal = Path.Combine($"{FrmPrincipal.diretorio}\\MatrizFinal\\"); // criando novo caminho de diretório
             string nomeArquivoCsv = "MatrizPCA.csv";
 
-            if (!Directory.Exists(caminhoComONomeDoArquivoCSVFinal)) { // se o diretório não existir, 
+            if (!Directory.Exists(_caminhoComONomeDoArquivoCSVFinal))
+            { // se o diretório não existir, 
 
-                Directory.CreateDirectory(caminhoComONomeDoArquivoCSVFinal); // crie-o
+                Directory.CreateDirectory(_caminhoComONomeDoArquivoCSVFinal); // crie-o
 
-                using (var streamWriter = new StreamWriter(Path.Combine(caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv))) // criando o arquivo em si
-                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture)) // para ser possível escrever nele
-                    streamWriter.Flush();
+                using (var streamWriter = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv))) // criando o arquivo em si
+                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))// para ser possível escrever nele
+                {
+
+
+                    for (int i = 0; i <= maiorNumeracaoNoNomeDoCsv; i++)
+                    {
+
+                        if (File.Exists($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv"))
+                        {
+                          //  MatrizComTodosCsv[1, i] = $"Rom{i}.csv"; // criando as colunas
+
+                         //   streamWriter.Write($"Rom{i}.csv");
+                            //csvWriter.WriteRecords($"Rom{i}.csv");
+                            if (i <= maiorNumeracaoNoNomeDoCsv - 0)
+                                streamWriter.Write($"Rom{i}.csv; ");
+                            else
+                                streamWriter.Write($"Rom{i}.csv");
+
+                        }
+                    }
+                }
+
             }
             else // se o diretório já existir, ignore esta segunda condição
                 ignorarCondicao = false;

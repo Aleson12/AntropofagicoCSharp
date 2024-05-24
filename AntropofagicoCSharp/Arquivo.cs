@@ -283,27 +283,7 @@ namespace AntropofagicoCSharp
 
             string[,] MatrizComTodosCsv = new string[_linhas, maiorNumeracaoNoNomeDoCsv];
 
-          /*  for (int i = 0; i < maiorNumeracaoNoNomeDoCsv; i++)
-            {
-                // verificando cada arquivo
-                if (File.Exists($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv"))
-                {
-                    MatrizComTodosCsv[1, i] = $"Rom{i}.csv"; // criando as colunas
-                    int quantidadeDeLinhas = MatrizComTodosCsv.GetLength(0); // obtendo a quantidade de linhas que cada coluna terá
-
-                    for (int linhas = 0; linhas < quantidadeDeLinhas; linhas++) // percorrendo as linhas da coluna
-                    {
-                        // inserindo cada valor correspondente à linha da coluna
-                        //MatrizComTodosCsv[linhas + 2, i] 
-
-                        // ler cada linha da coluna e inserir o valor
-                        MatrizComTodosCsv[linhas, i] = "a";
-
-
-                    }
-                }
-
-            }*/
+            int qtdDeLinhas = MatrizComTodosCsv.GetLength(0); // obtendo a quantidade de linhas da Matriz
 
             _caminhoComONomeDoArquivoCSVFinal = Path.Combine($"{FrmPrincipal.diretorio}\\MatrizFinal\\"); // criando novo caminho de diretório
             string nomeArquivoCsv = "MatrizPCA.csv";
@@ -316,30 +296,49 @@ namespace AntropofagicoCSharp
                 using (var streamWriter = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv))) // criando o arquivo em si
                 using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))// para ser possível escrever nele
                 {
-
-
-                    for (int i = 0; i <= maiorNumeracaoNoNomeDoCsv; i++)
+                    for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++) // percorrendo as colunas
                     {
-
-                        if (File.Exists($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv"))
+                        if (File.Exists($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv")) // se o arquivo .csv existir, 
                         {
-                          //  MatrizComTodosCsv[1, i] = $"Rom{i}.csv"; // criando as colunas
+                            string arquivoCsvIndividual = Path.Combine($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv");
 
-                         //   streamWriter.Write($"Rom{i}.csv");
-                            //csvWriter.WriteRecords($"Rom{i}.csv");
-                            if (i <= maiorNumeracaoNoNomeDoCsv - 0)
-                                streamWriter.Write($"Rom{i}.csv; ");
+                            // inserindo no topo de cada coluna o nome do arquivo .csv:
+                            if (i <= maiorNumeracaoNoNomeDoCsv) //utilizei o sinal de igual, aqui, para que o último valor, na linha 1 do .csv, não fique sobreposto à linha vertical no excel!
+                            {
+
+                                streamWriter.Write($"Rom{i}.csv; "); // esse ponto-e-vírgula (com o espaço depois) faz com que essa string seja inserida exatamente no topo de cada coluna! 
+
+                                using (StreamReader leitorDeLinhas = new StreamReader(arquivoCsvIndividual))
+                                {
+                                    int linhas = 0;
+                                    while (!leitorDeLinhas.EndOfStream)
+                                    {
+                                        leitorDeLinhas.ReadLine();
+                                        int quantidadeDeLinhasNoArquivoCsv = linhas++;
+
+                                    }
+
+                                }
+
+
+
+
+                            }
                             else
-                                streamWriter.Write($"Rom{i}.csv");
+                                streamWriter.Write($"Rom{i}.csv\n");
+
+
+
 
                         }
-                    }
-                }
 
+                    }
+
+                }
             }
             else // se o diretório já existir, ignore esta segunda condição
                 ignorarCondicao = false;
         }
         #endregion Metodos
     }
-}
+} 

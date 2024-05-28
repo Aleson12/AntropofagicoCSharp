@@ -1,7 +1,11 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
+using System.IO;
+using System.Runtime.InteropServices.Marshalling;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 
 namespace AntropofagicoCSharp
@@ -15,7 +19,6 @@ namespace AntropofagicoCSharp
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
         private static List<double> mediaDosValoresDaMatriz;
-
 
         private static readonly int _linhas = 2048;
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
@@ -261,11 +264,13 @@ namespace AntropofagicoCSharp
 
         public static void GeraMatrizFinal()
         {
+
             bool ignorarCondicao = true; // variável do tipo booleano criada apenas para ignorar uma condição
             string[] dados;
             //string caminhoComONomeDoArquivoCSVFinal = string.Empty;
             List<string> arquivosDaPastaCsv = new List<string>();
-            
+
+            List<double> listaDeTeste = new List<double>();
 
             // no diretório especificado, extrair os arquivos .csv que estão lá e inserí-los numa lista
             List<string> caminhosDosArquivosCsvCriados = Directory
@@ -293,47 +298,49 @@ namespace AntropofagicoCSharp
 
                 Directory.CreateDirectory(_caminhoComONomeDoArquivoCSVFinal); // crie-o
 
-                using (var streamWriter = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv))) // criando o arquivo em si
-                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))// para ser possível escrever nele
+                CultureInfo culture = CultureInfo.GetCultureInfo("pt-BR");
+                CsvConfiguration config = new(culture);
+                config.HasHeaderRecord = false;
+
+                List<string> arquivos = [];
+                List<double[]> Valores = [];
+                for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++)
                 {
-                    for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++) // percorrendo as colunas
+                    string arq = $"{_caminhoDaPastaDosArquivosCSVPosTratamento}Rom{i}.csv";
+                    if (!File.Exists(arq))
                     {
-                        if (File.Exists($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv")) // se o arquivo .csv existir, 
-                        {
-                            string arquivoCsvIndividual = Path.Combine($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{i}.csv");
-
-                            // inserindo no topo de cada coluna o nome do arquivo .csv:
-                            if (i <= maiorNumeracaoNoNomeDoCsv) //utilizei o sinal de igual, aqui, para que o último valor, na linha 1 do .csv, não fique sobreposto à linha vertical no excel!
-                            {
-
-                                streamWriter.Write($"Rom{i}.csv; "); // esse ponto-e-vírgula (com o espaço depois) faz com que essa string seja inserida exatamente no topo de cada coluna! 
-
-                                using (StreamReader leitorDeLinhas = new StreamReader(arquivoCsvIndividual))
-                                {
-                                    int linhas = 0;
-                                    while (!leitorDeLinhas.EndOfStream)
-                                    {
-                                        leitorDeLinhas.ReadLine();
-                                        int quantidadeDeLinhasNoArquivoCsv = linhas++;
-
-                                    }
-
-                                }
-
-
-
-
-                            }
-                            else
-                                streamWriter.Write($"Rom{i}.csv\n");
-
-
-
-
-                        }
-
+                        continue;
                     }
 
+                    using (var csv = new CsvReader(new StreamReader(arq), config))
+                    {
+                        double[] records = csv.GetRecords<double>().ToArray();
+                        Valores.Add(records);
+                        arquivos.Add(Path.GetFileName(arq));
+                    }
+                }
+                using (var csvMatriz = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv)))
+                {
+                    StringBuilder sb = new();
+                    foreach (var a in arquivos)
+                    {
+                        sb.Append(a + ";");
+                    }
+                    csvMatriz.WriteLine(sb);
+
+                    for (int i = 0; i < _linhas; i++)
+                    {
+                        sb.Clear();
+                        foreach (var a in Valores)
+                        {
+                            try
+                            {
+                                sb.Append(a[i].ToString().Replace(".", ",") + ";");
+                            }
+                            catch { }
+                        }
+                        csvMatriz.WriteLine(sb);
+                    }
                 }
             }
             else // se o diretório já existir, ignore esta segunda condição
@@ -341,4 +348,4 @@ namespace AntropofagicoCSharp
         }
         #endregion Metodos
     }
-} 
+}

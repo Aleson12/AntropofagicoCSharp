@@ -49,7 +49,7 @@ namespace AntropofagicoCSharp
             grp_GerarEExibirArquivosCsv.Paint += (sender, e) =>
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grp_GerarEExibirArquivosCsv.Width - 1, grp_GerarEExibirArquivosCsv.Height - 10));
-                };
+            };
             rtx_ArquivosTxt.Paint += (sender, e) =>
             {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, rtx_ArquivosTxt.Width - 1, rtx_ArquivosTxt.Height - 1));
@@ -69,6 +69,11 @@ namespace AntropofagicoCSharp
             Arquivo.GeraMatrizFinal();
             mtx_DiretorioDoArquivoCsvFinal.Clear();
             mtx_DiretorioDoArquivoCsvFinal.Text = Arquivo._caminhoComONomeDoArquivoCSVFinal + "MatrizPCA.csv".ToString();
+        }
+
+        private void btn_AplicarPCA_Click(object sender, EventArgs e)
+        {
+            Arquivo.PCA();
         }
     }
 }

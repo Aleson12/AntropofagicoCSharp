@@ -139,6 +139,7 @@
             btn_AplicarPCA.Text = "Aplicar";
             btn_AplicarPCA.UseVisualStyleBackColor = false;
             btn_AplicarPCA.UseWaitCursor = true;
+            btn_AplicarPCA.Click += btn_AplicarPCA_Click;
             // 
             // grp_GerarEExibirArquivosCsv
             // 

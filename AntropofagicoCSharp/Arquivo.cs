@@ -1,7 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -235,6 +237,7 @@ namespace AntropofagicoCSharp
                     var a = (valor / colunas);
                     var resultadoArredondado = Math.Round(a, 5); // arredondando o resultado da divisão para cinco casas decimais
                     mediaDosValoresDaMatriz.Add(resultadoArredondado);
+
                 }
                 else
                     mediaDosValoresDaMatriz.Add(0.0000);
@@ -270,8 +273,6 @@ namespace AntropofagicoCSharp
             //string caminhoComONomeDoArquivoCSVFinal = string.Empty;
             List<string> arquivosDaPastaCsv = new List<string>();
 
-            List<double> listaDeTeste = new List<double>();
-
             // no diretório especificado, extrair os arquivos .csv que estão lá e inserí-los numa lista
             List<string> caminhosDosArquivosCsvCriados = Directory
                 .GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento)
@@ -293,6 +294,8 @@ namespace AntropofagicoCSharp
             _caminhoComONomeDoArquivoCSVFinal = Path.Combine($"{FrmPrincipal.diretorio}\\MatrizFinal\\"); // criando novo caminho de diretório
             string nomeArquivoCsv = "MatrizPCA.csv";
 
+            //// Criação do arquivo .csv MatrizPCA:
+
             if (!Directory.Exists(_caminhoComONomeDoArquivoCSVFinal))
             { // se o diretório não existir, 
 
@@ -302,15 +305,15 @@ namespace AntropofagicoCSharp
                 CsvConfiguration config = new(culture);
                 config.HasHeaderRecord = false;
 
+                List<double> valoresDoArquivoMatrizPCA = new List<double>();
                 List<string> arquivos = [];
-                List<double[]> Valores = [];
+                List<double[]> Valores = []; // uma lista de arrays
                 for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++)
                 {
                     string arq = $"{_caminhoDaPastaDosArquivosCSVPosTratamento}Rom{i}.csv";
+
                     if (!File.Exists(arq))
-                    {
                         continue;
-                    }
 
                     using (var csv = new CsvReader(new StreamReader(arq), config))
                     {
@@ -319,33 +322,53 @@ namespace AntropofagicoCSharp
                         arquivos.Add(Path.GetFileName(arq));
                     }
                 }
+
                 using (var csvMatriz = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv)))
                 {
                     StringBuilder sb = new();
+
                     foreach (var a in arquivos)
-                    {
                         sb.Append(a + ";");
-                    }
-                    csvMatriz.WriteLine(sb);
+
+                    csvMatriz.WriteLine(sb); // inserindo os nomes dos arquivos .csv no topo de cada coluna (cabeçalhos)
 
                     for (int i = 0; i < _linhas; i++)
                     {
-                        sb.Clear();
+                        sb.Clear(); // limpando o objeto para poder utilizá-lo de novo, mas para escrever novo valor
                         foreach (var a in Valores)
                         {
                             try
                             {
-                                sb.Append(a[i].ToString().Replace(".", ",") + ";");
+                               sb.Append(a[i].ToString().Replace(".", ",") + ";");
                             }
                             catch { }
                         }
                         csvMatriz.WriteLine(sb);
                     }
-                }
+
+                    foreach (double[] array in Valores) // lendo cada array presente em uma lista
+                    {
+                        for (int i = 0; i < array.Length; i++) // percorrendo as posições dentro desse array
+                        {
+                            double valor = array[i]; // obtendo cada valor em cada posição do array
+                            valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
+                        }
+
+                    }
+
+                }            
             }
             else // se o diretório já existir, ignore esta segunda condição
                 ignorarCondicao = false;
         }
+
+       public static void PCA()
+       {
+         //   string matrizString = string.Empty;
+
+       }
+
+
         #endregion Metodos
     }
 }

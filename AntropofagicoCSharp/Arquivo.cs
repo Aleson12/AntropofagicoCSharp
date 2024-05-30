@@ -21,6 +21,7 @@ namespace AntropofagicoCSharp
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
         private static List<double> mediaDosValoresDaMatriz;
+        private static List<double> valoresDoArquivoMatrizPCA;
 
         private static readonly int _linhas = 2048;
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
@@ -305,7 +306,7 @@ namespace AntropofagicoCSharp
                 CsvConfiguration config = new(culture);
                 config.HasHeaderRecord = false;
 
-                List<double> valoresDoArquivoMatrizPCA = new List<double>();
+                valoresDoArquivoMatrizPCA = new List<double>();
                 List<string> arquivos = [];
                 List<double[]> Valores = []; // uma lista de arrays
                 for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++)
@@ -362,11 +363,11 @@ namespace AntropofagicoCSharp
                 ignorarCondicao = false;
         }
 
-       public static void PCA()
-       {
-         //   string matrizString = string.Empty;
+        public static void PCA()
+        {
+            valoresDoArquivoMatrizPCA = new List<double>();
 
-       }
+        }
 
 
         #endregion Metodos

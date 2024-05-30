@@ -218,10 +218,6 @@ namespace AntropofagicoCSharp
                         // Obtém o número de campos na linha atual
                         int numCampos = csv.Parser.Count;
 
-                }
-            }
-
-        } 
                         // Itera sobre os campos da linha atual
                         for (int i = 0; i < numCampos; i++)
                         {
@@ -241,4 +237,4 @@ namespace AntropofagicoCSharp
             }
         }
     }
-}
+}  

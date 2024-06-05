@@ -8,7 +8,8 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-
+using MathNet.Numerics.LinearAlgebra;
+using System;
 
 namespace AntropofagicoCSharp
 {
@@ -363,12 +364,44 @@ namespace AntropofagicoCSharp
                 ignorarCondicao = false;
         }
 
-        public static void PCA()
+        public static double[,] ObterTransposta(List<double> valoresDoArquivoMatrizPCA)
         {
-            valoresDoArquivoMatrizPCA = new List<double>();
 
+            int linhaTamanho = 5;
+
+            int colunas = (int)Math.Ceiling((double)valoresDoArquivoMatrizPCA.Count / linhaTamanho);
+            int linhas = (int)(Math.Ceiling((double)colunas * linhaTamanho / valoresDoArquivoMatrizPCA.Count));
+
+            double[,] arrayBidimensional = new double[linhas, colunas];
+
+            int index = 0;
+            for (int i = 0; i < linhas; i++)
+            {
+                for (int j = 0; j < colunas; j++)
+                {
+                    if (index < valoresDoArquivoMatrizPCA.Count)
+                    {
+                        arrayBidimensional[i, j] = valoresDoArquivoMatrizPCA[index];
+                        index++;
+                    }
+                    else
+                    {
+                        break; // Sai do loop interno se todos os valores foram atribuídos
+                    }
+                }
+            }
+
+            Matrix<double> matriz = Matrix<double>.Build.DenseOfArray(arrayBidimensional); 
+            Matrix<double> transposta = matriz.Transpose(); // obtendo a transposta da matriz
+            double[,] matrizTransposta = transposta.ToArray(); 
+
+            return matrizTransposta;
         }
 
+        public static void PCA()
+        {
+            var matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA);
+        }
 
         #endregion Metodos
     }

@@ -10,6 +10,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using MathNet.Numerics.LinearAlgebra;
 using System;
+using Accord.Math;
+using Accord.Statistics.Analysis;
+using Accord.MachineLearning;
+using Accord;
 
 namespace AntropofagicoCSharp
 {
@@ -391,18 +395,45 @@ namespace AntropofagicoCSharp
                 }
             }
 
-            Matrix<double> matriz = Matrix<double>.Build.DenseOfArray(arrayBidimensional); 
+            Matrix<double> matriz = Matrix<double>.Build.DenseOfArray(arrayBidimensional); // 
             Matrix<double> transposta = matriz.Transpose(); // obtendo a transposta da matriz
             double[,] matrizTransposta = transposta.ToArray(); 
 
             return matrizTransposta;
         }
 
+        [Obsolete]
         public static void PCA()
         {
-            var matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA);
+            double[,] matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA);
+            double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta);
+
+
+            PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis()
+            {
+                Method = PrincipalComponentMethod.Center,
+                Whiten = false
+            };
+
+
+            pca.Learn(matrizTrspstaJagged);
+            double[][] result = pca.Transform(matrizTrspstaJagged, 2);
+
         }
 
+        public static double[][] ConverterParaArrayJagged(double[,] matrizTransposta)
+        {
+            int linhas = matrizTransposta.GetLength(0);
+
+            double[][] matrizTrspstaJagged = new double[linhas][];
+
+            for (int i = 0; i < linhas; i++)
+            {
+                matrizTrspstaJagged[i] = new double[matrizTransposta.GetLength(1)];
+                Array.Copy(matrizTransposta, i * matrizTransposta.GetLength(1), matrizTrspstaJagged[i], 0, matrizTransposta.GetLength(1));
+            }
+            return matrizTrspstaJagged;
+        }
         #endregion Metodos
     }
 }

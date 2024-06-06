@@ -14,6 +14,12 @@ using Accord.Math;
 using Accord.Statistics.Analysis;
 using Accord.MachineLearning;
 using Accord;
+using Accord.MachineLearning.VectorMachines.Learning;
+using Accord.MachineLearning.VectorMachines;
+using Accord.Math.Decompositions;
+using Accord.Statistics.Kernels;
+using System.Numerics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AntropofagicoCSharp
 {
@@ -359,9 +365,7 @@ namespace AntropofagicoCSharp
                             double valor = array[i]; // obtendo cada valor em cada posição do array
                             valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
                         }
-
                     }
-
                 }            
             }
             else // se o diretório já existir, ignore esta segunda condição
@@ -395,42 +399,46 @@ namespace AntropofagicoCSharp
                 }
             }
 
-            Matrix<double> matriz = Matrix<double>.Build.DenseOfArray(arrayBidimensional); // 
+            Matrix<double> matriz = Matrix<double>.Build.DenseOfArray(arrayBidimensional); 
             Matrix<double> transposta = matriz.Transpose(); // obtendo a transposta da matriz
             double[,] matrizTransposta = transposta.ToArray(); 
 
             return matrizTransposta;
         }
 
-        [Obsolete]
         public static void PCA()
         {
-            double[,] matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA);
-            double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta);
+            double[,] matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA); // obtendo a transposta da matriz
+            double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
 
-
+            // configurando a classe (e a sua instância) para fazer o cálculo de PCA
             PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis()
             {
                 Method = PrincipalComponentMethod.Center,
                 Whiten = false
             };
 
-
-            pca.Learn(matrizTrspstaJagged);
-            double[][] result = pca.Transform(matrizTrspstaJagged, 2);
+            pca.Learn(matrizTrspstaJagged); // a classe PrincipalComponentAnalysis somente aceita array de arrays; não aceita array bidimensional; por isso foi necessária a conversão (de array bidimensional para um array de arrays [array jagged])
+            double[][] result = pca.Transform(matrizTrspstaJagged, 2); // reduzindo o número de variáveis para apenas dois componentes
+            
 
         }
 
+        // método para conversão de array bidimensional para um array de arrays:
         public static double[][] ConverterParaArrayJagged(double[,] matrizTransposta)
         {
-            int linhas = matrizTransposta.GetLength(0);
+            int linhas = matrizTransposta.GetLength(0); // obtendo a quantidade de linhas da matrizTransposta
 
-            double[][] matrizTrspstaJagged = new double[linhas][];
+            double[][] matrizTrspstaJagged = new double[linhas][]; // criando uma matriz jagged de mesma quantidade de linhas da matrizTransposta
 
-            for (int i = 0; i < linhas; i++)
+            for (int i = 0; i < linhas; i++) // percorrendo a quantidade de linhas 
             {
-                matrizTrspstaJagged[i] = new double[matrizTransposta.GetLength(1)];
-                Array.Copy(matrizTransposta, i * matrizTransposta.GetLength(1), matrizTrspstaJagged[i], 0, matrizTransposta.GetLength(1));
+                matrizTrspstaJagged[i] = new double[matrizTransposta.GetLength(1)]; // em cada linha da matrizTrspstaJagged, está sendo inserida as linhas da matrizTransposta
+
+                for (int j = 0; j < matrizTransposta.GetLength(1); j++)
+                {
+                    matrizTrspstaJagged[i][j] = matrizTransposta[i, j]; // inserindo os valores na matriz jagged
+                }
             }
             return matrizTrspstaJagged;
         }

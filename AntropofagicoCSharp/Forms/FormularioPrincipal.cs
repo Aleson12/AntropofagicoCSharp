@@ -34,7 +34,6 @@ namespace AntropofagicoCSharp
             }
         }
 
-
         private void FormularioPrincipal_Load(object sender, EventArgs e)
         {
             // definindo a cor das bordas:

@@ -1,25 +1,13 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using MathNet.Numerics.LinearAlgebra;
-using System;
+using MathNet.Numerics.Statistics;
 using Accord.Math;
 using Accord.Statistics.Analysis;
-using Accord.MachineLearning;
-using Accord;
-using Accord.MachineLearning.VectorMachines.Learning;
-using Accord.MachineLearning.VectorMachines;
-using Accord.Math.Decompositions;
-using Accord.Statistics.Kernels;
-using System.Numerics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AntropofagicoCSharp
 {
@@ -107,8 +95,6 @@ namespace AntropofagicoCSharp
 
                     if (!_validaPrimeiroCaso)
                         arquivosAgrupados.Add(arquivoOrdenado);
-                    //  _validaPrimeiroCaso = true;
-
                 }
                 else if (nomeComTipo == comparaNome)
                     arquivosAgrupados.Add(arquivoOrdenado);
@@ -199,11 +185,9 @@ namespace AntropofagicoCSharp
                             if (i < numeroDeCampos - 1)
 
                                 linhaAtual += ";";
-
                         }
                         // adiciona a linha atual à lista
                         ArquivosEmLinhaCsv.Add(linhaAtual);
-
                     }
                 }
 
@@ -408,7 +392,7 @@ namespace AntropofagicoCSharp
 
         public static void PCA()
         {
-            double[,] matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA); // obtendo a transposta da matriz
+            double[,] matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA); // trazendo a matriz transposta para este método (PCA)
             double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
 
             // configurando a classe (e a sua instância) para fazer o cálculo de PCA
@@ -419,9 +403,9 @@ namespace AntropofagicoCSharp
             };
 
             pca.Learn(matrizTrspstaJagged); // a classe PrincipalComponentAnalysis somente aceita array de arrays; não aceita array bidimensional; por isso foi necessária a conversão (de array bidimensional para um array de arrays [array jagged])
-            double[][] result = pca.Transform(matrizTrspstaJagged, 2); // reduzindo o número de variáveis para apenas dois componentes
             
-
+            double[][] componentes = pca.Transform(matrizTrspstaJagged, 2); // reduzindo o número de variáveis para apenas dois componentes
+            double[,] matrizDimensionada = MinMax(componentes,0,1); 
         }
 
         // método para conversão de array bidimensional para um array de arrays:
@@ -441,6 +425,33 @@ namespace AntropofagicoCSharp
                 }
             }
             return matrizTrspstaJagged;
+        }
+
+        public static double[,] MinMax(double[][] data, double min, double max)
+        {
+            int linhas = data.GetLength(0);
+            int colunas = data.GetLength(1);
+
+            double[,] dadosEscalados = new double[linhas, colunas];
+
+            for (int j = 0; j < colunas; j++)
+            {
+                double[] coluna = new double[linhas];
+                
+                for (int i = 0; i < linhas; i++)
+                {
+                    coluna[i] = dadosEscalados[i, j];
+                }
+
+                double minCol = Statistics.Minimum(coluna);
+                double maxCol = Statistics.Maximum(coluna);
+
+                for (int i = 0; i < linhas; i++)
+                {
+                    dadosEscalados[i, j] = (dadosEscalados[i, j] - minCol) / (maxCol - minCol) * (max - min) + min;
+                }
+            }
+            return dadosEscalados;
         }
         #endregion Metodos
     }

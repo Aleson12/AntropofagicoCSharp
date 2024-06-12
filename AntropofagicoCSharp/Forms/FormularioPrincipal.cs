@@ -1,10 +1,12 @@
 using Microsoft.VisualBasic.ApplicationServices;
+using ScottPlot.WinForms;
 using System.Windows.Forms;
 
 namespace AntropofagicoCSharp
 {
     public partial class FrmPrincipal : Form
     {
+
         public static string diretorio;
 
         public FrmPrincipal() // Interface Principal
@@ -76,4 +78,3 @@ namespace AntropofagicoCSharp
         }
     }
 }
-

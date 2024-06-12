@@ -1,13 +1,19 @@
-﻿using CsvHelper;
+﻿using Accord.Math;
+using Accord.Statistics.Analysis;
+using CsvHelper;
 using CsvHelper.Configuration;
+using MathNet.Numerics.LinearAlgebra;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.Statistics;
-using Accord.Math;
-using Accord.Statistics.Analysis;
+using System.Drawing;
+using System.Windows.Forms.DataVisualization.Charting;
+using Accord.Statistics.Kernels;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using ScottPlot;
+using AntropofagicoCSharp.Forms;
 
 namespace AntropofagicoCSharp
 {
@@ -335,7 +341,7 @@ namespace AntropofagicoCSharp
                         {
                             try
                             {
-                               sb.Append(a[i].ToString().Replace(".", ",") + ";");
+                                sb.Append(a[i].ToString().Replace(".", ",") + ";");
                             }
                             catch { }
                         }
@@ -350,7 +356,7 @@ namespace AntropofagicoCSharp
                             valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
                         }
                     }
-                }            
+                }
             }
             else // se o diretório já existir, ignore esta segunda condição
                 ignorarCondicao = false;
@@ -377,21 +383,23 @@ namespace AntropofagicoCSharp
                         index++;
                     }
                     else
-                    {
                         break; // Sai do loop interno se todos os valores foram atribuídos
-                    }
                 }
             }
 
-            Matrix<double> matriz = Matrix<double>.Build.DenseOfArray(arrayBidimensional); 
+            Matrix<double> matriz = Matrix<double>.Build.DenseOfArray(arrayBidimensional);
+
             Matrix<double> transposta = matriz.Transpose(); // obtendo a transposta da matriz
-            double[,] matrizTransposta = transposta.ToArray(); 
+            double[,] matrizTransposta = transposta.ToArray();
 
             return matrizTransposta;
         }
 
         public static void PCA()
         {
+            List<double> elementosDaPrimeiraColuna = new List<double>();
+            List<double> elementosDaSegundaColuna = new List<double>();
+
             double[,] matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA); // trazendo a matriz transposta para este método (PCA)
             double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
 
@@ -403,56 +411,60 @@ namespace AntropofagicoCSharp
             };
 
             pca.Learn(matrizTrspstaJagged); // a classe PrincipalComponentAnalysis somente aceita array de arrays; não aceita array bidimensional; por isso foi necessária a conversão (de array bidimensional para um array de arrays [array jagged])
-            
-            double[][] componentes = pca.Transform(matrizTrspstaJagged, 2); // reduzindo o número de variáveis para apenas dois componentes
-            double[,] matrizDimensionada = MinMax(componentes,0,1); 
+
+            double[][] componentes = pca.Transform(matrizTrspstaJagged,2); // reduzindo o número de variáveis para apenas dois componentes
+            double[][] dadosNormalizados = NormalizeData(componentes);
+
+            GraficoPCA graficoPCA = new GraficoPCA(dadosNormalizados);
+            graficoPCA.Show();
+
+            // obtendo os números presentes na coluna 0
+            for (int i = 0; i < dadosNormalizados.Length; i++)
+                elementosDaPrimeiraColuna.Add(dadosNormalizados[i][0]);
+
+            // obtendo os números presentes na coluna 1
+            for (int j = 0; j < dadosNormalizados.Length; j++)
+                elementosDaSegundaColuna.Add(dadosNormalizados[j][1]);
+
+        }
+
+        // transforma os dados para que todos os valores estejam em uma escala entre 0 e 1:
+        public static double[][] NormalizeData(double[][] data)
+        {
+            // Encontrar o valor mínimo e máximo no array de arrays
+            double min = data.SelectMany(innerArray => innerArray).Min();
+            double max = data.SelectMany(innerArray => innerArray).Max();
+
+            // Aplicar a normalização a cada valor no array de arrays
+            return data.Select(innerArray =>
+                innerArray.Select(value => (value - min) / (max - min)).ToArray()
+            ).ToArray();
         }
 
         // método para conversão de array bidimensional para um array de arrays:
         public static double[][] ConverterParaArrayJagged(double[,] matrizTransposta)
         {
             int linhas = matrizTransposta.GetLength(0); // obtendo a quantidade de linhas da matrizTransposta
+            int colunas = matrizTransposta.GetLength(1);
 
             double[][] matrizTrspstaJagged = new double[linhas][]; // criando uma matriz jagged de mesma quantidade de linhas da matrizTransposta
 
             for (int i = 0; i < linhas; i++) // percorrendo a quantidade de linhas 
             {
-                matrizTrspstaJagged[i] = new double[matrizTransposta.GetLength(1)]; // em cada linha da matrizTrspstaJagged, está sendo inserida as linhas da matrizTransposta
+                double[] valores = new double[colunas];
 
-                for (int j = 0; j < matrizTransposta.GetLength(1); j++)
+                matrizTrspstaJagged[i] = new double[colunas];
+
+                for (int j = 0; j < colunas; j++)
                 {
-                    matrizTrspstaJagged[i][j] = matrizTransposta[i, j]; // inserindo os valores na matriz jagged
+                    valores[j] = matrizTransposta[i, j]; // inserindo os valores na matriz jagged
+                    matrizTrspstaJagged[i] = valores; // em cada linha da matrizTrspstaJagged, está sendo inserida as linhas da matrizTransposta
+
+                    //   matrizTrspstaJagged[i][j] = matrizTransposta[i,j];
                 }
             }
             return matrizTrspstaJagged;
         }
-
-        public static double[,] MinMax(double[][] data, double min, double max)
-        {
-            int linhas = data.GetLength(0);
-            int colunas = data.GetLength(1);
-
-            double[,] dadosEscalados = new double[linhas, colunas];
-
-            for (int j = 0; j < colunas; j++)
-            {
-                double[] coluna = new double[linhas];
-                
-                for (int i = 0; i < linhas; i++)
-                {
-                    coluna[i] = dadosEscalados[i, j];
-                }
-
-                double minCol = Statistics.Minimum(coluna);
-                double maxCol = Statistics.Maximum(coluna);
-
-                for (int i = 0; i < linhas; i++)
-                {
-                    dadosEscalados[i, j] = (dadosEscalados[i, j] - minCol) / (maxCol - minCol) * (max - min) + min;
-                }
-            }
-            return dadosEscalados;
-        }
-        #endregion Metodos
+        #endregion Metodos  
     }
 }

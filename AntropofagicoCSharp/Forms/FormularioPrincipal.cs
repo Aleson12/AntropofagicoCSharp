@@ -1,6 +1,3 @@
-using Microsoft.VisualBasic.ApplicationServices;
-using ScottPlot.WinForms;
-using System.Windows.Forms;
 
 namespace AntropofagicoCSharp
 {

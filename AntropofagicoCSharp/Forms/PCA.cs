@@ -1,39 +1,38 @@
 ﻿using System.Windows.Forms.DataVisualization.Charting;
+using System;
+using System.Drawing;
 
 namespace AntropofagicoCSharp.Forms
 {
     public partial class GraficoPCA : Form
     {
-        public GraficoPCA(double[][] arrayDeArrays)
+        public GraficoPCA(List<double>elementosDaPrimeiraColuna, List<double> elementosDaSegundaColuna)
         {
             InitializeComponent();
             this.TopMost = true;  // sobrepõe este formulário em relação ao outro
-            PlotPCAresultados(arrayDeArrays);
+            PlotPCAresultados(elementosDaPrimeiraColuna, elementosDaSegundaColuna);
         }
 
-        private void PlotPCAresultados(double[][] resultados)
+        private void PlotPCAresultados(List<double> elementosDaPrimeiraColuna, List<double> elementosDaSegundaColuna)
         {
+
             Chart chart = new Chart();
-            chart.Series.Clear();
+            chart.Dock = DockStyle.Fill;
+          //  chart.ChartAreas[0].AxisX.LabelStyle.Format = "{0}";
+         //   chart.ChartAreas[0].AxisY.LabelStyle.Format = "{0}";
+            chart.Series.Add("Scatter Series");
 
-            // Certificar que ChartArea existe antes de usá-lo
-            if (chart.ChartAreas.Count == 0)
-                chart.ChartAreas.Add(new ChartArea());
-            
-            Series series = new Series
+            this.Controls.Add(chart);
+
+            Random rand = new Random();
+            int count = 100; // Quantidade de pontos a serem plotados
+
+            for (int i = 0; i < count; i++)
             {
-                Name = "PCA",
-                Color = System.Drawing.Color.Blue,
-                ChartType = SeriesChartType.Point
-            };
-
-            chart.Series.Add(series);
-
-            for (int i = 0; i < resultados.Length; i++)
-                series.Points.AddXY(resultados[i][0], resultados[i][1]);
-
-            chart.ChartAreas[0].AxisX.Title = "Componente Principal 1";
-            chart.ChartAreas[0].AxisY.Title = "Componente Principal 2";
+                double xValue = rand.NextDouble() * 10 - 5; // Gera valores aleatórios para X
+                double yValue = rand.NextDouble() * 10 - 5; // Gera valores aleatórios para Y
+                chart.Series["Scatter Series"].Points.AddXY(xValue, yValue);
+            }
 
         }
 

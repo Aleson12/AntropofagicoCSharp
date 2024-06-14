@@ -35,9 +35,9 @@
             // formsPlot1
             // 
             formsPlot1.DisplayScale = 1F;
-            formsPlot1.Location = new Point(43, 12);
+            formsPlot1.Location = new Point(12, 12);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(705, 426);
+            formsPlot1.Size = new Size(821, 576);
             formsPlot1.TabIndex = 0;
             formsPlot1.Load += formsPlot1_Load;
             // 
@@ -45,7 +45,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(866, 600);
             Controls.Add(formsPlot1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "GraficoPCA";

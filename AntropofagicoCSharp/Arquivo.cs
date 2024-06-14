@@ -6,13 +6,6 @@ using MathNet.Numerics.LinearAlgebra;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Drawing;
-using System.Windows.Forms.DataVisualization.Charting;
-using Accord.Statistics.Kernels;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using ScottPlot;
 using AntropofagicoCSharp.Forms;
 
 namespace AntropofagicoCSharp
@@ -415,7 +408,7 @@ namespace AntropofagicoCSharp
             double[][] componentes = pca.Transform(matrizTrspstaJagged,2); // reduzindo o número de variáveis para apenas dois componentes
             double[][] dadosNormalizados = NormalizeData(componentes);
 
-            GraficoPCA graficoPCA = new GraficoPCA(dadosNormalizados);
+            GraficoPCA graficoPCA = new GraficoPCA(elementosDaPrimeiraColuna, elementosDaSegundaColuna);
             graficoPCA.Show();
 
             // obtendo os números presentes na coluna 0
@@ -424,8 +417,7 @@ namespace AntropofagicoCSharp
 
             // obtendo os números presentes na coluna 1
             for (int j = 0; j < dadosNormalizados.Length; j++)
-                elementosDaSegundaColuna.Add(dadosNormalizados[j][1]);
-
+                elementosDaSegundaColuna.Add((dadosNormalizados[j][1]) * (-1)); // multiplicando todos esses números por -1 
         }
 
         // transforma os dados para que todos os valores estejam em uma escala entre 0 e 1:

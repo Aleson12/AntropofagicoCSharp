@@ -40,15 +40,16 @@
             // 
             chartArea1.Name = "ChartArea1";
             chart1.ChartAreas.Add(chartArea1);
+            chart1.Dock = DockStyle.Fill;
             legend1.Name = "Legend1";
             chart1.Legends.Add(legend1);
-            chart1.Location = new Point(12, 12);
+            chart1.Location = new Point(0, 0);
             chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             chart1.Series.Add(series1);
-            chart1.Size = new Size(968, 635);
+            chart1.Size = new Size(993, 661);
             chart1.TabIndex = 1;
             chart1.Text = "chart1";
             // 

@@ -7,6 +7,8 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using AntropofagicoCSharp.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Runtime.CompilerServices;
 
 namespace AntropofagicoCSharp
 {
@@ -26,7 +28,7 @@ namespace AntropofagicoCSharp
         public static string _caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
         public static string _caminhosCsv;
         public static string _caminhoComONomeDoArquivoCSVFinal;
-
+        
         #endregion propriedades
         #region Metodos
         /// <summary>
@@ -232,7 +234,6 @@ namespace AntropofagicoCSharp
                     var a = (valor / colunas);
                     var resultadoArredondado = Math.Round(a, 5); // arredondando o resultado da divisão para cinco casas decimais
                     mediaDosValoresDaMatriz.Add(resultadoArredondado);
-
                 }
                 else
                     mediaDosValoresDaMatriz.Add(0.0000);
@@ -408,9 +409,6 @@ namespace AntropofagicoCSharp
             double[][] componentes = pca.Transform(matrizTrspstaJagged,2); // reduzindo o número de variáveis para apenas dois componentes
             double[][] dadosNormalizados = NormalizeData(componentes);
 
-            GraficoPCA graficoPCA = new GraficoPCA(elementosDaPrimeiraColuna, elementosDaSegundaColuna);
-            graficoPCA.Show();
-
             // obtendo os números presentes na coluna 0
             for (int i = 0; i < dadosNormalizados.Length; i++)
                 elementosDaPrimeiraColuna.Add(dadosNormalizados[i][0]);
@@ -418,6 +416,9 @@ namespace AntropofagicoCSharp
             // obtendo os números presentes na coluna 1
             for (int j = 0; j < dadosNormalizados.Length; j++)
                 elementosDaSegundaColuna.Add((dadosNormalizados[j][1]) * (-1)); // multiplicando todos esses números por -1 
+
+            GraficoPCA graficoPCA = new GraficoPCA(elementosDaPrimeiraColuna, elementosDaSegundaColuna); // instanciando objeto para manipular o gráfico de dispersão
+            graficoPCA.Show(); // renderizando o gráfico de dispersão
         }
 
         // transforma os dados para que todos os valores estejam em uma escala entre 0 e 1:
@@ -451,8 +452,6 @@ namespace AntropofagicoCSharp
                 {
                     valores[j] = matrizTransposta[i, j]; // inserindo os valores na matriz jagged
                     matrizTrspstaJagged[i] = valores; // em cada linha da matrizTrspstaJagged, está sendo inserida as linhas da matrizTransposta
-
-                    //   matrizTrspstaJagged[i][j] = matrizTransposta[i,j];
                 }
             }
             return matrizTrspstaJagged;

@@ -1,3 +1,4 @@
+using AntropofagicoCSharp.Forms;
 
 namespace AntropofagicoCSharp
 {
@@ -32,7 +33,7 @@ namespace AntropofagicoCSharp
                 rtx_ArquivosCsv.Text = Arquivo._caminhosCsv; // exibindo cada caminho de arquivo csv no richTextBox
             }
         }
-
+        
         private void FormularioPrincipal_Load(object sender, EventArgs e)
         {
             // definindo a cor das bordas:
@@ -41,25 +42,19 @@ namespace AntropofagicoCSharp
             var borderPen = new Pen(Color.DarkBlue, borderWidth); // definindo sua cor 
 
             grp_LeituraEExibicaoDosArquivosTxt.Paint += (sender, e) =>
-            {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grp_LeituraEExibicaoDosArquivosTxt.Width - 1, grp_LeituraEExibicaoDosArquivosTxt.Height - 10));
-            };
+
             grp_GerarEExibirArquivosCsv.Paint += (sender, e) =>
-            {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grp_GerarEExibirArquivosCsv.Width - 1, grp_GerarEExibirArquivosCsv.Height - 10));
-            };
+
             rtx_ArquivosTxt.Paint += (sender, e) =>
-            {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 0, rtx_ArquivosTxt.Width - 1, rtx_ArquivosTxt.Height - 1));
-            };
+
             grp_GerarArquivoCsvComTodosDados.Paint += (sender, e) =>
-            {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grp_GerarArquivoCsvComTodosDados.Width - 1, grp_GerarArquivoCsvComTodosDados.Height - 10));
-            };
+            
             grpAplicarEPlotarPCA.Paint += (sender, e) =>
-            {
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grpAplicarEPlotarPCA.Width - 1, grpAplicarEPlotarPCA.Height - 10));
-            };
         }
 
         private void btn_GerarCSV_Click(object sender, EventArgs e)

@@ -28,33 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GraficoPCA));
-            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+            chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             SuspendLayout();
             // 
-            // formsPlot1
+            // chart1
             // 
-            formsPlot1.DisplayScale = 1F;
-            formsPlot1.Location = new Point(12, 12);
-            formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(821, 576);
-            formsPlot1.TabIndex = 0;
-            formsPlot1.Load += formsPlot1_Load;
+            chartArea1.Name = "ChartArea1";
+            chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chart1.Legends.Add(legend1);
+            chart1.Location = new Point(12, 12);
+            chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chart1.Series.Add(series1);
+            chart1.Size = new Size(968, 635);
+            chart1.TabIndex = 1;
+            chart1.Text = "chart1";
             // 
             // GraficoPCA
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(866, 600);
-            Controls.Add(formsPlot1);
+            ClientSize = new Size(993, 661);
+            Controls.Add(chart1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "GraficoPCA";
-            Text = "Gráfico com o resultado do cálculo de PCA";
+            Text = "Gráfico de Dispersão com o resultado do cálculo de PCA";
+            ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private ScottPlot.WinForms.FormsPlot formsPlot1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }

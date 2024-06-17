@@ -1,12 +1,10 @@
 ﻿using System.Windows.Forms.DataVisualization.Charting;
-using System;
-using System.Drawing;
 
 namespace AntropofagicoCSharp.Forms
 {
     public partial class GraficoPCA : Form
     {
-        public GraficoPCA(List<double>elementosDaPrimeiraColuna, List<double> elementosDaSegundaColuna)
+        public GraficoPCA(List<double>elementosDaPrimeiraColuna, List<double>elementosDaSegundaColuna)
         {
             InitializeComponent();
             this.TopMost = true;  // sobrepõe este formulário em relação ao outro
@@ -16,29 +14,21 @@ namespace AntropofagicoCSharp.Forms
         private void PlotPCAresultados(List<double> elementosDaPrimeiraColuna, List<double> elementosDaSegundaColuna)
         {
 
-            Chart chart = new Chart();
-            chart.Dock = DockStyle.Fill;
-          //  chart.ChartAreas[0].AxisX.LabelStyle.Format = "{0}";
-         //   chart.ChartAreas[0].AxisY.LabelStyle.Format = "{0}";
-            chart.Series.Add("Scatter Series");
 
-            this.Controls.Add(chart);
+            Chart chart = this.chart1; // acessando a interface do gráfico
 
-            Random rand = new Random();
-            int count = 100; // Quantidade de pontos a serem plotados
+            Series scatterSeries = chart.Series.Add("Dados dispersos"); // adiciona uma série de dados à interface do gráfico
+            // e também um identificador único a esse conjunto de dados ("Dados dispersos"), e o insere na variável 
+            // "scaterSeries"
 
-            for (int i = 0; i < count; i++)
-            {
-                double xValue = rand.NextDouble() * 10 - 5; // Gera valores aleatórios para X
-                double yValue = rand.NextDouble() * 10 - 5; // Gera valores aleatórios para Y
-                chart.Series["Scatter Series"].Points.AddXY(xValue, yValue);
-            }
+            scatterSeries.ChartType = SeriesChartType.Point; // define o tipo de gráfico (de pontos, no caso)
 
-        }
+            elementosDaSegundaColuna.ForEach(valorSgndaColuna =>
+                scatterSeries.Points.AddY(valorSgndaColuna));
 
-        private void formsPlot1_Load(object sender, EventArgs e)
-        {
-            Arquivo.PCA();
+            scatterSeries.MarkerStyle = MarkerStyle.Circle; // define o tipo de ponto (Círculo, no caso)
+            scatterSeries.MarkerSize = 8; // definindo o tamanho de cada ponto
+
         }
     }
 }

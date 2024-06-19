@@ -7,8 +7,6 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using AntropofagicoCSharp.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
-using System.Runtime.CompilerServices;
 
 namespace AntropofagicoCSharp
 {
@@ -391,6 +389,7 @@ namespace AntropofagicoCSharp
 
         public static void PCA()
         {
+
             List<double> elementosDaPrimeiraColuna = new List<double>();
             List<double> elementosDaSegundaColuna = new List<double>();
 
@@ -405,6 +404,21 @@ namespace AntropofagicoCSharp
             };
 
             pca.Learn(matrizTrspstaJagged); // a classe PrincipalComponentAnalysis somente aceita array de arrays; não aceita array bidimensional; por isso foi necessária a conversão (de array bidimensional para um array de arrays [array jagged])
+
+            double[] autoValores = pca.Eigenvalues;
+            double somaDosAutoValores = autoValores.Sum();
+
+            double[] variacaoExplicada = new double[autoValores.Length];
+
+            for (int i = 0; i < autoValores.Length; i++)
+                variacaoExplicada[i] = autoValores[i] / somaDosAutoValores;
+
+            var C1 = (int)(variacaoExplicada[0] * 100) + "%";
+            var C2 = (int)(variacaoExplicada[1] * 100) + "%";
+
+
+
+
 
             double[][] componentes = pca.Transform(matrizTrspstaJagged,2); // reduzindo o número de variáveis para apenas dois componentes
             double[][] dadosNormalizados = NormalizeData(componentes);

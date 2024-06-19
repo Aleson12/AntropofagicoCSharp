@@ -21,9 +21,8 @@ namespace AntropofagicoCSharp.Forms
             title.Font = new Font(title.Font.FontFamily, 20, GraphicsUnit.Pixel); // configurando a fonte das letras
 
             Series scatterSeries = chart.Series.Add("Dados dispersos"); // adiciona uma série de dados à interface do gráfico
-             // e também um identificador único a esse conjunto de dados ("Dados dispersos"), e o insere na variável 
-             // "scaterSeries"
-
+                                                                        // e também um identificador único a esse conjunto de dados ("Dados dispersos"), e o insere na variável 
+                                                                        // "scaterSeries"
             scatterSeries.ChartType = SeriesChartType.Point; // define o tipo de gráfico (de pontos, no caso)
              
             foreach (int i in Enumerable.Range(0, Math.Min(elementosDaPrimeiraColuna.Count, elementosDaSegundaColuna.Count)))

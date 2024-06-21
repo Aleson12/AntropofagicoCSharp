@@ -7,6 +7,9 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using AntropofagicoCSharp.Forms;
+using Microsoft.ML.Data;
+using Microsoft.ML;
+using System.Data;
 
 namespace AntropofagicoCSharp
 {
@@ -194,7 +197,7 @@ namespace AntropofagicoCSharp
                 int.Parse(arquivoValor.Split(';')[1])); // obtém o valor da coluna de índice 1 após o ponto-e-vírgula
 
                 // obtendo o valor e seu respectivo índice de cada elemento da lista
-                for (int i = 0; i < valorDeCadaTxtComoLista.Count; i++)
+                for (int i = 1; i < valorDeCadaTxtComoLista.Count ; i++)
                 {
 
                     int valorDeCadaLinha = valorDeCadaTxtComoLista[i]; // obtendo cada valor isoladamente
@@ -214,6 +217,8 @@ namespace AntropofagicoCSharp
             mediaDosValoresDaMatriz = new List<double>(); // instanciando o objeto dessa Lista para que 
             // ela possa ser manipulada e não ocorrer o erro
             // "System.NullReferenceException: 'Object reference not set to an instance of an object.'"
+
+         //   Console.WriteLine(matriz);
 
             string caminhoComNomeDoCsv;
 
@@ -345,7 +350,7 @@ namespace AntropofagicoCSharp
                         for (int i = 0; i < array.Length; i++) // percorrendo as posições dentro desse array
                         {
                             double valor = array[i]; // obtendo cada valor em cada posição do array
-                            valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
+                                valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
                         }
                     }
                 }
@@ -393,30 +398,25 @@ namespace AntropofagicoCSharp
             List<double> elementosDaSegundaColuna = new List<double>();
 
             double[,] matrizTransposta = ObterTransposta(valoresDoArquivoMatrizPCA); // trazendo a matriz transposta para este método (PCA)
-            double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
+             double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
 
             // configurando a classe (e a sua instância) para fazer o cálculo de PCA
-            PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis()
+            PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis(numberOfOutputs: 2)
             {
                 Method = PrincipalComponentMethod.Center,
                 Whiten = false
             };
 
+           //pca.Learn tava nessa linha
+            pca.Learn(matrizTrspstaJagged);
+
+            double[][] componentes = pca.Transform(matrizTrspstaJagged);
             
-            double[] autoValores = pca.Eigenvalues;
-            double somaDosAutoValores = autoValores.Sum();
+            // mexer aqui amanhã
 
-            double[] variacaoExplicada = new double[autoValores.Length];
-
-            for (int i = 0; i < autoValores.Length; i++)
-                variacaoExplicada[i] = autoValores[i] / somaDosAutoValores;
-
-            var c1 = (int)(variacaoExplicada[0] * 100) + "%";
-            var c2 = (int)(variacaoExplicada[1] * 100) + "%";
-
-
-            double[][] componentes = pca.Transform(matrizTrspstaJagged,2); // reduzindo o número de variáveis para apenas dois componentes
             double[][] dadosNormalizados = NormalizeData(componentes);
+
+            //double[][] componentes = pca.Transform(dadosNormalizados); // reduzindo o número de variáveis para apenas dois componentes
 
             // obtendo os números presentes na coluna 0
             for (int i = 0; i < dadosNormalizados.Length; i++)
@@ -431,14 +431,14 @@ namespace AntropofagicoCSharp
         }
 
         // transforma os dados para que todos os valores estejam em uma escala entre 0 e 1:
-        public static double[][] NormalizeData(double[][] data)
+        public static double[][] NormalizeData(double[][] componentes)
         {
             // Encontrar o valor mínimo e máximo no array de arrays
-            double min = data.SelectMany(innerArray => innerArray).Min();
-            double max = data.SelectMany(innerArray => innerArray).Max();
+            double min = componentes.SelectMany(innerArray => innerArray).Min();
+            double max = componentes.SelectMany(innerArray => innerArray).Max();
 
             // Aplicar a normalização a cada valor no array de arrays
-            return data.Select(innerArray =>
+            return componentes.Select(innerArray =>
                 innerArray.Select(value => (value - min) / (max - min)).ToArray()
             ).ToArray();
         }

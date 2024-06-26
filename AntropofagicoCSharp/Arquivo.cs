@@ -2,15 +2,14 @@
 using Accord.Statistics.Analysis;
 using CsvHelper;
 using CsvHelper.Configuration;
-using MathNet.Numerics.LinearAlgebra;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using AntropofagicoCSharp.Forms;
-using Microsoft.ML.Data;
-using Microsoft.ML;
 using System.Data;
-using System.Diagnostics;
+using Accord.Statistics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace AntropofagicoCSharp
 {
@@ -24,6 +23,7 @@ namespace AntropofagicoCSharp
         private static List<string> arquivosAgrupados;
         private static List<double> mediaDosValoresDaMatriz;
         private static List<double> valoresDoArquivoMatrizPCA;
+
         private static double[,] MatrizMedias; // Matriz com todas as médias dos valores
         private static readonly int _linhas = 2048;
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
@@ -249,69 +249,64 @@ namespace AntropofagicoCSharp
             string nomeArquivoCsv = "MatrizPCA.csv";
 
             //// Criação do arquivo .csv MatrizPCA:
+            
+            Directory.CreateDirectory(_caminhoComONomeDoArquivoCSVFinal); // crie-o
 
-            if (!Directory.Exists(_caminhoComONomeDoArquivoCSVFinal))
-            { // se o diretório não existir, 
+            CultureInfo culture = CultureInfo.GetCultureInfo("pt-BR");
+            CsvConfiguration config = new(culture);
+            config.HasHeaderRecord = false;
 
-                Directory.CreateDirectory(_caminhoComONomeDoArquivoCSVFinal); // crie-o
+            valoresDoArquivoMatrizPCA = new List<double>();
+            List<string> arquivos = [];
+            List<double[]> Valores = []; // uma lista de arrays
 
-                CultureInfo culture = CultureInfo.GetCultureInfo("pt-BR");
-                CsvConfiguration config = new(culture);
-                config.HasHeaderRecord = false;
+            for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++)
+            {
+               string arq = $"{_caminhoDaPastaDosArquivosCSVPosTratamento}Rom{i}.csv";
 
-                valoresDoArquivoMatrizPCA = new List<double>();
-                List<string> arquivos = [];
-                List<double[]> Valores = []; // uma lista de arrays
-                for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++)
-                {
-                    string arq = $"{_caminhoDaPastaDosArquivosCSVPosTratamento}Rom{i}.csv";
-
-                    if (!File.Exists(arq))
+                if (!File.Exists(arq))
                         continue;
 
-                    using (var csv = new CsvReader(new StreamReader(arq), config))
-                    {
-                        double[] records = csv.GetRecords<double>().ToArray();
-                        Valores.Add(records);
-                        arquivos.Add(Path.GetFileName(arq));
-                    }
-                }
-
-                using (var csvMatriz = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv)))
-                {
-                    StringBuilder sb = new();
-
-                    foreach (var a in arquivos)
-                        sb.Append(a + ";");
-
-                    csvMatriz.WriteLine(sb); // inserindo os nomes dos arquivos .csv no topo de cada coluna (cabeçalhos)
-
-                    for (int i = 0; i < _linhas; i++)
-                    {
-                        sb.Clear(); // limpando o objeto para poder utilizá-lo de novo, mas para escrever novo valor
-                        foreach (var a in Valores)
-                        {
-                            try
-                            {
-                                sb.Append(a[i].ToString().Replace(".", ",") + ";");
-                            }
-                            catch { }
-                        }
-                        csvMatriz.WriteLine(sb);
-                    }
-
-                    foreach (double[] array in Valores) // lendo cada array presente em uma lista
-                    {
-                        for (int i = 0; i < array.Length; i++) // percorrendo as posições dentro desse array
-                        {
-                            double valor = array[i]; // obtendo cada valor em cada posição do array
-                                valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
-                        }
-                    }
-                }
+               using (var csv = new CsvReader(new StreamReader(arq), config))
+               {
+                  double[] records = csv.GetRecords<double>().ToArray();
+                  Valores.Add(records);
+                  arquivos.Add(Path.GetFileName(arq));
+               }
             }
-            else // se o diretório já existir, ignore esta segunda condição
-                ignorarCondicao = false;
+
+            using (var csvMatriz = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv)))
+            {
+               StringBuilder sb = new();
+
+               foreach (var a in arquivos)
+                  sb.Append(a + ";");
+
+               csvMatriz.WriteLine(sb); // inserindo os nomes dos arquivos .csv no topo de cada coluna (cabeçalhos)
+
+               for (int i = 0; i < _linhas; i++)
+               {
+                 sb.Clear(); // limpando o objeto para poder utilizá-lo de novo, mas para escrever novo valor
+                 foreach (var a in Valores)
+                 {
+                      try
+                      {
+                        sb.Append(a[i].ToString().Replace(".", ",") + ";");
+                      }
+                      catch { }
+                 }
+                 csvMatriz.WriteLine(sb);
+               }
+
+               foreach (double[] array in Valores) // lendo cada array presente em uma lista
+               {
+                  for (int i = 0; i < array.Length; i++) // percorrendo as posições dentro desse array
+                  {
+                     double valor = array[i]; // obtendo cada valor em cada posição do array
+                       valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
+                  }
+               }
+            }
         }
 
         public static double[,] ObterTransposta(double[,] matriz)
@@ -345,36 +340,6 @@ namespace AntropofagicoCSharp
                 }
             }
             return transposta;
-            //int linhaTamanho = 5;
-
-            //int colunas = (int)Math.Ceiling((double)valoresDoArquivoMatrizPCA.Count / linhaTamanho);
-            //int linhas = (int)(Math.Ceiling((double)colunas * linhaTamanho / valoresDoArquivoMatrizPCA.Count));
-
-            //double[,] arrayBidimensional = new double[linhas, colunas];
-
-            //int index = 0;
-            //for (int i = 0; i < linhas; i++)
-            //{
-            //    for (int j = 0; j < colunas; j++)
-            //    {
-            //        if (index < valoresDoArquivoMatrizPCA.Count)
-            //        {
-            //            arrayBidimensional[i, j] = valoresDoArquivoMatrizPCA[index];
-            //            index++;
-            //        }
-            //        else
-            //            break; // Sai do loop interno se todos os valores foram atribuídos
-            //    }
-            //}
-
-            //Console.WriteLine(arrayBidimensional);
-
-            //Matrix<double> matriz = Matrix<double>.Build.DenseOfArray(arrayBidimensional);
-
-            //Matrix<double> transposta = matriz.Transpose(); // obtendo a transposta da matriz
-            //double[,] matrizTransposta = transposta.ToArray();
-
-            //return matrizTransposta;
         }
 
         public static void PCA()
@@ -384,8 +349,7 @@ namespace AntropofagicoCSharp
 
             double[,] matrizTransposta = ObterTransposta(MatrizMedias); // trazendo a matriz transposta para este método (PCA)
             double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
-
-            double[][] dadosNormalizados = NormalizeData(matrizTrspstaJagged);
+            
             // configurando a classe (e a sua instância) para fazer o cálculo de PCA
             PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis(numberOfOutputs: 2)
             {
@@ -393,23 +357,19 @@ namespace AntropofagicoCSharp
                 Whiten = false
             };
 
-           //pca.Learn tava nessa linha
-            pca.Learn(dadosNormalizados);
+            var teste = pca.Learn(matrizTrspstaJagged); // ajuste dos dados a serem manipulados
 
-            double[][] componentes = pca.Transform(dadosNormalizados);
-            
-            // mexer aqui amanhã
+            double[][] componentes = teste.Transform(matrizTrspstaJagged);
 
-
-            //double[][] componentes = pca.Transform(dadosNormalizados); // reduzindo o número de variáveis para apenas dois componentes
+            double[][] dadosNormalizados = NormalizeData(componentes);
 
             // obtendo os números presentes na coluna 0
-            for (int i = 0; i < componentes.Length; i++)
-                elementosDaPrimeiraColuna.Add(componentes[i][0]);
+            for (int i = 0; i < dadosNormalizados.Length; i++)
+                elementosDaPrimeiraColuna.Add(dadosNormalizados[i][0]);
 
             // obtendo os números presentes na coluna 1
-            for (int j = 0; j < componentes.Length; j++)
-                elementosDaSegundaColuna.Add((componentes[j][1]) * (-1)); // multiplicando todos esses números por -1 
+            for (int j = 0; j < dadosNormalizados.Length; j++)
+                elementosDaSegundaColuna.Add((dadosNormalizados[j][1]) * (-1)); // multiplicando todos esses números por -1 
 
             GraficoPCA graficoPCA = new GraficoPCA(elementosDaPrimeiraColuna, elementosDaSegundaColuna); // instanciando objeto para manipular o gráfico de dispersão
             graficoPCA.Show(); // renderizando o gráfico de dispersão

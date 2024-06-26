@@ -64,7 +64,7 @@ namespace AntropofagicoCSharp
             string nomeComTipo = string.Empty; // nome do arquivo
             string numeroPosHifen = string.Empty; // número após o hífen (sem a extensão do arquivo)
             string comparaNome = string.Empty;
-
+            MatrizMedias = new double[_linhas, caminhosDosArquivosTxtDaPasta.Count];
             // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
             caminhosDosArquivosTxtDaPasta.ToList().ForEach(caminho =>
             {
@@ -157,7 +157,7 @@ namespace AntropofagicoCSharp
                 }
             }
             nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];
-            MatrizMedias = new double[_linhas, caminhosDosArquivosTxtDaPasta.Count];
+            
             GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetro para este método para que ele seja capaz de manipulá-los
             colunaDaMatriz += 1;
         }
@@ -385,6 +385,7 @@ namespace AntropofagicoCSharp
             double[,] matrizTransposta = ObterTransposta(MatrizMedias); // trazendo a matriz transposta para este método (PCA)
             double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
 
+            double[][] dadosNormalizados = NormalizeData(matrizTrspstaJagged);
             // configurando a classe (e a sua instância) para fazer o cálculo de PCA
             PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis(numberOfOutputs: 2)
             {
@@ -393,28 +394,27 @@ namespace AntropofagicoCSharp
             };
 
            //pca.Learn tava nessa linha
-            pca.Learn(matrizTrspstaJagged);
+            pca.Learn(dadosNormalizados);
 
-            double[][] componentes = pca.Transform(matrizTrspstaJagged);
+            double[][] componentes = pca.Transform(dadosNormalizados);
             
             // mexer aqui amanhã
 
-            double[][] dadosNormalizados = NormalizeData(componentes);
 
             //double[][] componentes = pca.Transform(dadosNormalizados); // reduzindo o número de variáveis para apenas dois componentes
 
             // obtendo os números presentes na coluna 0
             for (int i = 0; i < componentes.Length; i++)
-                elementosDaPrimeiraColuna.Add(dadosNormalizados[i][0]);
+                elementosDaPrimeiraColuna.Add(componentes[i][0]);
 
             // obtendo os números presentes na coluna 1
             for (int j = 0; j < componentes.Length; j++)
-                elementosDaSegundaColuna.Add((dadosNormalizados[j][1]) * (-1)); // multiplicando todos esses números por -1 
+                elementosDaSegundaColuna.Add((componentes[j][1]) * (-1)); // multiplicando todos esses números por -1 
 
             GraficoPCA graficoPCA = new GraficoPCA(elementosDaPrimeiraColuna, elementosDaSegundaColuna); // instanciando objeto para manipular o gráfico de dispersão
             graficoPCA.Show(); // renderizando o gráfico de dispersão
         }
-
+            
         // transforma os dados para que todos os valores estejam em uma escala entre 0 e 1:
         public static double[][] NormalizeData(double[][] componentes)
         {

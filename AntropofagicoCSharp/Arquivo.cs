@@ -7,15 +7,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using AntropofagicoCSharp.Forms;
 using System.Data;
-using Accord.Statistics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
+using Microsoft.ML;
+using Microsoft.ML.Data;
+using Microsoft.ML.Transforms;
 
 namespace AntropofagicoCSharp
 {
 
     public static class Arquivo
     {
+
+
+
         #region propriedades
         private static List<string> arquivosTxtsDaPasta;
         private static List<string> caminhosDosArquivosTxtDaPasta;
@@ -30,7 +33,7 @@ namespace AntropofagicoCSharp
         public static string _caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
         public static string _caminhosCsv;
         public static string _caminhoComONomeDoArquivoCSVFinal;
-        
+
         #endregion propriedades
         #region Metodos
         /// <summary>
@@ -65,13 +68,12 @@ namespace AntropofagicoCSharp
             string numeroPosHifen = string.Empty; // número após o hífen (sem a extensão do arquivo)
             string comparaNome = string.Empty;
             MatrizMedias = new double[_linhas, caminhosDosArquivosTxtDaPasta.Count];
+            object MatrizVAR = new object[_linhas, caminhosDosArquivosTxtDaPasta.Count]; 
             // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
             caminhosDosArquivosTxtDaPasta.ToList().ForEach(caminho =>
             {
                 if (Path.GetDirectoryName(caminho) != " ")
-                { 
                     arquivosTxtsDaPasta.Add(Path.GetFileNameWithoutExtension(caminho)); // pega o arquivo sem a extensão
-                }
             });
             //arquivosTxtsDaPastaOrdenados = arquivosTxtsDaPasta.OrderBy(arquivo => RecuperarNumeracaoDeNomeDeArquivo(arquivo)).ToList(); // ordenando a lista crescentemente de acordo com o número de cada arquivo
             arquivosTxtsDaPastaOrdenados = arquivosTxtsDaPasta.OrderBy((arquivo) =>
@@ -196,7 +198,7 @@ namespace AntropofagicoCSharp
             mediaDosValoresDaMatriz = ObterMedias(matriz);
             string caminhoComNomeDoCsv;
             int indiceDoCSV = int.Parse(nomeDoArquivoCsv.Split("-")[0].Substring(3)) - 1;
-
+             
             for (int i = 0; i < mediaDosValoresDaMatriz.Count; i++)
             {
                 MatrizMedias[i, indiceDoCSV] = mediaDosValoresDaMatriz[i];
@@ -224,7 +226,6 @@ namespace AntropofagicoCSharp
         {
 
             bool ignorarCondicao = true; // variável do tipo booleano criada apenas para ignorar uma condição
-            //string caminhoComONomeDoArquivoCSVFinal = string.Empty;
             List<string> arquivosDaPastaCsv = new List<string>();
 
             // no diretório especificado, extrair os arquivos .csv que estão lá e inserí-los numa lista
@@ -309,21 +310,21 @@ namespace AntropofagicoCSharp
             }
         }
 
-        public static double[,] ObterTransposta(double[,] matriz)
+        public static string[,] ObterTransposta(string[,] matriz)
         {
             int linhas = matriz.GetLength(0);
             int colunas = matriz.GetLength(1);
 
-            double[,] transposta = new double[colunas, linhas];
+            string[,] transposta = new string[colunas, linhas];
 
             if (linhas == colunas)
             {
-                transposta = (double[,])matriz.Clone();
+                transposta = (string[,])matriz.Clone();
                 for (int i = 1; i < linhas; i++)
                 {
                     for (int j = 0; j < i; j++)
                     {
-                        double temp = transposta[i, j];
+                        string temp = transposta[i, j];
                         transposta[i, j] = transposta[j, i];
                         transposta[j, i] = temp;
                     }
@@ -347,30 +348,43 @@ namespace AntropofagicoCSharp
             List<double> elementosDaPrimeiraColuna = new List<double>();
             List<double> elementosDaSegundaColuna = new List<double>();
 
-            double[,] matrizTransposta = ObterTransposta(MatrizMedias); // trazendo a matriz transposta para este método (PCA)
-            double[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
-            
+            int linhas = MatrizMedias.GetLength(0);
+            int colunas = MatrizMedias.GetLength(1);
+
+            string[,] matrizMediasString = new string[linhas, colunas];
+
+            for (int i = 0;i < linhas; i++)
+            {
+                for(int j = 0;j < colunas; j++)
+                {
+                    matrizMediasString[i, j] = MatrizMedias[i,j].ToString("E5"); // transformando os números em Notação Científica
+                }
+            }
+
+            string[,] matrizTransposta = ObterTransposta(matrizMediasString); // trazendo a matriz transposta para este método (PCA)
+            string[][] matrizTrspstaJagged = ConverterParaArrayJagged(matrizTransposta); // convertendo a matriz bidimensional para um array de array (array jagged)
+
             // configurando a classe (e a sua instância) para fazer o cálculo de PCA
-            PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis(numberOfOutputs: 2)
+            PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis()
             {
                 Method = PrincipalComponentMethod.Center,
                 Whiten = false
             };
 
-            var teste = pca.Learn(matrizTrspstaJagged); // ajuste dos dados a serem manipulados
+           pca.Learn(matrizTrspstaJagged.ToDouble()); // ajuste dos dados a serem manipulados
 
-            double[][] componentes = teste.Transform(matrizTrspstaJagged);
+           double[][] componentes = pca.Transform(matrizTrspstaJagged.ToDouble());
+           
+           double[][] dadosNormalizados = NormalizeData(componentes);
 
-            double[][] dadosNormalizados = NormalizeData(componentes);
-
-            // obtendo os números presentes na coluna 0
-            for (int i = 0; i < dadosNormalizados.Length; i++)
+           // obtendo os números presentes na coluna 0
+           for (int i = 0; i < dadosNormalizados.Length; i++)
                 elementosDaPrimeiraColuna.Add(dadosNormalizados[i][0]);
 
-            // obtendo os números presentes na coluna 1
-            for (int j = 0; j < dadosNormalizados.Length; j++)
+           // obtendo os números presentes na coluna 1
+           for (int j = 0; j < dadosNormalizados.Length; j++)
                 elementosDaSegundaColuna.Add((dadosNormalizados[j][1]) * (-1)); // multiplicando todos esses números por -1 
-
+        
             GraficoPCA graficoPCA = new GraficoPCA(elementosDaPrimeiraColuna, elementosDaSegundaColuna); // instanciando objeto para manipular o gráfico de dispersão
             graficoPCA.Show(); // renderizando o gráfico de dispersão
         }
@@ -386,21 +400,21 @@ namespace AntropofagicoCSharp
             return componentes.Select(innerArray =>
                 innerArray.Select(value => (value - min) / (max - min)).ToArray()
             ).ToArray();
-        }
+        } 
 
         // método para conversão de array bidimensional para um array de arrays:
-        public static double[][] ConverterParaArrayJagged(double[,] matrizTransposta)
+        public static string[][] ConverterParaArrayJagged(string[,] matrizTransposta)
         {
             int linhas = matrizTransposta.GetLength(0); // obtendo a quantidade de linhas da matrizTransposta
             int colunas = matrizTransposta.GetLength(1);
 
-            double[][] matrizTrspstaJagged = new double[linhas][]; // criando uma matriz jagged de mesma quantidade de linhas da matrizTransposta
+            string[][] matrizTrspstaJagged = new string[linhas][]; // criando uma matriz jagged de mesma quantidade de linhas da matrizTransposta
 
             for (int i = 0; i < linhas; i++) // percorrendo a quantidade de linhas 
             {
-                double[] valores = new double[colunas];
+                string[] valores = new string[colunas];
 
-                matrizTrspstaJagged[i] = new double[colunas];
+                matrizTrspstaJagged[i] = new string[colunas];
 
                 for (int j = 0; j < colunas; j++)
                 {
@@ -413,4 +427,3 @@ namespace AntropofagicoCSharp
         #endregion Metodos  
     }
 }
-   

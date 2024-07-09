@@ -34,7 +34,7 @@ namespace AntropofagicoCSharp
                 rtx_ArquivosCsv.Text = Arquivo._caminhosCsv; // exibindo cada caminho de arquivo csv no richTextBox
             }
         }
-        
+
         private void FormularioPrincipal_Load(object sender, EventArgs e)
         {
             // definindo a cor das bordas:
@@ -53,7 +53,7 @@ namespace AntropofagicoCSharp
 
             grp_GerarArquivoCsvComTodosDados.Paint += (sender, e) =>
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grp_GerarArquivoCsvComTodosDados.Width - 1, grp_GerarArquivoCsvComTodosDados.Height - 10));
-            
+
             grpAplicarEPlotarPCA.Paint += (sender, e) =>
                 e.Graphics.DrawRectangle(borderPen, new Rectangle(0, 8, grpAplicarEPlotarPCA.Width - 1, grpAplicarEPlotarPCA.Height - 10));
         }

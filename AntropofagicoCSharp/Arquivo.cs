@@ -5,20 +5,16 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using AntropofagicoCSharp.Forms;
 using System.Data;
-using Microsoft.ML;
-using Microsoft.ML.Data;
-using Microsoft.ML.Transforms;
+using System;
+using AntropofagicoCSharp.Forms;
+using ScottPlot;
+using ScottPlot.WinForms;
 
 namespace AntropofagicoCSharp
 {
-
     public static class Arquivo
     {
-
-
-
         #region propriedades
         private static List<string> arquivosTxtsDaPasta;
         private static List<string> caminhosDosArquivosTxtDaPasta;
@@ -376,7 +372,7 @@ namespace AntropofagicoCSharp
            double[][] componentes = pca.Transform(matrizTrspstaJagged.ToDouble());
            
            double[][] dadosNormalizados = NormalizeData(componentes);
-
+             
            // obtendo os números presentes na coluna 0
            for (int i = 0; i < dadosNormalizados.Length; i++)
                 elementosDaPrimeiraColuna.Add(dadosNormalizados[i][0]);
@@ -384,11 +380,14 @@ namespace AntropofagicoCSharp
            // obtendo os números presentes na coluna 1
            for (int j = 0; j < dadosNormalizados.Length; j++)
                 elementosDaSegundaColuna.Add((dadosNormalizados[j][1]) * (-1)); // multiplicando todos esses números por -1 
-        
-            GraficoPCA graficoPCA = new GraficoPCA(elementosDaPrimeiraColuna, elementosDaSegundaColuna); // instanciando objeto para manipular o gráfico de dispersão
-            graficoPCA.Show(); // renderizando o gráfico de dispersão
+
+            PCA_grafico pcaGrafico = new PCA_grafico();
+            pcaGrafico.formsPlot1_Load(elementosDaPrimeiraColuna, elementosDaSegundaColuna);
+
+            pcaGrafico.Show();
+
         }
-            
+
         // transforma os dados para que todos os valores estejam em uma escala entre 0 e 1:
         public static double[][] NormalizeData(double[][] componentes)
         {

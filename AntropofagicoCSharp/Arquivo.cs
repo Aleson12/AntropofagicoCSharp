@@ -582,5 +582,3 @@ namespace AntropofagicoCSharp
         #endregion Metodos
     }
 }
-
-

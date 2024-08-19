@@ -1,12 +1,8 @@
-﻿using Accord;
-using Accord.Math;
+﻿using Accord.Math;
 using AntropofagicoCSharp.Forms;
 using CsvHelper;
 using CsvHelper.Configuration;
-using LiveCharts.Defaults;
 using MathNet.Numerics.LinearAlgebra.Double;
-using ScottPlot;
-using ScottPlot.WinForms;
 using System.Data;
 using System.Globalization;
 using System.Text;
@@ -146,8 +142,6 @@ namespace AntropofagicoCSharp
             }
             nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];
 
-            Console.WriteLine(matriz);
-
             GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetro para este método para que ele seja capaz de manipulá-los
             colunaDaMatriz += 1;
         }
@@ -192,7 +186,7 @@ namespace AntropofagicoCSharp
 
             _caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{FrmPrincipal.diretorio}\\Roms\\");
             Directory.CreateDirectory(_caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
-
+            
             caminhoComNomeDoCsv = Path.Combine($"{_caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"); // criando o caminho onde está o arquivo csv para ser escrito
 
             // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
@@ -207,7 +201,7 @@ namespace AntropofagicoCSharp
 
             mediaDosValoresDaMatriz.Clear();
         }
-
+        
         public static void GeraMatrizFinal()
         {
 
@@ -572,9 +566,11 @@ namespace AntropofagicoCSharp
 
             PCA_grafico pcaGrafico = new PCA_grafico();
 
+            pcaGrafico.Text = "Análise de Componentes Principais (PCA)";
             pcaGrafico.Show();
-
             pcaGrafico.AtualizarGrafico(xs,ys);
+
+            
 
         }
 

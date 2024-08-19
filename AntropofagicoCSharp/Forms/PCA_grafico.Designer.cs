@@ -36,9 +36,9 @@
             // 
             formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             formsPlot1.DisplayScale = 1F;
-            formsPlot1.Location = new Point(12, 27);
+            formsPlot1.Location = new Point(-7, -10);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(876, 514);
+            formsPlot1.Size = new Size(910, 691);
             formsPlot1.TabIndex = 0;
             formsPlot1.Load += formsPlot1_Load;
             // 
@@ -46,7 +46,7 @@
             // 
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label2.AutoSize = true;
-            label2.Location = new Point(366, 9);
+            label2.Location = new Point(409, 183);
             label2.Name = "label2";
             label2.Size = new Size(0, 15);
             label2.TabIndex = 2;
@@ -55,7 +55,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(900, 538);
+            ClientSize = new Size(900, 678);
             Controls.Add(label2);
             Controls.Add(formsPlot1);
             Name = "PCA_grafico";

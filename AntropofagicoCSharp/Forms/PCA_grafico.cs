@@ -14,7 +14,6 @@ namespace AntropofagicoCSharp.Forms
       
         string[] arquivosCSVs = Directory.GetFiles(caminhoDaPastaComOsCSVs);
        
-
         public PCA_grafico()
         {
             InitializeComponent();
@@ -34,23 +33,9 @@ namespace AntropofagicoCSharp.Forms
 
         public void AtualizarGrafico(double[] xs, double[] ys)
         {
-            double[,] pontos = new double[xs.Length, ys.Length];
-
             if (xs.Count() == ys.Count())
-            {
-
                 formsPlot1.Plot.Add.ScatterPoints(xs, ys);
-
-                for (int i = 0; i < xs.Count(); i++) {
-
-                    pontos[0, i] = xs[i]; // Linha 0 para coordenadas X
-                    pontos[1, i] = ys[i]; // Linha 1 para coordenadas Y
-
-                }
-            }
-
             LocalizaPonto(xs, ys);
-
         }
 
         public void LocalizaPonto(double[] xs, double[] ys)
@@ -83,12 +68,15 @@ namespace AntropofagicoCSharp.Forms
                 // remove, "limpa", cada ponto sombreado pelo ponteiro do mouse:
                 formsPlot1.Plot.Remove<ScottPlot.Plottables.Callout>();
 
+                // lista para conter apenas o nome de cada arquivo.csv sem o seu caminho de diretório:
                 List<string> nomeDosArquivosCSV = new List<string>();
 
+                // percorrendo cada arquivo.csv, obtendo apenas o seu nome e extensão:
                 foreach (string arquivoCSV in arquivosCSVs)
-                    nomeDosArquivosCSV.Add(Path.GetFileNameWithoutExtension(arquivoCSV));
+                    nomeDosArquivosCSV.Add(Path.GetFileName(arquivoCSV));
                 
-                var objectCallot = formsPlot1.Plot.Add.Callout($"X: {nearest.X}\nY: {nearest.Y}\nOrigem: {nomeDosArquivosCSV[nearest.Index]}" ,
+                // obtendo o retorno do método Callout, que é um Objeto, para manipulá-lo:
+                formsPlot1.Plot.Add.Callout($"X: {nearest.X}\nY: {nearest.Y}\nOrigem: {nomeDosArquivosCSV[nearest.Index]}" ,
                     
                     textLocation: nearest.Coordinates,
                     tipLocation: nearest.Coordinates
@@ -103,7 +91,7 @@ namespace AntropofagicoCSharp.Forms
                      MyCrosshair.Position = nearest.Coordinates;
                      formsPlot1.Refresh();
 
-                     Text = $"Coordenadas: X={nearest.X:0.##}, Y={nearest.Y:0.##}; Origem:  ";
+                     Text = $"Coordenadas: X={nearest.X:0.##}, Y={nearest.Y:0.##}; Origem: {nomeDosArquivosCSV[nearest.Index]}";
 
                  }
 
@@ -116,23 +104,6 @@ namespace AntropofagicoCSharp.Forms
                  }
             };
         }
-
-        /*
-        public void FormsPlot1_MouseHover(double[] xs, double[]ys)
-        {
-
-            formsPlot1.Plot.Add.Callout("Hello",
-                textLocation: new(xs[3], ys[5]),
-                tipLocation: new(xs[6], ys[6])
-            );
-
-            formsPlot1.Plot.Add.Callout("World",
-                textLocation: new(xs[5], ys[2]),
-                tipLocation: new(xs[13], ys[13])
-            );
-
-        }*/
-
         #endregion PlotagemGraficoPCA
     }
 }

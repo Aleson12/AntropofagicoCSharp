@@ -1,4 +1,5 @@
 ﻿using Accord.Math;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using ScottPlot;
 
 namespace AntropofagicoCSharp.Forms
@@ -43,15 +44,12 @@ namespace AntropofagicoCSharp.Forms
             MyScatter = formsPlot1.Plot.Add.Scatter(xs, ys);
             MyScatter.LineWidth = 0;
 
-            MyCrosshair = formsPlot1.Plot.Add.Crosshair(42, 0.48);
+            // criando um Crosshair para ser possível capturar as coordendas de cada ponto
+            // sombreado pelo ponteiro e exibir o resultado (X e Y) na borda superior da interface:
+
+            MyCrosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
             MyCrosshair.IsVisible = false;
             MyCrosshair.MarkerShape = MarkerShape.OpenCircle;
-
-            // inicializa e adiciona um botão
-            rbNearestXY = new RadioButton();
-            rbNearestXY.Checked = true; 
-            rbNearestXY.Location = new Point(10, 10); 
-            Controls.Add(rbNearestXY);
 
             formsPlot1.MouseMove += (s, e) =>
             {
@@ -74,34 +72,23 @@ namespace AntropofagicoCSharp.Forms
                 // percorrendo cada arquivo.csv, obtendo apenas o seu nome e extensão:
                 foreach (string arquivoCSV in arquivosCSVs)
                     nomeDosArquivosCSV.Add(Path.GetFileName(arquivoCSV));
-                
-                // obtendo o retorno do método Callout, que é um Objeto, para manipulá-lo:
-                formsPlot1.Plot.Add.Callout($"X: {nearest.X}\nY: {nearest.Y}\nOrigem: {nomeDosArquivosCSV[nearest.Index]}" ,
+
+                if (nearest.Index >= 0 && nearest.Index < nomeDosArquivosCSV.Count)
+                {
+                    formsPlot1.Plot.Add.Callout($"X: {nearest.X}\nY: {nearest.Y}\nOrigem: {nomeDosArquivosCSV[nearest.Index]}" ,
                     
-                    textLocation: nearest.Coordinates,
-                    tipLocation: nearest.Coordinates
+                        textLocation: nearest.Coordinates,
+                        tipLocation: nearest.Coordinates
 
-                 );
+                     );
 
-                // remove, "limpa", o último ponto sombreado pelo ponteiro do mouse:
-                formsPlot1.Refresh();
+                    // remove, "limpa", o último ponto sombreado pelo ponteiro do mouse:
+                    formsPlot1.Refresh();
 
-                 if (nearest.IsReal)
-                 {
-                     MyCrosshair.Position = nearest.Coordinates;
-                     formsPlot1.Refresh();
-
-                     Text = $"Coordenadas: X={nearest.X:0.##}, Y={nearest.Y:0.##}; Origem: {nomeDosArquivosCSV[nearest.Index]}";
-
-                 }
-
-                 // hide the crosshair when no point is selected
-                 if (!nearest.IsReal && MyCrosshair.IsVisible)
-                 {
-                     MyCrosshair.IsVisible = false;
-                     formsPlot1.Refresh();
-                     Text = $"No point selected";
-                 }
+                    // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
+                    if (nearest.IsReal)
+                         Text = $"Coordenadas: X={nearest.X:0.##}, Y={nearest.Y:0.##}; Origem: {nomeDosArquivosCSV[nearest.Index]}";
+                }
             };
         }
         #endregion PlotagemGraficoPCA

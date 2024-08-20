@@ -569,9 +569,6 @@ namespace AntropofagicoCSharp
             pcaGrafico.Text = "Análise de Componentes Principais (PCA)";
             pcaGrafico.Show();
             pcaGrafico.AtualizarGrafico(xs,ys);
-
-            
-
         }
 
         #endregion PlotagemDoGrafico

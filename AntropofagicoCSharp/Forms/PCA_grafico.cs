@@ -1,6 +1,7 @@
 ﻿using Accord.Math;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using ScottPlot;
+using System.Runtime.CompilerServices;
 
 namespace AntropofagicoCSharp.Forms
 {
@@ -35,7 +36,9 @@ namespace AntropofagicoCSharp.Forms
         public void AtualizarGrafico(double[] xs, double[] ys)
         {
             if (xs.Count() == ys.Count())
+
                 formsPlot1.Plot.Add.ScatterPoints(xs, ys);
+
             LocalizaPonto(xs, ys);
         }
 
@@ -53,10 +56,8 @@ namespace AntropofagicoCSharp.Forms
 
             formsPlot1.MouseMove += (s, e) =>
             {
-                
                 Pixel mousePixel = new(e.Location.X, e.Location.Y);
                 Coordinates localizacaoDoMouse = formsPlot1.Plot.GetCoordinates(mousePixel);
-
                 DataPoint nearest = MyScatter.Data.GetNearest(localizacaoDoMouse, formsPlot1.Plot.LastRender);
 
                 // se o dataPoint for nulo:
@@ -75,12 +76,14 @@ namespace AntropofagicoCSharp.Forms
 
                 if (nearest.Index >= 0 && nearest.Index < nomeDosArquivosCSV.Count)
                 {
-                    formsPlot1.Plot.Add.Callout($"X: {nearest.X}\nY: {nearest.Y}\nOrigem: {nomeDosArquivosCSV[nearest.Index]}" ,
+                    Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
+
+                    formsPlot1.Plot.Add.Callout($"Origem: {nomeDosArquivosCSV[nearest.Index]}" ,
                     
                         textLocation: nearest.Coordinates,
                         tipLocation: nearest.Coordinates
 
-                     );
+                    );
 
                     // remove, "limpa", o último ponto sombreado pelo ponteiro do mouse:
                     formsPlot1.Refresh();
@@ -91,6 +94,7 @@ namespace AntropofagicoCSharp.Forms
                 }
             };
         }
+
         #endregion PlotagemGraficoPCA
     }
 }

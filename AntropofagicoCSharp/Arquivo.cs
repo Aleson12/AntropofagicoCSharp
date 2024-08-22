@@ -18,6 +18,7 @@ namespace AntropofagicoCSharp
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
         private static List<double> valoresDoArquivoMatrizPCA;
+        private static List<string> lista_nomeCSV;
 
         private static double[,] matrizMedias; // Matriz com todas as médias dos valores
         private static readonly int _linhas = 2048;
@@ -182,7 +183,7 @@ namespace AntropofagicoCSharp
             int indiceDoCSV = int.Parse(nomeDoArquivoCsv.Split("-")[0].Substring(3)) - 1;
 
             for (int i = 0; i < mediaDosValoresDaMatriz.Count; i++)
-                matrizMedias[indiceDoCSV, i] = mediaDosValoresDaMatriz[i];
+                matrizMedias[indiceDoCSV, i] = mediaDosValoresDaMatriz[i]; //breakpoint
 
             _caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{FrmPrincipal.diretorio}\\Roms\\");
             Directory.CreateDirectory(_caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
@@ -205,8 +206,8 @@ namespace AntropofagicoCSharp
         public static void GeraMatrizFinal()
         {
 
-            bool ignorarCondicao = true; // variável do tipo booleano criada apenas para ignorar uma condição
             List<string> arquivosDaPastaCsv = new List<string>();
+            lista_nomeCSV = new List<string>();
 
             // no diretório especificado, extrair os arquivos .csv que estão lá e inserí-los numa lista
             List<string> caminhosDosArquivosCsvCriados = Directory
@@ -221,6 +222,14 @@ namespace AntropofagicoCSharp
                 .Select(match => int.Parse(match.Groups[1].Value))
                 .DefaultIfEmpty(0)
                 .Max();
+
+            // percorrendo a lista de arquivos .csv e ordenando-os numericamente em ordem crescente:
+
+            for (int num = 1; num <= maiorNumeracaoNoNomeDoCsv; num++)
+            {
+                if (File.Exists($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{num}.csv"))
+                    lista_nomeCSV.Add($"Rom{num}.csv"); // esta lista será utilizada como base para referenciar os pontos que serão plotados no gráfico de dispersão!
+            }
 
             string[,] MatrizComTodosCsv = new string[_linhas, maiorNumeracaoNoNomeDoCsv];
 
@@ -285,6 +294,7 @@ namespace AntropofagicoCSharp
                         double valor = array[i]; // obtendo cada valor em cada posição do array
                         valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
                     }
+
             }
         }
         #region PCA
@@ -406,8 +416,6 @@ namespace AntropofagicoCSharp
                 foreach (var item in autoVetor)
                     ListaDeAutoVetores.Add(item);
             }
-
-            //Console.WriteLine(autoVetores);
 
             AutoVetoresEmReal(ListaDeAutoVetores);
 
@@ -547,7 +555,7 @@ namespace AntropofagicoCSharp
                 }
             }
 
-            return dadosNormalizados;
+            return dadosNormalizados; // 339 linhas e colunas
         }
         #endregion NormalizaçãoDosDados
         

@@ -52,8 +52,6 @@ namespace AntropofagicoCSharp
         /// <param name="Diretorio"></param>
         public static void AgrupandoOsTxtsPorClasse()
         {
-       
-
             arquivosTxtsDaPasta = new List<string>();
             arquivosTxtsDaPastaOrdenados = new List<string>();
             arquivosAgrupados = new List<string>();
@@ -63,7 +61,6 @@ namespace AntropofagicoCSharp
             string nomeComTipo = string.Empty; // nome do arquivo
             string numeroPosHifen = string.Empty; // número após o hífen (sem a extensão do arquivo)
             string comparaNome = string.Empty;
-          //  matrizMedias = new double[caminhosDosArquivosTxtDaPasta.Count, _linhas];
             object MatrizVAR = new object[_linhas, caminhosDosArquivosTxtDaPasta.Count];
             // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
             caminhosDosArquivosTxtDaPasta.ToList().ForEach(caminho =>
@@ -200,18 +197,34 @@ namespace AntropofagicoCSharp
             // concatenar com uma quebra de linha
             _caminhosCsv += caminhoComNomeDoCsv + '\n';
 
-            if (Path.Exists(_caminhoDaPastaDosArquivosCSVPosTratamento))
+            if (Directory.Exists(_caminhoDaPastaDosArquivosCSVPosTratamento))
             {
                 string[] arquivosCsv = Directory.GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento);
-                matrizMedias = new double[_linhas, arquivosCsv.Length];
 
-                for (int i = 0; i < mediaDosValoresDaMatriz.Count; i++)
-                    matrizMedias[indiceDoCSV, i] = mediaDosValoresDaMatriz[i]; // ao passar para a linha 1, o código "quebra"
+                int numeroDeLinhas = mediaDosValoresDaMatriz.Count;
+                int numeroDeColunas = arquivosCsv.Length;   
 
+                matrizMedias = new double[numeroDeLinhas, numeroDeColunas];
+
+                int indiceValor = 0;
+
+                for (int linha = 0; linha < numeroDeLinhas; linha++)
+                {
+                    for (int coluna = 0; coluna < numeroDeColunas; coluna++)
+                    {
+                        if (indiceValor < mediaDosValoresDaMatriz.Count)
+                        {
+                            matrizMedias[linha, coluna] = mediaDosValoresDaMatriz[indiceValor];
+                            indiceValor++;
+                        }
+                        else
+                            matrizMedias[linha, coluna] = 0;
+                    }
+                }
                 mediaDosValoresDaMatriz.Clear();
             }
         }
-        
+         
         public static void GeraMatrizFinal()
         {
             List<string> arquivosDaPastaCsv = new List<string>();

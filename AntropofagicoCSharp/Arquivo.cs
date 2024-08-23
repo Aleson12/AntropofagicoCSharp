@@ -43,6 +43,7 @@ namespace AntropofagicoCSharp
                         .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList();
             return caminhosDosArquivosTxtDaPasta;
 
+
         }
 
         /// <summary>
@@ -51,6 +52,8 @@ namespace AntropofagicoCSharp
         /// <param name="Diretorio"></param>
         public static void AgrupandoOsTxtsPorClasse()
         {
+       
+
             arquivosTxtsDaPasta = new List<string>();
             arquivosTxtsDaPastaOrdenados = new List<string>();
             arquivosAgrupados = new List<string>();
@@ -60,7 +63,7 @@ namespace AntropofagicoCSharp
             string nomeComTipo = string.Empty; // nome do arquivo
             string numeroPosHifen = string.Empty; // número após o hífen (sem a extensão do arquivo)
             string comparaNome = string.Empty;
-            matrizMedias = new double[caminhosDosArquivosTxtDaPasta.Count, _linhas];
+          //  matrizMedias = new double[caminhosDosArquivosTxtDaPasta.Count, _linhas];
             object MatrizVAR = new object[_linhas, caminhosDosArquivosTxtDaPasta.Count];
             // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
             caminhosDosArquivosTxtDaPasta.ToList().ForEach(caminho =>
@@ -182,9 +185,6 @@ namespace AntropofagicoCSharp
             string caminhoComNomeDoCsv;
             int indiceDoCSV = int.Parse(nomeDoArquivoCsv.Split("-")[0].Substring(3)) - 1;
 
-            for (int i = 0; i < mediaDosValoresDaMatriz.Count; i++)
-                matrizMedias[indiceDoCSV, i] = mediaDosValoresDaMatriz[i]; //breakpoint
-
             _caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{FrmPrincipal.diretorio}\\Roms\\");
             Directory.CreateDirectory(_caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
             
@@ -200,12 +200,20 @@ namespace AntropofagicoCSharp
             // concatenar com uma quebra de linha
             _caminhosCsv += caminhoComNomeDoCsv + '\n';
 
-            mediaDosValoresDaMatriz.Clear();
+            if (Path.Exists(_caminhoDaPastaDosArquivosCSVPosTratamento))
+            {
+                string[] arquivosCsv = Directory.GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento);
+                matrizMedias = new double[_linhas, arquivosCsv.Length];
+
+                for (int i = 0; i < mediaDosValoresDaMatriz.Count; i++)
+                    matrizMedias[indiceDoCSV, i] = mediaDosValoresDaMatriz[i]; // ao passar para a linha 1, o código "quebra"
+
+                mediaDosValoresDaMatriz.Clear();
+            }
         }
         
         public static void GeraMatrizFinal()
         {
-
             List<string> arquivosDaPastaCsv = new List<string>();
             lista_nomeCSV = new List<string>();
 

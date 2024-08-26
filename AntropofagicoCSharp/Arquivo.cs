@@ -7,6 +7,9 @@ using System.Data;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AntropofagicoCSharp
 {
@@ -18,7 +21,8 @@ namespace AntropofagicoCSharp
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
         private static List<double> valoresDoArquivoMatrizPCA;
-        private static List<string> lista_nomeCSV;
+        private static List<double> mediaDosValoresDaMatriz;
+        private static List<double[]> todasAsColunasDeMatrizFinal = []; // uma lista de arrays
 
         private static double[,] matrizMedias; // Matriz com todas as médias dos valores
         private static readonly int _linhas = 2048;
@@ -26,6 +30,7 @@ namespace AntropofagicoCSharp
         public static string _caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
         public static string _caminhosCsv;
         public static string _caminhoComONomeDoArquivoCSVFinal;
+        public static int qtdLinhasEmMatrizFinal;
 
         #endregion propriedades
         #region Metodos
@@ -42,8 +47,6 @@ namespace AntropofagicoCSharp
                         // Filtra apenas os arquivos com extensão ".txt"
                         .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList();
             return caminhosDosArquivosTxtDaPasta;
-
-
         }
 
         /// <summary>
@@ -56,8 +59,6 @@ namespace AntropofagicoCSharp
             arquivosTxtsDaPastaOrdenados = new List<string>();
             arquivosAgrupados = new List<string>();
 
-            //string nome_do_csv = string.Empty;
-            string[] partes; // vai receber as duas partes de um nome de arquivo separados pelo hífen
             string nomeComTipo = string.Empty; // nome do arquivo
             string numeroPosHifen = string.Empty; // número após o hífen (sem a extensão do arquivo)
             string comparaNome = string.Empty;
@@ -68,6 +69,7 @@ namespace AntropofagicoCSharp
                 if (Path.GetDirectoryName(caminho) != " ")
                     arquivosTxtsDaPasta.Add(Path.GetFileNameWithoutExtension(caminho)); // pega o arquivo sem a extensão
             });
+
             //arquivosTxtsDaPastaOrdenados = arquivosTxtsDaPasta.OrderBy(arquivo => RecuperarNumeracaoDeNomeDeArquivo(arquivo)).ToList(); // ordenando a lista crescentemente de acordo com o número de cada arquivo
             arquivosTxtsDaPastaOrdenados = arquivosTxtsDaPasta.OrderBy((arquivo) =>
             {
@@ -143,7 +145,7 @@ namespace AntropofagicoCSharp
             }
             nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];
 
-            GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetro para este método para que ele seja capaz de manipulá-los
+            GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetros para este método para que ele seja capaz de manipulá-los
             colunaDaMatriz += 1;
         }
 
@@ -176,8 +178,6 @@ namespace AntropofagicoCSharp
 
         private static void GerarSomenteUmArquivoPorClasse(double[,] matriz, string nomeDoArquivoCsv)
         {
-            List<double> mediaDosValoresDaMatriz = new List<double>();
-
             mediaDosValoresDaMatriz = ObterMedias(matriz);
             string caminhoComNomeDoCsv;
             int indiceDoCSV = int.Parse(nomeDoArquivoCsv.Split("-")[0].Substring(3)) - 1;
@@ -190,19 +190,22 @@ namespace AntropofagicoCSharp
             // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
             using (StreamWriter writer = new StreamWriter(caminhoComNomeDoCsv))
 
-                foreach (double vlr in mediaDosValoresDaMatriz)
-                    writer.WriteLine($"{vlr}".Replace('.', ','));
+            foreach (double vlr in mediaDosValoresDaMatriz)
+                writer.WriteLine($"{vlr}".Replace('.', ','));
 
             // criada uma nova variável que irá receber cada valor da variável "caminhoComNomeDoCsv" e 
             // concatenar com uma quebra de linha
             _caminhosCsv += caminhoComNomeDoCsv + '\n';
+        }
 
+        public static void GerandoMatrizMedias()
+        {
             if (Directory.Exists(_caminhoDaPastaDosArquivosCSVPosTratamento))
             {
                 string[] arquivosCsv = Directory.GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento);
 
                 int numeroDeLinhas = mediaDosValoresDaMatriz.Count;
-                int numeroDeColunas = arquivosCsv.Length;   
+                int numeroDeColunas = arquivosCsv.Length;
 
                 matrizMedias = new double[numeroDeLinhas, numeroDeColunas];
 
@@ -224,11 +227,11 @@ namespace AntropofagicoCSharp
                 mediaDosValoresDaMatriz.Clear();
             }
         }
-         
+
         public static void GeraMatrizFinal()
         {
-            List<string> arquivosDaPastaCsv = new List<string>();
-            lista_nomeCSV = new List<string>();
+            valoresDoArquivoMatrizPCA = new List<double>();
+            List<string> arquivos = [];
 
             // no diretório especificado, extrair os arquivos .csv que estão lá e inserí-los numa lista
             List<string> caminhosDosArquivosCsvCriados = Directory
@@ -244,18 +247,6 @@ namespace AntropofagicoCSharp
                 .DefaultIfEmpty(0)
                 .Max();
 
-            // percorrendo a lista de arquivos .csv e ordenando-os numericamente em ordem crescente:
-
-            for (int num = 1; num <= maiorNumeracaoNoNomeDoCsv; num++)
-            {
-                if (File.Exists($"{_caminhoDaPastaDosArquivosCSVPosTratamento}\\Rom{num}.csv"))
-                    lista_nomeCSV.Add($"Rom{num}.csv"); // esta lista será utilizada como base para referenciar os pontos que serão plotados no gráfico de dispersão!
-            }
-
-            string[,] MatrizComTodosCsv = new string[_linhas, maiorNumeracaoNoNomeDoCsv];
-
-            int qtdDeLinhas = MatrizComTodosCsv.GetLength(0); // obtendo a quantidade de linhas da Matriz
-
             _caminhoComONomeDoArquivoCSVFinal = Path.Combine($"{FrmPrincipal.diretorio}\\MatrizFinal\\"); // criando novo caminho de diretório
             string nomeArquivoCsv = "MatrizPCA.csv";
 
@@ -267,10 +258,6 @@ namespace AntropofagicoCSharp
             CsvConfiguration config = new(culture);
             config.HasHeaderRecord = false;
 
-            valoresDoArquivoMatrizPCA = new List<double>();
-            List<string> arquivos = [];
-            List<double[]> Valores = []; // uma lista de arrays
-
             for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++)
             {
                 string arq = $"{_caminhoDaPastaDosArquivosCSVPosTratamento}Rom{i}.csv";
@@ -281,7 +268,7 @@ namespace AntropofagicoCSharp
                 using (var csv = new CsvReader(new StreamReader(arq), config))
                 {
                     double[] records = csv.GetRecords<double>().ToArray();
-                    Valores.Add(records);
+                    todasAsColunasDeMatrizFinal.Add(records);
                     arquivos.Add(Path.GetFileName(arq));
                 }
             }
@@ -298,7 +285,7 @@ namespace AntropofagicoCSharp
                 for (int i = 0; i < _linhas; i++)
                 {
                     sb.Clear(); // limpando o objeto para poder utilizá-lo de novo, mas para escrever novo valor
-                    foreach (var a in Valores)
+                    foreach (var a in todasAsColunasDeMatrizFinal)
                     {
                         try
                         {
@@ -309,37 +296,28 @@ namespace AntropofagicoCSharp
                     csvMatriz.WriteLine(sb);
                 }
 
-                foreach (double[] array in Valores) // lendo cada array presente em uma lista
-                    for (int i = 0; i < array.Length; i++) // percorrendo as posições dentro desse array
-                    {
-                        double valor = array[i]; // obtendo cada valor em cada posição do array
-                        valoresDoArquivoMatrizPCA.Add(valor); // adicionando esses valores em uma lista
-                    }
-
+                foreach (double[] cadaColunaDeMatrizFinal in todasAsColunasDeMatrizFinal) // lendo cada array presente em uma lista
+                    for (int i = 0; i < cadaColunaDeMatrizFinal.Length; i++) // percorrendo as posições dentro desse array
+                        qtdLinhasEmMatrizFinal = cadaColunaDeMatrizFinal.Count(); // obtendo a quantidade de linhas em cada coluna da Matriz Final
             }
         }
+        
         #region PCA
         public static void PCA()
         {
-            int numColunas = matrizMedias.GetLength(0); // 339
-            int numLinhas = matrizMedias.GetLength(1); // 2048
+            GerandoMatrizMedias();
+
+            int numLinhas = qtdLinhasEmMatrizFinal; // 2048
+            int numColunas = todasAsColunasDeMatrizFinal.Count; // 113
 
             double[] media = new double[numColunas];
             double[] somaColunas = new double[numColunas];
 
-            // percorrer cada coluna de matrizMedias, somando os valores de cada coluna e inserindo o resultado de cada soma 
-            // no array unidimensional "somaColunas":
-
-            for (int coluna = 0; coluna < numColunas; coluna++)
-            {
-                for (int linha = 0; linha < numLinhas; linha++)
-                    somaColunas[coluna] = somaColunas[coluna] + matrizMedias[coluna, linha];
-
-                media[coluna] = somaColunas[coluna] / numColunas;
-            }
+            somaColunas = todasAsColunasDeMatrizFinal.Select(array => array.Sum()).ToArray();
 
             double[,] matrizCovariancia = CalcularMatrizCovariancia(matrizMedias, media);
             MatrizTransposta(numLinhas, numColunas, matrizCovariancia);
+
         }
         #endregion PCA
 

@@ -196,6 +196,8 @@ namespace AntropofagicoCSharp
             // criada uma nova variável que irá receber cada valor da variável "caminhoComNomeDoCsv" e 
             // concatenar com uma quebra de linha
             _caminhosCsv += caminhoComNomeDoCsv + '\n';
+
+            GerandoMatrizMedias();
         }
 
         public static void GerandoMatrizMedias()
@@ -305,8 +307,6 @@ namespace AntropofagicoCSharp
         #region PCA
         public static void PCA()
         {
-            GerandoMatrizMedias();
-
             int numLinhas = qtdLinhasEmMatrizFinal; // 2048
             int numColunas = todasAsColunasDeMatrizFinal.Count; // 113
 

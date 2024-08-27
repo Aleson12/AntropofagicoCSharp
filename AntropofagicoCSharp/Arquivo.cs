@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Accord;
 
 namespace AntropofagicoCSharp
 {
@@ -330,7 +331,20 @@ namespace AntropofagicoCSharp
             double[] media = new double[numColunas];
             double[] somaColunas = new double[numColunas];
 
-            somaColunas = matrizMedias.Select(array => array.Sum()).ToArray();
+            // Percorre cada coluna da matriz
+            for (int coluna = 0; coluna < matrizMedias.GetLength(1); coluna++)
+            {
+                double soma = 0;
+
+                // Soma os valores de cada linha na coluna atual
+                for (int linha = 0; linha < matrizMedias.GetLength(0); linha++)
+                    soma += matrizMedias[linha, coluna];
+
+                    // Armazena a soma da coluna no array unidimensional
+                    somaColunas[coluna] = soma;
+
+                media[coluna] = (soma / numColunas);  // média de cada coluna
+            }
 
             double[,] matrizCovariancia = CalcularMatrizCovariancia(matrizMedias, media);
             MatrizTransposta(numLinhas, numColunas, matrizCovariancia);
@@ -341,14 +355,14 @@ namespace AntropofagicoCSharp
         #region MatrizCovariancia
         public static double[,] CalcularMatrizCovariancia(double[,] matrizMedias, double[] media)
         {
-            int linhas = matrizMedias.GetLength(1);
-            int colunas = matrizMedias.GetLength(0);
+            int linhas = matrizMedias.GetLength(0);
+            int colunas = matrizMedias.GetLength(1);
 
             double[,] matrizCovariancia = new double[linhas, colunas];
 
             for (int i = 0; i < colunas; i++)
                 for (int j = 0; j < linhas; j++)
-                    matrizCovariancia[j, i] = matrizMedias[i, j] - media[i];
+                    matrizCovariancia[j, i] = matrizMedias[j, i] - media[i];
 
             return matrizCovariancia;
         }
@@ -524,7 +538,7 @@ namespace AntropofagicoCSharp
         {
             double[,] resultado = new double[matrizMedias.GetLength(0), autoVetoresRealArrayBidimensional.GetLength(1)];
 
-            if (matrizMedias.GetLength(0) == autoVetoresRealArrayBidimensional.GetLength(1))
+            if (matrizMedias.GetLength(1) == autoVetoresRealArrayBidimensional.GetLength(1))
             {
                 for (int i = 0; i < matrizMedias.GetLength(0); i++)
                 {
@@ -538,7 +552,6 @@ namespace AntropofagicoCSharp
 
             double[,] resultadoNormalizado = NormalizarDados(resultado);
             PlotagemGraficoPCA(resultadoNormalizado);
-
         }
 
         #endregion produtoDeMatrizes
@@ -574,7 +587,7 @@ namespace AntropofagicoCSharp
             return dadosNormalizados; // 339 linhas e colunas
         }
         #endregion NormalizaçãoDosDados
-        
+
         #region PlotagemDoGrafico
 
         public static void PlotagemGraficoPCA(double[,] resultadoNormalizado)
@@ -584,8 +597,12 @@ namespace AntropofagicoCSharp
 
             for (int i = 0; i < resultadoNormalizado.GetLength(0); i++)
             {
-                xs[i] = resultadoNormalizado[i, 0]; // Primeiro componente principal
-                ys[i] = resultadoNormalizado[i, 1]; // Segundo componente principal
+                xs[i] = resultadoNormalizado[i, 0]; // Primeiro componente principal    
+
+                for (int j = 0; j < resultadoNormalizado.GetLength(1); j++)
+                {
+                    ys[j] = resultadoNormalizado[i, j]; // Segundo componente principal
+                }
             }
 
             PCA_grafico pcaGrafico = new PCA_grafico();

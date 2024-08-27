@@ -31,6 +31,7 @@ namespace AntropofagicoCSharp
         public static string _caminhosCsv;
         public static string _caminhoComONomeDoArquivoCSVFinal;
         public static int qtdLinhasEmMatrizFinal;
+        private static int colunaAtual = 0;
 
         #endregion propriedades
         #region Metodos
@@ -199,33 +200,49 @@ namespace AntropofagicoCSharp
 
             GerandoMatrizMedias();
         }
-
         public static void GerandoMatrizMedias()
         {
-            if (Directory.Exists(_caminhoDaPastaDosArquivosCSVPosTratamento))
+            if (Directory.Exists(_caminhoDaPastaDosArquivosCSVPosTratamento)) // se a pasta com os arquivos .csv's existe, 
             {
-                string[] arquivosCsv = Directory.GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento);
+                string[] arquivosCsv = Directory.GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento); // extrair dessa pasta os arquivos contidos nela e inserir no array unidimensional "arquivosCsv";
 
-                int numeroDeLinhas = mediaDosValoresDaMatriz.Count;
-                int numeroDeColunas = arquivosCsv.Length;
+                int numeroDeLinhas = mediaDosValoresDaMatriz.Count; // obtendo o número de valores total em "mediaDosValoresDaMatriz" (uma lista);
+                int numeroDeColunas = arquivosCsv.Length; // obtendo a quantidade total de arquivos contidos no array "arquivosCsv";
 
-                matrizMedias = new double[numeroDeLinhas, numeroDeColunas];
+                // Inicializa ou redimensiona a matriz se necessário
+                if (matrizMedias == null) // se a matrizMedias ainda não tiver sido criada, 
+                    matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a
+                
+                else
+                {
+                    if (matrizMedias.GetLength(0) != numeroDeLinhas || matrizMedias.GetLength(1) != numeroDeColunas) // se as dimensões estiverem erradas, 
+                    {
+                        matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a com as dimensões certas
+                        colunaAtual = 0; // Redefine a coluna atual ao redimensionar a matriz
+                    }
+                }
 
                 int indiceValor = 0;
 
+                // Preenche a coluna atual com os valores;
+                // desta forma, a cada nova lista de valores em "mediaDosValoresDaMatriz", o laço de repetição irá para a próxima coluna:
                 for (int linha = 0; linha < numeroDeLinhas; linha++)
                 {
-                    for (int coluna = 0; coluna < numeroDeColunas; coluna++)
+                    if (indiceValor < mediaDosValoresDaMatriz.Count)
                     {
-                        if (indiceValor < mediaDosValoresDaMatriz.Count)
-                        {
-                            matrizMedias[linha, coluna] = mediaDosValoresDaMatriz[indiceValor];
-                            indiceValor++;
-                        }
-                        else
-                            matrizMedias[linha, coluna] = 0;
+                        matrizMedias[linha, colunaAtual] = mediaDosValoresDaMatriz[indiceValor];
+                        indiceValor++;
+                    }
+                    else
+                    {
+                        matrizMedias[linha, colunaAtual] = 0;
                     }
                 }
+
+                // Incrementa para a próxima coluna
+                colunaAtual++;
+
+                // Limpa a lista para o próximo uso
                 mediaDosValoresDaMatriz.Clear();
             }
         }
@@ -307,13 +324,13 @@ namespace AntropofagicoCSharp
         #region PCA
         public static void PCA()
         {
-            int numLinhas = qtdLinhasEmMatrizFinal; // 2048
-            int numColunas = todasAsColunasDeMatrizFinal.Count; // 113
+            int numLinhas = matrizMedias.GetLength(0); // 2048
+            int numColunas = matrizMedias.GetLength(1); // 113
 
             double[] media = new double[numColunas];
             double[] somaColunas = new double[numColunas];
 
-            somaColunas = todasAsColunasDeMatrizFinal.Select(array => array.Sum()).ToArray();
+            somaColunas = matrizMedias.Select(array => array.Sum()).ToArray();
 
             double[,] matrizCovariancia = CalcularMatrizCovariancia(matrizMedias, media);
             MatrizTransposta(numLinhas, numColunas, matrizCovariancia);

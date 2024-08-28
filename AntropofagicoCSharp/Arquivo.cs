@@ -178,6 +178,7 @@ namespace AntropofagicoCSharp
             return medias;
         }
 
+        #region GerarSomenteUmArquivoPorClasse
         private static void GerarSomenteUmArquivoPorClasse(double[,] matriz, string nomeDoArquivoCsv)
         {
             mediaDosValoresDaMatriz = ObterMedias(matriz);
@@ -201,6 +202,9 @@ namespace AntropofagicoCSharp
 
             GerandoMatrizMedias();
         }
+        #endregion GerarSomenteUmArquivoPorClasse
+
+        #region GerandoMatrizMedias
         public static void GerandoMatrizMedias()
         {
             if (Directory.Exists(_caminhoDaPastaDosArquivosCSVPosTratamento)) // se a pasta com os arquivos .csv's existe, 
@@ -235,9 +239,8 @@ namespace AntropofagicoCSharp
                         indiceValor++;
                     }
                     else
-                    {
                         matrizMedias[linha, colunaAtual] = 0;
-                    }
+                    
                 }
 
                 // Incrementa para a próxima coluna
@@ -247,7 +250,8 @@ namespace AntropofagicoCSharp
                 mediaDosValoresDaMatriz.Clear();
             }
         }
-
+        #endregion GerandoMatrizMedias
+        #region GeraMatrizFinal
         public static void GeraMatrizFinal()
         {
             valoresDoArquivoMatrizPCA = new List<double>();
@@ -315,13 +319,10 @@ namespace AntropofagicoCSharp
                     }
                     csvMatriz.WriteLine(sb);
                 }
-
-                foreach (double[] cadaColunaDeMatrizFinal in todasAsColunasDeMatrizFinal) // lendo cada array presente em uma lista
-                    for (int i = 0; i < cadaColunaDeMatrizFinal.Length; i++) // percorrendo as posições dentro desse array
-                        qtdLinhasEmMatrizFinal = cadaColunaDeMatrizFinal.Count(); // obtendo a quantidade de linhas em cada coluna da Matriz Final
             }
         }
-        
+        #endregion GeraMatrizFinal
+
         #region PCA
         public static void PCA()
         {
@@ -551,40 +552,38 @@ namespace AntropofagicoCSharp
             }
 
             double[,] resultadoNormalizado = NormalizarDados(resultado);
-            PlotagemGraficoPCA(resultadoNormalizado);
+            PlotagemGraficoPCA(resultado);
         }
-
         #endregion produtoDeMatrizes
 
         #region NormalizaçãoDosDados
         public static double[,] NormalizarDados(double[,] resultado)
         {
-            int linhas = resultado.GetLength(0);
-            int colunas = resultado.GetLength(1);
+            double min = double.MaxValue;
+            double max = double.MinValue;
 
-            double[,] dadosNormalizados = new double[linhas, colunas];
+            int rows = resultado.GetLength(0);
+            int cols = resultado.GetLength(1);
 
-            for (int j = 0; j < colunas; j++)
+            for (int i = 0; i < rows; i++)
             {
-                double valorMin = resultado[0, j];
-                double valorMax = resultado[0, j];
-
-                // Encontre os valores mínimo e máximo em cada coluna
-                for (int i = 1; i < linhas; i++)
+                for (int j = 0; j < cols; j++)
                 {
-                    if (resultado[i, j] < valorMin) valorMin = resultado[i, j];
-                    if (resultado[i, j] > valorMax) valorMax = resultado[i, j];
-                }
-
-                // Normalize os dados na coluna
-                for (int i = 0; i < linhas; i++)
-                {
-                    dadosNormalizados[i, j] = (resultado[i, j] - valorMin) / (valorMax - valorMin);
-                    dadosNormalizados[i, j] = dadosNormalizados[i, j] * -1 + 1;
+                    if (resultado[i, j] < min)
+                        min = resultado[i, j];
+                    if (resultado[i, j] > max)
+                        max = resultado[i, j];
                 }
             }
 
-            return dadosNormalizados; // 339 linhas e colunas
+            double[,] arrayNormalizado = new double[rows, cols];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                    arrayNormalizado[i, j] = (resultado[i, j] - min) / (max - min);
+            }
+            return arrayNormalizado;
         }
         #endregion NormalizaçãoDosDados
 
@@ -600,9 +599,8 @@ namespace AntropofagicoCSharp
                 xs[i] = resultadoNormalizado[i, 0]; // Primeiro componente principal    
 
                 for (int j = 0; j < resultadoNormalizado.GetLength(1); j++)
-                {
                     ys[j] = resultadoNormalizado[i, j]; // Segundo componente principal
-                }
+                
             }
 
             PCA_grafico pcaGrafico = new PCA_grafico();

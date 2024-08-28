@@ -90,7 +90,7 @@ namespace AntropofagicoCSharp.Forms
 
                     // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
                     if (nearest.IsReal)
-                         Text = $"Coordenadas: X={nearest.X:0.##}, Y={nearest.Y:0.##}; Origem: {nomeDosArquivosCSV[nearest.Index]}";
+                         Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem: {nomeDosArquivosCSV[nearest.Index]}";
                 }
             };
         }

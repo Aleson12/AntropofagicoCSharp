@@ -4,13 +4,17 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using MathNet.Numerics.LinearAlgebra.Double;
 using System.Data;
+using Accord.Statistics.Analysis;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using Accord.Statistics.Kernels;
+using Accord.Statistics;
 using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using Accord;
+using Accord.MachineLearning.VectorMachines;
+using Accord.MachineLearning.VectorMachines.Learning;
 
 namespace AntropofagicoCSharp
 {
@@ -36,11 +40,8 @@ namespace AntropofagicoCSharp
 
         #endregion propriedades
         #region Metodos
-        /// <summary>
-        /// obtém o caminho de cada arquivo do diretório (com a extensão .txt) transformando em uma Lista
-        /// </summary>
-        /// <param name="diretorio"></param>
-        /// <returns></returns>
+
+        #region FiltrarArquivosTxts
         public static List<string> FiltrarArquivosTxt(string diretorio)
         {
             caminhosDosArquivosTxtDaPasta = new List<string>();
@@ -50,11 +51,9 @@ namespace AntropofagicoCSharp
                         .Where(arquivo => Path.GetExtension(arquivo) == ".txt").ToList();
             return caminhosDosArquivosTxtDaPasta;
         }
+        #endregion FiltrarArquivosTxts
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Diretorio"></param>
+        #region AgrupandoOsTxtsPorClasse
         public static void AgrupandoOsTxtsPorClasse()
         {
             arquivosTxtsDaPasta = new List<string>();
@@ -72,7 +71,6 @@ namespace AntropofagicoCSharp
                     arquivosTxtsDaPasta.Add(Path.GetFileNameWithoutExtension(caminho)); // pega o arquivo sem a extensão
             });
 
-            //arquivosTxtsDaPastaOrdenados = arquivosTxtsDaPasta.OrderBy(arquivo => RecuperarNumeracaoDeNomeDeArquivo(arquivo)).ToList(); // ordenando a lista crescentemente de acordo com o número de cada arquivo
             arquivosTxtsDaPastaOrdenados = arquivosTxtsDaPasta.OrderBy((arquivo) =>
             {
                 int num;
@@ -101,31 +99,11 @@ namespace AntropofagicoCSharp
                 }
                 else if (nomeComTipo == comparaNome)
                     arquivosAgrupados.Add(arquivoOrdenado);
-
-                //else if (nomeComTipo != "null1")
-                //    nome_do_csv = nomeComTipo;
             });
         }
+        #endregion AgrupandoOsTxtsPorClasse
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nomeDoArquivo"></param>
-        /// <returns></returns>
-        private static int RecuperarNumeracaoDeNomeDeArquivo(string nomeDoArquivo) // método para obter o número do arquivo .txt
-        {
-            string[] partesDoNomeDoArquivo = nomeDoArquivo.Split('-'); // divide a string em duas partes, tendo como delimitador, o hífen
-
-            if (partesDoNomeDoArquivo.Length >= 2 && partesDoNomeDoArquivo[0].StartsWith("Rom")) // se o tamanho do array for igual a dois ou maior E a string iniciar com a palavra "Rom"
-                if (int.TryParse(partesDoNomeDoArquivo[0].Substring(3), out int numero)) // o valor na quarta posição é transformado em inteiro e inserido na variável "numero"
-                    return numero; // retorna o número de cada arquivo            
-            return int.MaxValue; // indica que não foi possível obter um número válido do texto fornecido
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        #region ProcessamentoDosTxtsAgrupados
         private static void ProcessamentoDosTxtsAgrupados()
         {
 
@@ -150,7 +128,9 @@ namespace AntropofagicoCSharp
             GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetros para este método para que ele seja capaz de manipulá-los
             colunaDaMatriz += 1;
         }
+        #endregion ProcessamentoDosTxtsAgrupados
 
+        #region ObterMedias
         private static List<double> ObterMedias(double[,] matriz)
         {
             int linhas = matriz.GetLength(0); // obtendo a quantidade de linhas
@@ -163,7 +143,6 @@ namespace AntropofagicoCSharp
                 double soma = 0d;
 
                 for (int j = 0; j < colunas; j++)
-
                     soma += matriz[i, j];
                 double media;
 
@@ -177,6 +156,7 @@ namespace AntropofagicoCSharp
             }
             return medias;
         }
+        #endregion ObterMedias
 
         #region GerarSomenteUmArquivoPorClasse
         private static void GerarSomenteUmArquivoPorClasse(double[,] matriz, string nomeDoArquivoCsv)
@@ -251,6 +231,7 @@ namespace AntropofagicoCSharp
             }
         }
         #endregion GerandoMatrizMedias
+
         #region GeraMatrizFinal
         public static void GeraMatrizFinal()
         {
@@ -346,11 +327,10 @@ namespace AntropofagicoCSharp
 
                 media[coluna] = (soma / numColunas);  // média de cada coluna
             }
-
             double[,] matrizCovariancia = CalcularMatrizCovariancia(matrizMedias, media);
-            MatrizTransposta(numLinhas, numColunas, matrizCovariancia);
-
+            MatrizTransposta(numLinhas, numColunas, matrizMedias);
         }
+
         #endregion PCA
 
         #region MatrizCovariancia
@@ -363,29 +343,53 @@ namespace AntropofagicoCSharp
 
             for (int i = 0; i < colunas; i++)
                 for (int j = 0; j < linhas; j++)
-                    matrizCovariancia[j, i] = matrizMedias[j, i] - media[i];
+                     matrizCovariancia[j, i] = matrizMedias[j, i] - media[i];
 
             return matrizCovariancia;
         }
         #endregion MatrizCovariancia
 
         #region TransposiçãoDeMatriz
-        public static double[,] MatrizTransposta(int numLinhas, int numColunas, double[,] matrizCovariancia)
+        public static double[,] MatrizTransposta(int numLinhas, int numColunas, double[,] matrizMedias)
         {
             double[,] matrizTranspostaArray = new double[numColunas, numLinhas]; // declaração da Matriz para Transposição
 
-            var matriz = DenseMatrix.OfArray(matrizCovariancia); // cria uma nova instância de DenseMatrix usando os valores do array matrizCovariancia
-            var matrizCovarianciaTransposta = matriz.Transpose(); // transpondo a MatrizCovariancia
-            matrizTranspostaArray = matrizCovarianciaTransposta.ToArray(); // transformando a Matriz de Covariância Transposta em um Array (bidimensional)
+            var matriz = DenseMatrix.OfArray(matrizMedias); // cria uma nova instância de DenseMatrix usando os valores do array matrizCovariancia
+            var matrizTransposta = matriz.Transpose(); // transpondo a MatrizCovariancia
+            matrizTranspostaArray = matrizTransposta.ToArray(); // transformando a Matriz de Covariância Transposta em um Array (bidimensional)
 
-            double escalar = 1.0 / (matrizCovariancia.GetLength(0) - 1);
+            double escalar = 1.0 / (matrizMedias.GetLength(0) - 1);
 
-            double[,] produtoMatrizCovariancia = ProdutoDeTranspostaECovarianciaMatrizes(matrizTranspostaArray, matrizCovariancia, escalar);
+            double[,] produtoMatrizCovariancia = ProdutoDeTranspostaECovarianciaMatrizes(matrizTranspostaArray, matrizMedias, escalar);
+            
             AutosValoresEVetores(produtoMatrizCovariancia);
-
+            TransformacaoDeMatrizTransposta(matrizTranspostaArray);
+            
             return matrizTranspostaArray;
+
         }
+
         #endregion TransposiçãoDeMatriz
+
+        public static void TransformacaoDeMatrizTransposta(double[,] matrizTranspostaArray)
+        {
+            double[][] matrizTranspostaJaggedArray = matrizTranspostaArray.ToJagged();
+
+             var pca = new PrincipalComponentAnalysis()
+             {
+                 Method = PrincipalComponentMethod.Center
+             };
+
+            pca.Learn(matrizTranspostaJaggedArray); // ajustando os valores de PCA
+
+            double[][] componentes = pca.Transform(matrizTranspostaJaggedArray); // aplicando uma Transformação à Matriz Transposta
+
+            var scaler = new Accord.Statistics.Filters.Normalization();
+            double[][] matriz_scaled = scaler.Apply(componentes);
+
+            NormalizarDados(componentes);
+        
+        }
 
         #region ProdutoDasMatrizesTranspostaECovariância
         // Função para multiplicar duas matrizes (Transposta e Covariância):
@@ -512,7 +516,7 @@ namespace AntropofagicoCSharp
         #endregion variância
 
         #region transformandoArrayUnidimensionalEmBi
-
+            
         public static void TransformandoArrayUniEmBiDim(List<double> autoVetoresEmReal)
         {
             // convertendo de double para int:
@@ -551,44 +555,46 @@ namespace AntropofagicoCSharp
                 }
             }
 
-            double[,] resultadoNormalizado = NormalizarDados(resultado);
+      //      double[,] resultadoNormalizado = NormalizarDados(resultado);
             PlotagemGraficoPCA(resultado);
         }
+
         #endregion produtoDeMatrizes
 
         #region NormalizaçãoDosDados
-        public static double[,] NormalizarDados(double[,] resultado)
+
+        public static double[][] NormalizarDados(double[][] componentes)
         {
             double min = double.MaxValue;
             double max = double.MinValue;
 
-            int rows = resultado.GetLength(0);
-            int cols = resultado.GetLength(1);
+            int rows = componentes.Length;
+            int cols = componentes[0].Length;
 
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    if (resultado[i, j] < min)
-                        min = resultado[i, j];
-                    if (resultado[i, j] > max)
-                        max = resultado[i, j];
+                    if (componentes[i][j] < min)
+                        min = componentes[i][j];
+                    if (componentes[i][j] > max)
+                        max = componentes[i][j];
                 }
             }
 
-            double[,] arrayNormalizado = new double[rows, cols];
+            double[][] arrayNormalizado = new double[rows][];
 
             for (int i = 0; i < rows; i++)
             {
+                arrayNormalizado[i] = new double[cols];
                 for (int j = 0; j < cols; j++)
-                    arrayNormalizado[i, j] = (resultado[i, j] - min) / (max - min);
+                    arrayNormalizado[i][j] = (componentes[i][j] - min) / (max - min);
             }
             return arrayNormalizado;
         }
         #endregion NormalizaçãoDosDados
 
         #region PlotagemDoGrafico
-
         public static void PlotagemGraficoPCA(double[,] resultadoNormalizado)
         {
             double[] xs = new double[resultadoNormalizado.GetLength(0)]; // Coordenadas x - Primeiro Componente Principal;
@@ -611,6 +617,7 @@ namespace AntropofagicoCSharp
         }
 
         #endregion PlotagemDoGrafico
+
         #endregion Metodos
     }
 }

@@ -15,6 +15,7 @@ using System;
 using System.Linq;
 using Accord.MachineLearning.VectorMachines;
 using Accord.MachineLearning.VectorMachines.Learning;
+using Aspose.Words.Tables;
 
 namespace AntropofagicoCSharp
 {
@@ -167,14 +168,14 @@ namespace AntropofagicoCSharp
 
             _caminhoDaPastaDosArquivosCSVPosTratamento = Path.Combine($"{FrmPrincipal.diretorio}\\Roms\\");
             Directory.CreateDirectory(_caminhoDaPastaDosArquivosCSVPosTratamento); // cria a pasta no sistema de arquivos
-            
+
             caminhoComNomeDoCsv = Path.Combine($"{_caminhoDaPastaDosArquivosCSVPosTratamento}{nomeDoArquivoCsv}.csv"); // criando o caminho onde está o arquivo csv para ser escrito
 
             // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
             using (StreamWriter writer = new StreamWriter(caminhoComNomeDoCsv))
 
-            foreach (double vlr in mediaDosValoresDaMatriz)
-                writer.WriteLine($"{vlr}".Replace('.', ','));
+                foreach (double vlr in mediaDosValoresDaMatriz)
+                    writer.WriteLine($"{vlr}".Replace('.', ','));
 
             // criada uma nova variável que irá receber cada valor da variável "caminhoComNomeDoCsv" e 
             // concatenar com uma quebra de linha
@@ -197,7 +198,7 @@ namespace AntropofagicoCSharp
                 // Inicializa ou redimensiona a matriz se necessário
                 if (matrizMedias == null) // se a matrizMedias ainda não tiver sido criada, 
                     matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a
-                
+
                 else
                 {
                     if (matrizMedias.GetLength(0) != numeroDeLinhas || matrizMedias.GetLength(1) != numeroDeColunas) // se as dimensões estiverem erradas, 
@@ -220,7 +221,7 @@ namespace AntropofagicoCSharp
                     }
                     else
                         matrizMedias[linha, colunaAtual] = 0;
-                    
+
                 }
 
                 // Incrementa para a próxima coluna
@@ -322,8 +323,8 @@ namespace AntropofagicoCSharp
                 for (int linha = 0; linha < matrizMedias.GetLength(0); linha++)
                     soma += matrizMedias[linha, coluna];
 
-                    // Armazena a soma da coluna no array unidimensional
-                    somaColunas[coluna] = soma;
+                // Armazena a soma da coluna no array unidimensional
+                somaColunas[coluna] = soma;
 
                 media[coluna] = (soma / numColunas);  // média de cada coluna
             }
@@ -343,7 +344,7 @@ namespace AntropofagicoCSharp
 
             for (int i = 0; i < colunas; i++)
                 for (int j = 0; j < linhas; j++)
-                     matrizCovariancia[j, i] = matrizMedias[j, i] - media[i];
+                    matrizCovariancia[j, i] = matrizMedias[j, i] - media[i];
 
             return matrizCovariancia;
         }
@@ -361,10 +362,10 @@ namespace AntropofagicoCSharp
             double escalar = 1.0 / (matrizMedias.GetLength(0) - 1);
 
             double[,] produtoMatrizCovariancia = ProdutoDeTranspostaECovarianciaMatrizes(matrizTranspostaArray, matrizMedias, escalar);
-            
+
             AutosValoresEVetores(produtoMatrizCovariancia);
             TransformacaoDeMatrizTransposta(matrizTranspostaArray);
-            
+
             return matrizTranspostaArray;
 
         }
@@ -375,20 +376,31 @@ namespace AntropofagicoCSharp
         {
             double[][] matrizTranspostaJaggedArray = matrizTranspostaArray.ToJagged();
 
-             var pca = new PrincipalComponentAnalysis()
-             {
-                 Method = PrincipalComponentMethod.Center
-             };
+            var pca = new PrincipalComponentAnalysis()
+            {
+                Method = PrincipalComponentMethod.Center
+            };
 
             pca.Learn(matrizTranspostaJaggedArray); // ajustando os valores de PCA
 
             double[][] componentes = pca.Transform(matrizTranspostaJaggedArray); // aplicando uma Transformação à Matriz Transposta
 
-            var scaler = new Accord.Statistics.Filters.Normalization();
-            double[][] matriz_scaled = scaler.Apply(componentes);
+            MatrizTransformadaEmJaggedEmBidimensional(componentes);
 
-            NormalizarDados(componentes);
-        
+        }
+
+        public static void MatrizTransformadaEmJaggedEmBidimensional(double[][] componentes)
+        {
+            int numLinhas = componentes.Length;
+            double[,] arrayComponentesBidimensional = new double[numLinhas, 2];
+
+            for (int i = 0; i < numLinhas; i++)
+            {
+                arrayComponentesBidimensional[i, 0] = componentes[i][0];
+                arrayComponentesBidimensional[i, 1] = componentes[i][1];
+            }
+
+            NormalizarDados(arrayComponentesBidimensional);
         }
 
         #region ProdutoDasMatrizesTranspostaECovariância
@@ -475,7 +487,7 @@ namespace AntropofagicoCSharp
 
             foreach (System.Numerics.Complex valor in ListaDosAutoValoresInvertidos) // listaInvertidaDeAutoValores
                 autoValoresInvertidosEmReal.Add(valor.Real);
-            
+
             Variancia(autoValoresInvertidosEmReal);
         }
 
@@ -497,7 +509,7 @@ namespace AntropofagicoCSharp
         #endregion AutoVetoresEmNumeraçãoReal
 
         #region variância
-        
+
         public static void Variancia(List<double> autoValoresInvertidosEmReal)
         {
             List<double> var_pcs = new List<double>();
@@ -509,18 +521,18 @@ namespace AntropofagicoCSharp
             for (int i = 0; i < autoValoresInvertidosEmReal.Count; i++)
             {
                 var result = ((autoValoresInvertidosEmReal[i] / soma) * 100);
-                var_pcs.Add(result);                    
+                var_pcs.Add(result);
             }
         }
 
         #endregion variância
 
         #region transformandoArrayUnidimensionalEmBi
-            
+
         public static void TransformandoArrayUniEmBiDim(List<double> autoVetoresEmReal)
         {
             // convertendo de double para int:
-            int linhas = Convert.ToInt32(Math.Sqrt(autoVetoresEmReal.Count)); 
+            int linhas = Convert.ToInt32(Math.Sqrt(autoVetoresEmReal.Count));
             int colunas = Convert.ToInt32(Math.Sqrt(autoVetoresEmReal.Count));
 
             double[,] autoVetoresRealArrayBidimensional = new double[linhas, colunas];
@@ -555,65 +567,78 @@ namespace AntropofagicoCSharp
                 }
             }
 
-      //      double[,] resultadoNormalizado = NormalizarDados(resultado);
-            PlotagemGraficoPCA(resultado);
+            //      double[,] resultadoNormalizado = NormalizarDados(resultado);
+            //  PlotagemGraficoPCA(resultado);
         }
 
         #endregion produtoDeMatrizes
 
         #region NormalizaçãoDosDados
-
-        public static double[][] NormalizarDados(double[][] componentes)
+        public static double[,] NormalizarDados(double[,] arrayComponentesBidimensional)
         {
             double min = double.MaxValue;
             double max = double.MinValue;
 
-            int rows = componentes.Length;
-            int cols = componentes[0].Length;
+            int linhas = arrayComponentesBidimensional.GetLength(0);
+            int colunas = arrayComponentesBidimensional.GetLength(1);
 
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < linhas; i++)
             {
-                for (int j = 0; j < cols; j++)
+                for (int j = 0; j < colunas; j++)
                 {
-                    if (componentes[i][j] < min)
-                        min = componentes[i][j];
-                    if (componentes[i][j] > max)
-                        max = componentes[i][j];
+                    if (arrayComponentesBidimensional[i, j] < min)
+                        min = arrayComponentesBidimensional[i, j];
+                    if (arrayComponentesBidimensional[i, j] > max)
+                        max = arrayComponentesBidimensional[i, j];
                 }
             }
 
-            double[][] arrayNormalizado = new double[rows][];
+            double[,] arrayNormalizado = new double[linhas, colunas];
 
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < linhas; i++)
             {
-                arrayNormalizado[i] = new double[cols];
-                for (int j = 0; j < cols; j++)
-                    arrayNormalizado[i][j] = (componentes[i][j] - min) / (max - min);
+                for (int j = 0; j < colunas; j++)
+                    arrayNormalizado[i, j] = (arrayComponentesBidimensional[i, j] - min) / (max - min);
             }
+
+            PlotagemGraficoPCA(arrayNormalizado);
+
             return arrayNormalizado;
+
         }
         #endregion NormalizaçãoDosDados
 
         #region PlotagemDoGrafico
-        public static void PlotagemGraficoPCA(double[,] resultadoNormalizado)
+        public static void PlotagemGraficoPCA(double[,] arrayNormalizado)
         {
-            double[] xs = new double[resultadoNormalizado.GetLength(0)]; // Coordenadas x - Primeiro Componente Principal;
-            double[] ys = new double[resultadoNormalizado.GetLength(1)]; // Coordenadas y - Segundo Componente Principal
+            int numLinhas = arrayNormalizado.GetLength(0);
 
-            for (int i = 0; i < resultadoNormalizado.GetLength(0); i++)
+            double[] x = new double[numLinhas];
+            double[] y = new double[numLinhas];
+
+            for (int i = 0; i < numLinhas; i++)
             {
-                xs[i] = resultadoNormalizado[i, 0]; // Primeiro componente principal    
-
-                for (int j = 0; j < resultadoNormalizado.GetLength(1); j++)
-                    ys[j] = resultadoNormalizado[i, j]; // Segundo componente principal
-                
+                x[i] = arrayNormalizado[i, 0]; // Primeira coluna
+                y[i] = arrayNormalizado[i, 1]; // Segunda coluna
             }
+            
+         /*   double[] xs = new double[arrayNormalizado.GetLength(0)]; // Coordenadas x - Primeiro Componente Principal;
+            double[] ys = new double[arrayNormalizado.GetLength(1)]; // Coordenadas y - Segundo Componente Principal
+
+            for (int i = 0; i < arrayNormalizado.GetLength(0); i++)
+            {
+                xs[i] = arrayNormalizado[i, 0]; // Primeiro componente principal    
+
+                for (int j = 0; j < arrayNormalizado.GetLength(1); j++)
+                    ys[j] = arrayNormalizado[i, j]; // Segundo componente principal
+         
+            }*/
 
             PCA_grafico pcaGrafico = new PCA_grafico();
 
             pcaGrafico.Text = "Análise de Componentes Principais (PCA)";
             pcaGrafico.Show();
-            pcaGrafico.AtualizarGrafico(xs,ys);
+            pcaGrafico.AtualizarGrafico(x, y);
         }
 
         #endregion PlotagemDoGrafico

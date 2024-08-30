@@ -33,18 +33,18 @@ namespace AntropofagicoCSharp.Forms
 
         #region PlotagemGraficoPCA
 
-        public void AtualizarGrafico(double[] xs, double[] ys)
+        public void AtualizarGrafico(double[] x, double[] y)
         {
-            if (xs.Count() == ys.Count())
+            if (x.Count() == y.Count())
 
-                formsPlot1.Plot.Add.ScatterPoints(xs, ys);
+                formsPlot1.Plot.Add.ScatterPoints(x, y);
 
-            LocalizaPonto(xs, ys);
+            LocalizaPonto(x, y);
         }
 
-        public void LocalizaPonto(double[] xs, double[] ys)
+        public void LocalizaPonto(double[] x, double[] y)
         {
-            MyScatter = formsPlot1.Plot.Add.Scatter(xs, ys);
+            MyScatter = formsPlot1.Plot.Add.Scatter(x, y);
             MyScatter.LineWidth = 0;
 
             // criando um Crosshair para ser possível capturar as coordendas de cada ponto

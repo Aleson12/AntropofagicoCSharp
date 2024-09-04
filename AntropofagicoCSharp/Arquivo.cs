@@ -444,25 +444,6 @@ namespace AntropofagicoCSharp
         }
         #endregion ProdutoDasMatrizesTranspostaECovariância
 
-        #region variância
-
-        public static void Variancia(List<double> autoValoresInvertidosEmReal)
-        {
-            List<double> var_pcs = new List<double>();
-
-            double soma = autoValoresInvertidosEmReal.Sum(); // "soma" contém o somatório de todos os valores em autoValoresInvertidosEmReal
-
-            // porcentagem dos auto-valores em formato real:
-
-            for (int i = 0; i < autoValoresInvertidosEmReal.Count; i++)
-            {
-                var result = ((autoValoresInvertidosEmReal[i] / soma) * 100);
-                var_pcs.Add(result);
-            }
-        }
-
-        #endregion variância
-
         #region NormalizaçãoDosDados
         public static double[,] NormalizarDados(double[,] arrayComponentesBidimensional)
         {
@@ -515,7 +496,7 @@ namespace AntropofagicoCSharp
             PCA_grafico pcaGrafico = new PCA_grafico();
 
             pcaGrafico.Text = "Análise de Componentes Principais (PCA)";
-            pcaGrafico.Show();
+            pcaGrafico.Show(); // renderiza a interface do gráfico em si.
             pcaGrafico.AtualizarGrafico(x, y); // plota os pontos no gráfico, efetivamente.
 
           

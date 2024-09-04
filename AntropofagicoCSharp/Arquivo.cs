@@ -9,13 +9,6 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Accord.Statistics.Kernels;
-using Accord.Statistics;
-using System;
-using System;
-using System.Linq;
-using Accord.MachineLearning.VectorMachines;
-using Accord.MachineLearning.VectorMachines.Learning;
-using Aspose.Words.Tables;
 
 namespace AntropofagicoCSharp
 {
@@ -29,6 +22,7 @@ namespace AntropofagicoCSharp
         private static List<double> valoresDoArquivoMatrizPCA;
         private static List<double> mediaDosValoresDaMatriz;
         private static List<double[]> todasAsColunasDeMatrizFinal = []; // uma lista de arrays
+        public static List<MatrizRelCSV> listaMatrizRelCSV = new List<MatrizRelCSV>();
 
         private static double[,] matrizMedias; // Matriz com todas as médias dos valores
         private static readonly int _linhas = 2048;
@@ -222,7 +216,6 @@ namespace AntropofagicoCSharp
                     }
                     else
                         matrizMedias[linha, colunaAtual] = 0;
-
                 }
 
                 // Incrementa para a próxima coluna
@@ -257,8 +250,6 @@ namespace AntropofagicoCSharp
             _caminhoComONomeDoArquivoCSVFinal = Path.Combine($"{FrmPrincipal.diretorio}\\MatrizFinal\\"); // criando novo caminho de diretório
             string nomeArquivoCsv = "MatrizPCA.csv";
 
-            //// Criação do arquivo .csv MatrizPCA:
-
             Directory.CreateDirectory(_caminhoComONomeDoArquivoCSVFinal); // crie-o
 
             CultureInfo culture = CultureInfo.GetCultureInfo("pt-BR");
@@ -276,10 +267,19 @@ namespace AntropofagicoCSharp
                 {
                     double[] records = csv.GetRecords<double>().ToArray();
                     todasAsColunasDeMatrizFinal.Add(records);
+
+                    // para cada arquivo, é instanciado um Objeto da classe MatrizRelCSV, com seus valores e nome de arquivo, e, após,
+                    // inserido na lista "listaMatrizRelCSV":
+
+                    listaMatrizRelCSV.Add(new MatrizRelCSV {ValoresInternosCSV = records.ToList(), NomeArqCSV = Path.GetFileName(arq)});
+
                     arquivos.Add(Path.GetFileName(arq));
+                               
                 }
             }
 
+            // Criação do arquivo .csv MatrizPCA:
+             
             using (var csvMatriz = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv)))
             {
                 StringBuilder sb = new();
@@ -364,7 +364,6 @@ namespace AntropofagicoCSharp
 
             double[,] produtoMatrizCovariancia = ProdutoDeTranspostaECovarianciaMatrizes(matrizTranspostaArray, matrizMedias, escalar);
 
-           // AutosValoresEVetores(produtoMatrizCovariancia);
             TransformacaoDeMatrizTransposta(matrizTranspostaArray);
 
             return matrizTranspostaArray;
@@ -517,7 +516,9 @@ namespace AntropofagicoCSharp
 
             pcaGrafico.Text = "Análise de Componentes Principais (PCA)";
             pcaGrafico.Show();
-            pcaGrafico.AtualizarGrafico(x, y);
+            pcaGrafico.AtualizarGrafico(x, y); // plota os pontos no gráfico, efetivamente.
+
+          
         }
 
         #endregion PlotagemDoGrafico

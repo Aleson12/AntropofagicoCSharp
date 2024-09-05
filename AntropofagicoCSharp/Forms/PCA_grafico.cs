@@ -53,15 +53,6 @@ namespace AntropofagicoCSharp.Forms
                 Pixel mousePixel = new(e.Location.X, e.Location.Y);
                 Coordinates localizacaoDoMouse = formsPlot1.Plot.GetCoordinates(mousePixel);
                 DataPoint nearest = MyScatter.Data.GetNearest(localizacaoDoMouse, formsPlot1.Plot.LastRender);
-
-               /* MatrizRelCSV resultado = Arquivo.listaMatrizRelCSV.Where(matrizRel =>
-                {
-
-                    matrizRel.ValorX = nearest.X; 
-                    matrizRel.ValorY = nearest.Y;
-                    return matrizRel.ValorY == nearest.Y && matrizRel.ValorX == nearest.X ;
-               
-                }).FirstOrDefault();*/
                 
                 // se o dataPoint for nulo:
                 if (nearest.Equals(DataPoint.None))

@@ -252,9 +252,9 @@ namespace AntropofagicoCSharp
 
             Directory.CreateDirectory(_caminhoComONomeDoArquivoCSVFinal); // crie-o
 
-            CultureInfo culture = CultureInfo.GetCultureInfo("pt-BR");
-            CsvConfiguration config = new(culture);
-            config.HasHeaderRecord = false;
+            CultureInfo culture = CultureInfo.GetCultureInfo("pt-BR"); // define configurações de formatação de números, datas, moedas, etc... em PT-BR.
+            CsvConfiguration config = new(culture); // passando a configuração definida para o objeto "config", por meio do qual, a configuração do csv será aplicada
+            config.HasHeaderRecord = false; // informando que o arquivo .csv não possui cabeçalho.
 
             for (int i = 1; i <= maiorNumeracaoNoNomeDoCsv; i++)
             {
@@ -279,7 +279,7 @@ namespace AntropofagicoCSharp
             }
 
             // Criação do arquivo .csv MatrizPCA:
-             
+
             using (var csvMatriz = new StreamWriter(Path.Combine(_caminhoComONomeDoArquivoCSVFinal, nomeArquivoCsv)))
             {
                 StringBuilder sb = new();
@@ -332,7 +332,6 @@ namespace AntropofagicoCSharp
             double[,] matrizCovariancia = CalcularMatrizCovariancia(matrizMedias, media);
             MatrizTransposta(numLinhas, numColunas, matrizMedias);
         }
-
         #endregion PCA
 
         #region MatrizCovariancia
@@ -445,6 +444,7 @@ namespace AntropofagicoCSharp
         #endregion ProdutoDasMatrizesTranspostaECovariância
 
         #region NormalizaçãoDosDados
+        // normalização dos dados (deixando-os em uma faixa numérica entre 0 e 1), preparando-os para a plotagem no gráfico:
         public static double[,] NormalizarDados(double[,] arrayComponentesBidimensional)
         {
             double min = double.MaxValue;
@@ -499,7 +499,6 @@ namespace AntropofagicoCSharp
             pcaGrafico.Show(); // renderiza a interface do gráfico em si.
             pcaGrafico.AtualizarGrafico(x, y); // plota os pontos no gráfico, efetivamente.
 
-          
         }
 
         #endregion PlotagemDoGrafico

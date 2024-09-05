@@ -61,31 +61,25 @@ namespace AntropofagicoCSharp.Forms
                 // remove, "limpa", cada ponto sombreado pelo ponteiro do mouse:
                 formsPlot1.Plot.Remove<ScottPlot.Plottables.Callout>();
 
-                List<string> nomesDosArquivosCSV = new List<string>();
 
-                foreach (string arquivoCSV in arquivosCSVs)
-                    nomesDosArquivosCSV.Add(Path.GetFileName(arquivoCSV));
+                // correlacionando cada ponto a cada arquivo .csv:
 
-               if (nearest.Index >= 0 && nearest.Index < nomesDosArquivosCSV.Count)
-               {
+                formsPlot1.Plot.Add.Callout($"{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}",
 
-                    formsPlot1.Plot.Add.Callout($"teste",
+                    textLocation: nearest.Coordinates,
+                    tipLocation: nearest.Coordinates
 
-                        textLocation: nearest.Coordinates,
-                        tipLocation: nearest.Coordinates
+                );
 
-                    );
+                Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
 
-                    Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
+                // remove, "limpa", o último ponto sombreado pelo ponteiro do mouse:
+                formsPlot1.Refresh();
 
-                    // remove, "limpa", o último ponto sombreado pelo ponteiro do mouse:
-                    formsPlot1.Refresh();
+                // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
+                if (nearest.IsReal)
+                    Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}";
 
-                    // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
-                    if (nearest.IsReal)
-                        Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:";
-
-               }
             };
         }
         #endregion PlotagemGraficoPCA

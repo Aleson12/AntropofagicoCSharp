@@ -224,6 +224,9 @@ namespace AntropofagicoCSharp
                 // Limpa a lista para o próximo uso
                 mediaDosValoresDaMatriz.Clear();
             }
+
+            // matrizMedias se refere ao arquivo .csv "MatrizPCA"
+
         }
         #endregion GerandoMatrizMedias
 
@@ -265,8 +268,8 @@ namespace AntropofagicoCSharp
 
                 using (var csv = new CsvReader(new StreamReader(arq), config))
                 {
-                    double[] records = csv.GetRecords<double>().ToArray();
-                    todasAsColunasDeMatrizFinal.Add(records);
+                    double[] records = csv.GetRecords<double>().ToArray(); // obtendo os valores de cada arquivo .csv, inserindo-os num array unidimensional
+                    todasAsColunasDeMatrizFinal.Add(records); // e, em seguida, inserindo esse array de valores em uma lista
 
                     // para cada arquivo, é instanciado um Objeto da classe MatrizRelCSV, com seus valores e nome de arquivo, e, após,
                     // inserido na lista "listaMatrizRelCSV":
@@ -309,6 +312,7 @@ namespace AntropofagicoCSharp
         #region PCA
         public static void PCA()
         {
+
             int numLinhas = matrizMedias.GetLength(0); // 2048
             int numColunas = matrizMedias.GetLength(1); // 113
 
@@ -316,12 +320,13 @@ namespace AntropofagicoCSharp
             double[] somaColunas = new double[numColunas];
 
             // Percorre cada coluna da matriz
-            for (int coluna = 0; coluna < matrizMedias.GetLength(1); coluna++)
+            for (int coluna = 0; coluna < numColunas; coluna++)
             {
                 double soma = 0;
 
                 // Soma os valores de cada linha na coluna atual
-                for (int linha = 0; linha < matrizMedias.GetLength(0); linha++)
+                for (int linha = 0; linha < numLinhas; linha++)
+                    
                     soma += matrizMedias[linha, coluna];
 
                 // Armazena a soma da coluna no array unidimensional
@@ -329,8 +334,10 @@ namespace AntropofagicoCSharp
 
                 media[coluna] = (soma / numColunas);  // média de cada coluna
             }
+
             double[,] matrizCovariancia = CalcularMatrizCovariancia(matrizMedias, media);
             MatrizTransposta(numLinhas, numColunas, matrizMedias);
+
         }
         #endregion PCA
 

@@ -11,7 +11,7 @@ namespace AntropofagicoCSharp.Forms
         RadioButton rbNearestXY;
 
         static string caminhoDaPastaComOsCSVs = Arquivo._caminhoDaPastaDosArquivosCSVPosTratamento;
-        static string[] arquivosCSVs = Directory.GetFiles(caminhoDaPastaComOsCSVs);
+        static string[] caminhoDeCadaArquivoCSV = Directory.GetFiles(caminhoDaPastaComOsCSVs);
 
         public PCA_grafico()
         {
@@ -49,39 +49,47 @@ namespace AntropofagicoCSharp.Forms
 
             formsPlot1.MouseMove += (s, e) =>
             {
-
                 Pixel mousePixel = new(e.Location.X, e.Location.Y);
                 Coordinates localizacaoDoMouse = formsPlot1.Plot.GetCoordinates(mousePixel);
                 DataPoint nearest = MyScatter.Data.GetNearest(localizacaoDoMouse, formsPlot1.Plot.LastRender);
                 
                 // se o dataPoint for nulo:
                 if (nearest.Equals(DataPoint.None))
+                {
+                    Cursor = Cursors.Default; // cursor do mouse ficará no estado de apresentação padrão
                     return;
+                }
+                else
+                {
+                    // remove, "limpa", cada ponto sombreado pelo ponteiro do mouse:
+                    formsPlot1.Plot.Remove<ScottPlot.Plottables.Callout>();
+
+                    // correlacionando cada ponto a cada arquivo .csv:
+
+                    formsPlot1.Plot.Add.Callout($"{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}",
+
+                        textLocation: nearest.Coordinates,
+                        tipLocation: nearest.Coordinates
+
+                    );
                 
-                // remove, "limpa", cada ponto sombreado pelo ponteiro do mouse:
-                formsPlot1.Plot.Remove<ScottPlot.Plottables.Callout>();
+                    Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
 
+                    // remove, "limpa", o último ponto sombreado pelo ponteiro do mouse:
+                    formsPlot1.Refresh();
 
-                // correlacionando cada ponto a cada arquivo .csv:
+                    // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
+                    if (nearest.IsReal)
+                        Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}";
 
-                formsPlot1.Plot.Add.Callout($"{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}",
+                }
 
-                    textLocation: nearest.Coordinates,
-                    tipLocation: nearest.Coordinates
-
-                );
-
-                Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
-
-                // remove, "limpa", o último ponto sombreado pelo ponteiro do mouse:
-                formsPlot1.Refresh();
-
-                // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
-                if (nearest.IsReal)
-                    Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}";
 
             };
         }
+
+
+
         #endregion PlotagemGraficoPCA
     }
 }

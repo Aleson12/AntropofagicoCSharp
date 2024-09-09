@@ -510,6 +510,6 @@ namespace AntropofagicoCSharp
 
         #endregion PlotagemDoGrafico
 
-        #endregion Meétodos
+        #endregion Métodos
     }
 }

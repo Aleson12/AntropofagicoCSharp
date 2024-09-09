@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+            formsPlot2 = new ScottPlot.WinForms.FormsPlot();
             SuspendLayout();
             // 
-            // formsPlot1
+            // formsPlot2
             // 
-            formsPlot1.DisplayScale = 1F;
-            formsPlot1.Dock = DockStyle.Fill;
-            formsPlot1.Location = new Point(0, 0);
-            formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(655, 425);
-            formsPlot1.TabIndex = 0;
+            formsPlot2.DisplayScale = 1F;
+            formsPlot2.Dock = DockStyle.Fill;
+            formsPlot2.Location = new Point(0, 0);
+            formsPlot2.Name = "formsPlot2";
+            formsPlot2.Size = new Size(655, 425);
+            formsPlot2.TabIndex = 0;
             // 
             // GraficoDeCadaPonto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(655, 425);
-            Controls.Add(formsPlot1);
+            Controls.Add(formsPlot2);
             Name = "GraficoDeCadaPonto";
             Text = "Form1";
             TopMost = true;
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private ScottPlot.WinForms.FormsPlot formsPlot1;
+        public ScottPlot.WinForms.FormsPlot formsPlot2;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AntropofagicoCSharp.Forms
 {
-    partial class PCA_grafico
+    partial class GraficoDeCadaPonto
     {
         /// <summary>
         /// Required designer variable.
@@ -29,44 +29,31 @@
         private void InitializeComponent()
         {
             formsPlot1 = new ScottPlot.WinForms.FormsPlot();
-            label2 = new Label();
             SuspendLayout();
             // 
             // formsPlot1
             // 
-            formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             formsPlot1.DisplayScale = 1F;
-            formsPlot1.Location = new Point(-2, 1);
+            formsPlot1.Dock = DockStyle.Fill;
+            formsPlot1.Location = new Point(0, 0);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(905, 680);
+            formsPlot1.Size = new Size(655, 425);
             formsPlot1.TabIndex = 0;
-            formsPlot1.Load += formsPlot1_Load;
             // 
-            // label2
-            // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Location = new Point(409, 183);
-            label2.Name = "label2";
-            label2.Size = new Size(0, 15);
-            label2.TabIndex = 2;
-            // 
-            // PCA_grafico
+            // GraficoDeCadaPonto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(900, 678);
-            Controls.Add(label2);
+            ClientSize = new Size(655, 425);
             Controls.Add(formsPlot1);
-            Name = "PCA_grafico";
-            Text = "PCA";
+            Name = "GraficoDeCadaPonto";
+            Text = "Form1";
+            TopMost = true;
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private ScottPlot.WinForms.FormsPlot formsPlot1;
-        private Label label2;
     }
 }

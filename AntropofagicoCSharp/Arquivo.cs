@@ -14,7 +14,7 @@ namespace AntropofagicoCSharp
 {
     public static class Arquivo
     {
-        #region propriedades
+        #region Propriedades
         private static List<string> arquivosTxtsDaPasta;
         private static List<string> caminhosDosArquivosTxtDaPasta;
         private static List<string> arquivosTxtsDaPastaOrdenados;
@@ -33,9 +33,9 @@ namespace AntropofagicoCSharp
         public static int qtdLinhasEmMatrizFinal;
         private static int colunaAtual = 0;
 
-        #endregion propriedades
+        #endregion Propriedades
 
-        #region Metodos
+        #region Métodos
 
         #region FiltrarArquivosTxts
         public static List<string> FiltrarArquivosTxt(string diretorio)
@@ -510,6 +510,6 @@ namespace AntropofagicoCSharp
 
         #endregion PlotagemDoGrafico
 
-        #endregion Metodos
+        #endregion Meétodos
     }
 }

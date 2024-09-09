@@ -1,4 +1,5 @@
 ﻿using Accord.Math;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ScottPlot;
 
 namespace AntropofagicoCSharp.Forms
@@ -9,16 +10,14 @@ namespace AntropofagicoCSharp.Forms
         ScottPlot.Plottables.Crosshair MyCrosshair;
 
         RadioButton rbNearestXY;
-
-        static string caminhoDaPastaComOsCSVs = Arquivo._caminhoDaPastaDosArquivosCSVPosTratamento;
-        static string[] caminhoDeCadaArquivoCSV = Directory.GetFiles(caminhoDaPastaComOsCSVs);
+        GraficoDeCadaPonto graficoIndividual = new GraficoDeCadaPonto();
 
         public PCA_grafico()
         {
             InitializeComponent();
             this.TopMost = true; // sobrepõe este formulário em detrimento de outros
         }
-        
+
         #region invocaçãoDoMétodoPCA
         private void formsPlot1_Load(object sender, EventArgs e)
         {
@@ -27,11 +26,11 @@ namespace AntropofagicoCSharp.Forms
         #endregion invocaçãoDoMétodoPCA
 
         #region PlotagemGraficoPCA
-       
+
         public void AtualizarGrafico(double[] x, double[] y)
         {
             if (x.Count() == y.Count())
-              formsPlot1.Plot.Add.ScatterPoints(x, y);            
+                formsPlot1.Plot.Add.ScatterPoints(x, y);
             LocalizaPonto(x, y);
         }
 
@@ -52,7 +51,7 @@ namespace AntropofagicoCSharp.Forms
                 Pixel mousePixel = new(e.Location.X, e.Location.Y);
                 Coordinates localizacaoDoMouse = formsPlot1.Plot.GetCoordinates(mousePixel);
                 DataPoint nearest = MyScatter.Data.GetNearest(localizacaoDoMouse, formsPlot1.Plot.LastRender);
-                
+
                 // se o dataPoint for nulo:
                 if (nearest.Equals(DataPoint.None))
                 {
@@ -68,11 +67,11 @@ namespace AntropofagicoCSharp.Forms
 
                     formsPlot1.Plot.Add.Callout($"{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}",
 
-                        textLocation: nearest.Coordinates,
-                        tipLocation: nearest.Coordinates
+                         textLocation: nearest.Coordinates,
+                         tipLocation: nearest.Coordinates
 
-                    );
-                
+                     );
+
                     Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
 
                     // remove, "limpa", o último ponto sombreado pelo ponteiro do mouse:
@@ -80,16 +79,19 @@ namespace AntropofagicoCSharp.Forms
 
                     // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
                     if (nearest.IsReal)
-                        Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}";
+
+                        formsPlot1.MouseDown += (s, e) => // ao clicar num dos pontos,
+                        {
+                            graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
+                            graficoIndividual.Show(); // renderiza o gráfico na tela
+                        };
+
+                    Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}"; // texto que será exibido na borda superior do gráfico
 
                 }
 
-
             };
         }
-
-
-
         #endregion PlotagemGraficoPCA
     }
 }

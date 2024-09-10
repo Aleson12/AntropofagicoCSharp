@@ -83,9 +83,9 @@ namespace AntropofagicoCSharp.Forms
                         {
                             graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
 
-                            GraficoDeCadaPonto.PlotagemIndividual(Arquivo.listaMatrizRelCSV[0].ValoresInternosCSV);
+                            graficoIndividual.PlotagemIndividual(Arquivo.listaMatrizRelCSV[nearest.Index].ValoresInternosCSV);
 
-                            graficoIndividual.Show(); // renderiza o gráfico na tela
+                            graficoIndividual.Show();
                         };
 
                     Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}"; // texto que será exibido na borda superior do gráfico

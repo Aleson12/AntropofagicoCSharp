@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GraficoDeCadaPonto));
             formsPlot2 = new ScottPlot.WinForms.FormsPlot();
             SuspendLayout();
             // 
@@ -46,6 +47,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(655, 425);
             Controls.Add(formsPlot2);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "GraficoDeCadaPonto";
             Text = "Form1";
             TopMost = true;

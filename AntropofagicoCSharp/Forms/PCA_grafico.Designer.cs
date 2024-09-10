@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PCA_grafico));
             formsPlot1 = new ScottPlot.WinForms.FormsPlot();
             label2 = new Label();
             SuspendLayout();
@@ -58,6 +59,7 @@
             ClientSize = new Size(900, 678);
             Controls.Add(label2);
             Controls.Add(formsPlot1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "PCA_grafico";
             Text = "PCA";
             ResumeLayout(false);

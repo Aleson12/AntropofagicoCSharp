@@ -37,20 +37,21 @@
             formsPlot2.DisplayScale = 1F;
             formsPlot2.Dock = DockStyle.Fill;
             formsPlot2.Location = new Point(0, 0);
+            formsPlot2.Margin = new Padding(3, 4, 3, 4);
             formsPlot2.Name = "formsPlot2";
-            formsPlot2.Size = new Size(655, 425);
+            formsPlot2.Size = new Size(749, 567);
             formsPlot2.TabIndex = 0;
             // 
             // GraficoDeCadaPonto
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(655, 425);
+            ClientSize = new Size(749, 567);
             Controls.Add(formsPlot2);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 4, 3, 4);
             Name = "GraficoDeCadaPonto";
             Text = "Form1";
-            TopMost = true;
             ResumeLayout(false);
         }
 

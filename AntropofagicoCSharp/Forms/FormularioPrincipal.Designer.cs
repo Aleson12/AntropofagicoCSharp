@@ -186,7 +186,7 @@
             lbl_DiretorioDosArquivosCsv.ForeColor = Color.Black;
             lbl_DiretorioDosArquivosCsv.Location = new Point(6, 39);
             lbl_DiretorioDosArquivosCsv.Name = "lbl_DiretorioDosArquivosCsv";
-            lbl_DiretorioDosArquivosCsv.Size = new Size(73, 20);
+            lbl_DiretorioDosArquivosCsv.Size = new Size(90, 25);
             lbl_DiretorioDosArquivosCsv.TabIndex = 12;
             lbl_DiretorioDosArquivosCsv.Text = "Diretório:";
             lbl_DiretorioDosArquivosCsv.TextAlign = ContentAlignment.MiddleCenter;
@@ -198,7 +198,7 @@
             mtx_DiretorioArquivosCsv.Location = new Point(84, 38);
             mtx_DiretorioArquivosCsv.Margin = new Padding(3, 4, 3, 4);
             mtx_DiretorioArquivosCsv.Name = "mtx_DiretorioArquivosCsv";
-            mtx_DiretorioArquivosCsv.Size = new Size(474, 23);
+            mtx_DiretorioArquivosCsv.Size = new Size(474, 26);
             mtx_DiretorioArquivosCsv.TabIndex = 5;
             mtx_DiretorioArquivosCsv.UseWaitCursor = true;
             // 
@@ -273,7 +273,7 @@
             lbl_DiretorioDosArquivosTxt.ForeColor = Color.Black;
             lbl_DiretorioDosArquivosTxt.Location = new Point(6, 39);
             lbl_DiretorioDosArquivosTxt.Name = "lbl_DiretorioDosArquivosTxt";
-            lbl_DiretorioDosArquivosTxt.Size = new Size(73, 20);
+            lbl_DiretorioDosArquivosTxt.Size = new Size(90, 25);
             lbl_DiretorioDosArquivosTxt.TabIndex = 7;
             lbl_DiretorioDosArquivosTxt.Text = "Diretório:";
             lbl_DiretorioDosArquivosTxt.TextAlign = ContentAlignment.MiddleCenter;
@@ -286,7 +286,7 @@
             mtx_DiretorioArquivosTxt.Location = new Point(84, 39);
             mtx_DiretorioArquivosTxt.Margin = new Padding(3, 4, 3, 4);
             mtx_DiretorioArquivosTxt.Name = "mtx_DiretorioArquivosTxt";
-            mtx_DiretorioArquivosTxt.Size = new Size(472, 23);
+            mtx_DiretorioArquivosTxt.Size = new Size(472, 27);
             mtx_DiretorioArquivosTxt.TabIndex = 1;
             mtx_DiretorioArquivosTxt.UseWaitCursor = true;
             // 
@@ -396,7 +396,7 @@
             lbl_DiretorioDaMatrizFinal.ForeColor = Color.Black;
             lbl_DiretorioDaMatrizFinal.Location = new Point(6, 51);
             lbl_DiretorioDaMatrizFinal.Name = "lbl_DiretorioDaMatrizFinal";
-            lbl_DiretorioDaMatrizFinal.Size = new Size(72, 20);
+            lbl_DiretorioDaMatrizFinal.Size = new Size(91, 25);
             lbl_DiretorioDaMatrizFinal.TabIndex = 3;
             lbl_DiretorioDaMatrizFinal.Text = "Diretório:";
             lbl_DiretorioDaMatrizFinal.TextAlign = ContentAlignment.MiddleCenter;
@@ -408,7 +408,7 @@
             mtx_DiretorioDoArquivoCsvFinal.Location = new Point(84, 51);
             mtx_DiretorioDoArquivoCsvFinal.Margin = new Padding(3, 4, 3, 4);
             mtx_DiretorioDoArquivoCsvFinal.Name = "mtx_DiretorioDoArquivoCsvFinal";
-            mtx_DiretorioDoArquivoCsvFinal.Size = new Size(472, 23);
+            mtx_DiretorioDoArquivoCsvFinal.Size = new Size(472, 26);
             mtx_DiretorioDoArquivoCsvFinal.TabIndex = 3;
             mtx_DiretorioDoArquivoCsvFinal.UseWaitCursor = true;
             // 
@@ -431,7 +431,7 @@
             // 
             // FrmPrincipal
             // 
-            AutoScaleDimensions = new SizeF(7F, 18F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
             ClientSize = new Size(1184, 807);
@@ -444,7 +444,6 @@
             Name = "FrmPrincipal";
             RightToLeftLayout = true;
             Text = "Análise de Componentes Principais (PCA)";
-            TopMost = true;
             UseWaitCursor = true;
             Load += FormularioPrincipal_Load;
             pnl_Panel3.ResumeLayout(false);

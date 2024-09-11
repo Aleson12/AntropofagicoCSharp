@@ -506,6 +506,7 @@ namespace AntropofagicoCSharp
             pcaGrafico.Show(); // renderiza a interface do gráfico em si.
             pcaGrafico.AtualizarGrafico(x, y); // plota os pontos no gráfico, efetivamente.
 
+
         }
 
         #endregion PlotagemDoGrafico

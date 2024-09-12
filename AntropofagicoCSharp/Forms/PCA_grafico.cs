@@ -1,4 +1,5 @@
-﻿using Accord.Math;
+﻿using Accord;
+using Accord.Math;
 using ScottPlot;
 
 namespace AntropofagicoCSharp.Forms
@@ -81,17 +82,22 @@ namespace AntropofagicoCSharp.Forms
 
                         formsPlot1.MouseDown += (s, e) => // ao clicar num dos pontos,
                         {
-                            graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
-
                             graficoIndividual.PlotagemIndividual(Arquivo.listaMatrizRelCSV[nearest.Index].ValoresInternosCSV);
 
-                            graficoIndividual.Show();
+                                                
+
+                            graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
+
+                            //graficoIndividual.Show();
+
                         };
+                        
 
                     Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}"; // texto que será exibido na borda superior do gráfico
                 }
             };
         }
         #endregion PlotagemGraficoPCA
+
     }
 }

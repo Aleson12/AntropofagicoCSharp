@@ -5,9 +5,6 @@ namespace AntropofagicoCSharp.Forms
 {
     public partial class PCA_grafico : Form
     {
-
-       // RadioButton rbNearestXY;
-
         public PCA_grafico()
         {
             InitializeComponent();
@@ -86,7 +83,7 @@ namespace AntropofagicoCSharp.Forms
                 }
             };
 
-            formsPlot1.MouseDown += (s, e) => // ao sobrepor um ponto no gráfico, faça:
+            formsPlot1.MouseDown += (s, e) => // ao clicar em um ponto no gráfico, faça:
             {
 
                 Pixel mousePixel = new(e.Location.X, e.Location.Y);
@@ -106,18 +103,12 @@ namespace AntropofagicoCSharp.Forms
                     // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
                     if (nearest.IsReal)
 
-
-
                         graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
                         graficoIndividual.Show();
-
                         graficoIndividual.PlotagemIndividual(valoresContidosNoArquivoCsvLido);
-
                         graficoIndividual.Refresh();
-
                 }
             };
-
         }
         #endregion PlotagemGraficoPCA
     }

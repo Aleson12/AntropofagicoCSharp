@@ -84,7 +84,7 @@ namespace AntropofagicoCSharp.Forms
                 }
             };
 
-            formsPlot1.MouseDown += (s, e) => // ao sobrepor um ponto no gráfico, faça:
+            formsPlot1.MouseDown += (s, e) => // ao clicar em um ponto no gráfico, faça:
             {
 
                 Pixel mousePixel = new(e.Location.X, e.Location.Y);

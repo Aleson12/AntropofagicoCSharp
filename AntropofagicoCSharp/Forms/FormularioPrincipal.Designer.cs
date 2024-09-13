@@ -444,7 +444,6 @@
             Name = "FrmPrincipal";
             RightToLeftLayout = true;
             Text = "Análise de Componentes Principais (PCA)";
-            TopMost = true;
             UseWaitCursor = true;
             Load += FormularioPrincipal_Load;
             pnl_Panel3.ResumeLayout(false);

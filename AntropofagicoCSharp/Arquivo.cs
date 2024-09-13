@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Accord.Statistics.Kernels;
+using ScottPlot.WinForms;
 
 namespace AntropofagicoCSharp
 {
@@ -501,10 +502,12 @@ namespace AntropofagicoCSharp
             }
 
             PCA_grafico pcaGrafico = new PCA_grafico();
-
+             
             pcaGrafico.Text = "Análise de Componentes Principais (PCA)";
             pcaGrafico.Show(); // renderiza a interface do gráfico em si.
+            pcaGrafico.BringToFront(); // traz o formulário atual para frente, sobrepondo outros que estiverem na frente
             pcaGrafico.AtualizarGrafico(x, y); // plota os pontos no gráfico, efetivamente.
+
 
         }
 

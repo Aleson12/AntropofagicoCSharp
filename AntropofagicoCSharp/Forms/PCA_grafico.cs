@@ -86,7 +86,6 @@ namespace AntropofagicoCSharp.Forms
 
             formsPlot1.MouseDown += (s, e) => // ao clicar em um ponto no gráfico, faça:
             {
-
                 Pixel mousePixel = new(e.Location.X, e.Location.Y);
                 Coordinates localizacaoDoMouse = formsPlot1.Plot.GetCoordinates(mousePixel);
                 DataPoint nearest = MyScatter.Data.GetNearest(localizacaoDoMouse, formsPlot1.Plot.LastRender);
@@ -108,6 +107,7 @@ namespace AntropofagicoCSharp.Forms
                         graficoIndividual.Show();
                         graficoIndividual.PlotagemIndividual(valoresContidosNoArquivoCsvLido);
                         graficoIndividual.Refresh();
+
                 }
             };
         }

@@ -50,7 +50,6 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "GraficoDeCadaPonto";
             Text = "Form1";
-            TopMost = true;
             ResumeLayout(false);
         }
 

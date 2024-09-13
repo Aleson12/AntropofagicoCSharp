@@ -43,10 +43,10 @@ namespace AntropofagicoCSharp.Forms
             double[] arrayX = Lista_X.ToArray();
             double[] arrayY = Lista_Y.ToArray();
 
+            this.BringToFront();
             formsPlot2.Plot.Clear();
-            myScatter = formsPlot2.Plot.Add.Scatter(arrayX, arrayY);
-            myScatter.LineWidth = 0;
-            myScatter.LineColor = ScottPlot.Colors.Red;
+            myScatter = formsPlot2.Plot.Add.Scatter(arrayX, arrayY); // armazenando os pontos na variável "myScatter"
+            myScatter.LineWidth = 0; // 0 linhas que ligam os pontos
                         
         }
     }

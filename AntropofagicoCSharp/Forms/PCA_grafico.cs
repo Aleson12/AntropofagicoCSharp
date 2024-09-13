@@ -24,6 +24,7 @@ namespace AntropofagicoCSharp.Forms
         {
             if (x.Count() == y.Count())
                 formsPlot1.Plot.Add.ScatterPoints(x, y);
+                formsPlot1.Plot.Axes.AutoScale(); // ajustando automaticamente a escala dos pontos de dispersão no gráfico
             LocalizaPonto(x, y);
         }
 

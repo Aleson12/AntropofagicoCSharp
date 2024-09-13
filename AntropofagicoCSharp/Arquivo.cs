@@ -505,9 +505,9 @@ namespace AntropofagicoCSharp
              
             pcaGrafico.Text = "Análise de Componentes Principais (PCA)";
             pcaGrafico.Show(); // renderiza a interface do gráfico em si.
+
             pcaGrafico.BringToFront(); // traz o formulário atual para frente, sobrepondo outros que estiverem na frente
             pcaGrafico.AtualizarGrafico(x, y); // plota os pontos no gráfico, efetivamente.
-
 
         }
 

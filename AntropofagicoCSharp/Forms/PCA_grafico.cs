@@ -6,16 +6,9 @@ namespace AntropofagicoCSharp.Forms
 {
     public partial class PCA_grafico : Form
     {
-        ScottPlot.Plottables.Scatter MyScatter;
-        ScottPlot.Plottables.Crosshair MyCrosshair;
-
-        RadioButton rbNearestXY;
-        GraficoDeCadaPonto graficoIndividual = new GraficoDeCadaPonto();
-
         public PCA_grafico()
         {
             InitializeComponent();
-            this.TopMost = true; // sobrepõe este formulário em detrimento de outros
         }
 
         #region invocaçãoDoMétodoPCA
@@ -36,6 +29,12 @@ namespace AntropofagicoCSharp.Forms
 
         public void LocalizaPonto(double[] x, double[] y)
         {
+
+            ScottPlot.Plottables.Crosshair MyCrosshair;
+            ScottPlot.Plottables.Scatter MyScatter;
+
+            GraficoDeCadaPonto graficoIndividual = new GraficoDeCadaPonto();
+
             MyScatter = formsPlot1.Plot.Add.Scatter(x, y);
             MyScatter.LineWidth = 0;
 
@@ -45,6 +44,7 @@ namespace AntropofagicoCSharp.Forms
             MyCrosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
             MyCrosshair.IsVisible = false;
             MyCrosshair.MarkerShape = MarkerShape.OpenCircle;
+            List<double> valoresContidosNoArquivoCsvLido = new List<double>();
 
             formsPlot1.MouseMove += (s, e) => // ao sobrepor um ponto no gráfico, faça:
             {
@@ -79,21 +79,35 @@ namespace AntropofagicoCSharp.Forms
 
                     // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
                     if (nearest.IsReal)
+                        valoresContidosNoArquivoCsvLido = Arquivo.listaMatrizRelCSV[nearest.Index].ValoresInternosCSV;
+                        Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}"; // texto que será exibido na borda superior do gráfico
+                }
+            };
 
-                        formsPlot1.MouseDown += (s, e) => // ao clicar num dos pontos,
-                        {
-                            graficoIndividual.PlotagemIndividual(Arquivo.listaMatrizRelCSV[nearest.Index].ValoresInternosCSV);
+            formsPlot1.MouseDown += (s, e) => // ao sobrepor um ponto no gráfico, faça:
+            {
 
-                                                
+                Pixel mousePixel = new(e.Location.X, e.Location.Y);
+                Coordinates localizacaoDoMouse = formsPlot1.Plot.GetCoordinates(mousePixel);
+                DataPoint nearest = MyScatter.Data.GetNearest(localizacaoDoMouse, formsPlot1.Plot.LastRender);
 
-                            graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
+                // se o dataPoint for nulo:
+                if (nearest.Equals(DataPoint.None))
+                {
+                    Cursor = Cursors.Default; // cursor do mouse ficará no estado de apresentação padrão
+                    return;
+                }
+                else
+                {
+                    Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
 
-                            //graficoIndividual.Show();
+                    // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
+                    if (nearest.IsReal)
 
-                        };
-                        
-
-                    Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}"; // texto que será exibido na borda superior do gráfico
+                        graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
+                        graficoIndividual.Show();
+                        graficoIndividual.PlotagemIndividual(valoresContidosNoArquivoCsvLido);
+                        graficoIndividual.Refresh();
                 }
             };
         }

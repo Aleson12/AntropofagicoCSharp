@@ -23,8 +23,9 @@ namespace AntropofagicoCSharp.Forms
             InitializeComponent();
         }
 
-        public Plot PlotagemIndividual(List<double> valoresContidosNoArquivoCsvLido)
+        public void PlotagemIndividual(List<double> valoresContidosNoArquivoCsvLido)
         {
+            ScottPlot.Plottables.Scatter myScatter;
 
             List<double> Lista_X = new List<double>();
             List<double> Lista_Y = new List<double>();
@@ -42,20 +43,11 @@ namespace AntropofagicoCSharp.Forms
             double[] arrayX = Lista_X.ToArray();
             double[] arrayY = Lista_Y.ToArray();
 
-            var plt = new ScottPlot.Plot();
-            plt.Add.Scatter(arrayX, arrayY);
-            plt.XLabel("Canal");
-            plt.YLabel("Contagem");
-            plt.Title("Canal x Contagem");
-
-            return plt;
-
-           // ScottPlot.WinForms.FormsPlot formsPlot2 = new ScottPlot.WinForms.FormsPlot();
-  
-           // formsPlot2.Plot.Add.Scatter(arrayX, arrayY);
-            //formsPlot2.Refresh();
-            
-           // return formsPlot2;
+            formsPlot2.Plot.Clear();
+            myScatter = formsPlot2.Plot.Add.Scatter(arrayX, arrayY);
+            myScatter.LineWidth = 0;
+            myScatter.LineColor = ScottPlot.Colors.Red;
+                        
         }
     }
 }

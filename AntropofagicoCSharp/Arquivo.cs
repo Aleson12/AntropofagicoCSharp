@@ -9,7 +9,9 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Accord.Statistics.Kernels;
-using ScottPlot.WinForms;
+using Accord;
+using Accord.Statistics.Models.Regression.Linear;
+using Accord.Statistics.Analysis.Base;
 
 namespace AntropofagicoCSharp
 {
@@ -371,6 +373,7 @@ namespace AntropofagicoCSharp
 
             double[,] produtoMatrizCovariancia = ProdutoDeTranspostaECovarianciaMatrizes(matrizTranspostaArray, matrizMedias, escalar);
 
+            //AutosValoresEVetores(produtoMatrizCovariancia);
             TransformacaoDeMatrizTransposta(matrizTranspostaArray);
 
             return matrizTranspostaArray;
@@ -384,12 +387,14 @@ namespace AntropofagicoCSharp
         {
             double[][] matrizTranspostaJaggedArray = matrizTranspostaArray.ToJagged();
 
-            var pca = new PrincipalComponentAnalysis()
+            var pca = new Accord.Statistics.Analysis.PrincipalComponentAnalysis()
             {
                 Method = PrincipalComponentMethod.Center
             };
 
-            pca.Learn(matrizTranspostaJaggedArray); // ajustando os valores de PCA
+            pca.Learn(matrizTranspostaJaggedArray);
+
+            var aprendizadoDePCA = pca.Learn(matrizTranspostaJaggedArray); // ajustando os valores de PCA
 
             double[][] componentes = pca.Transform(matrizTranspostaJaggedArray); // aplicando uma Transformação à Matriz Transposta
 
@@ -451,6 +456,139 @@ namespace AntropofagicoCSharp
         }
         #endregion ProdutoDasMatrizesTranspostaECovariância
 
+        /*  #region AutoValores e AutoVetores
+
+        public static void AutosValoresEVetores(double[,] produtoMatrizCovariancia)
+        {
+            // Convertendo a matriz resultante para um formato compatível com Math.NET:
+            var matriz = DenseMatrix.OfArray(produtoMatrizCovariancia);
+
+            // Calculando autovalores e autovetores:
+            var evd = matriz.Evd();
+            var autoValores = evd.EigenValues;
+            var autoVetores = evd.EigenVectors;
+
+            // Autovetores:
+
+            List<System.Numerics.Complex> ListaDeAutoVetores = new List<System.Numerics.Complex>();
+
+            for (int i = 0; i < autoVetores.ColumnCount; i++)
+            {
+                var autoVetor = autoVetores.Column(i);
+                foreach (var item in autoVetor)
+                    ListaDeAutoVetores.Add(item);
+            }
+
+            AutoVetoresEmReal(ListaDeAutoVetores);
+
+            List<System.Numerics.Complex> ListaDosAutoValoresInvertidos = new List<System.Numerics.Complex>();
+
+            var listaDeAutoValores = autoValores.ToList(); // transformando autoValores em uma lista
+            listaDeAutoValores.Reverse(); // invertendo a lista de autoValores
+
+            foreach (System.Numerics.Complex i in listaDeAutoValores)
+                ListaDosAutoValoresInvertidos.Add(i);
+
+            AutoValoresEmReal(ListaDosAutoValoresInvertidos);
+
+        }
+        #endregion AutoValores e AutoVetores
+
+        #region AutoValoresEmNumeraçãoReal
+
+        public static void AutoValoresEmReal(List<System.Numerics.Complex> ListaDosAutoValoresInvertidos)
+        {
+            List<double> autoValoresInvertidosEmReal = new List<double>();
+
+            foreach (System.Numerics.Complex valor in ListaDosAutoValoresInvertidos) // listaInvertidaDeAutoValores
+                autoValoresInvertidosEmReal.Add(valor.Real);
+
+            Variancia(autoValoresInvertidosEmReal);
+        }
+
+        #endregion AutoValoresEmNumeraçãoReal
+
+        #region AutoVetoresEmNumeraçãoReal
+
+        public static void AutoVetoresEmReal(List<System.Numerics.Complex> ListaDeAutoVetores)
+        {
+            List<double> autoVetoresEmReal = new List<double>();
+
+            foreach (System.Numerics.Complex valor in ListaDeAutoVetores)
+                autoVetoresEmReal.Add(valor.Real);
+
+            TransformandoArrayUniEmBiDim(autoVetoresEmReal);
+
+        }
+
+        #endregion AutoVetoresEmNumeraçãoReal
+
+        #region variância
+
+        public static void Variancia(List<double> autoValoresInvertidosEmReal)
+        {
+            List<double> var_pcs = new List<double>();
+
+            double soma = autoValoresInvertidosEmReal.Sum(); // "soma" contém o somatório de todos os valores em autoValoresInvertidosEmReal
+
+            // porcentagem dos auto-valores em formato real:
+
+            for (int i = 0; i < autoValoresInvertidosEmReal.Count; i++)
+            {
+                var result = ((autoValoresInvertidosEmReal[i] / soma) * 100);
+                var_pcs.Add(result);
+            }
+
+            Console.WriteLine(var_pcs);
+
+        }
+
+        #endregion variância
+
+        #region transformandoArrayUnidimensionalEmBi
+
+        public static void TransformandoArrayUniEmBiDim(List<double> autoVetoresEmReal)
+        {
+            // convertendo de double para int:
+            int linhas = Convert.ToInt32(Math.Sqrt(autoVetoresEmReal.Count));
+            int colunas = Convert.ToInt32(Math.Sqrt(autoVetoresEmReal.Count));
+
+            double[,] autoVetoresRealArrayBidimensional = new double[linhas, colunas];
+
+            int indice = 0;
+
+            for (int i = 0; i < linhas; i++)
+            {
+                for (int j = 0; j < colunas; j++)
+                    autoVetoresRealArrayBidimensional[i, j] = autoVetoresEmReal[indice++]; // preenchendo a matriz (array bidimensional)
+            }
+            ProdutoDeMatrizes(matrizMedias, autoVetoresRealArrayBidimensional);
+        }
+
+        #endregion transformandoArrayUnidimensionalEmBi
+
+        #region produtoDeMatrizes
+
+        public static void ProdutoDeMatrizes(double[,] matrizMedias, double[,]autoVetoresRealArrayBidimensional)
+        {
+            double[,] resultado = new double[matrizMedias.GetLength(0), autoVetoresRealArrayBidimensional.GetLength(1)];
+
+            if (matrizMedias.GetLength(1) == autoVetoresRealArrayBidimensional.GetLength(0)) // condição necessária para multiplicar matrizes
+            {
+                // Realizando a multiplicação das matrizes:
+                for (int i = 0; i < matrizMedias.GetLength(0); i++)
+                {
+                    for (int j = 0; j < autoVetoresRealArrayBidimensional.GetLength(1); j++)
+                    {
+                        for (int k = 0; k < autoVetoresRealArrayBidimensional.GetLength(0); k++)
+                            resultado[i, j] += matrizMedias[i, k] * autoVetoresRealArrayBidimensional[k, j];
+                    }
+                }
+            }
+        }
+
+        #endregion produtoDeMatrizes*/
+
         #region NormalizaçãoDosDados
         // normalização dos dados (deixando-os em uma faixa numérica entre 0 e 1), preparando-os para a plotagem no gráfico:
         public static double[,] NormalizarDados(double[,] arrayComponentesBidimensional)
@@ -487,9 +625,34 @@ namespace AntropofagicoCSharp
         }
         #endregion NormalizaçãoDosDados
 
+        #region VariânciaDosComponentes
+        /*
+        public static void Teste()
+        {
+
+            var pca = new Accord.Statistics.Analysis.PrincipalComponentAnalysis()
+            {
+                Method = PrincipalComponentMethod.Center
+            };
+
+            double pc = pca.ExplainedVariance;
+
+            double[] PCs = new double[2];
+            PCs.Add(pc);
+
+            string C1 = (Math.Round(PCs[0] * 100,0).ToString() + "%");
+            string C2 = (Math.Round(PCs[1] * 100, 0).ToString() + "%");
+
+        }*/
+
+        #endregion VariânciaDosComponentes
+
         #region PlotagemDoGrafico
         public static void PlotagemGraficoPCA(double[,] arrayNormalizado)
         {
+
+            //Teste();
+
             int numLinhas = arrayNormalizado.GetLength(0);
 
             double[] x = new double[numLinhas];

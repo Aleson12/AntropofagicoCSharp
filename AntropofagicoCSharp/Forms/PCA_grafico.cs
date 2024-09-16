@@ -101,18 +101,27 @@ namespace AntropofagicoCSharp.Forms
                 {
                     Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
 
-                    // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
-                    if (nearest.IsReal)
+                    if (graficoIndividual == null || graficoIndividual.IsDisposed)
+                        graficoIndividual = new GraficoDeCadaPonto();
+                    
+                    try
+                    {
+                        // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
+                        if (nearest.IsReal)
 
-                        graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
-                        graficoIndividual.Show();
-                        graficoIndividual.PlotagemIndividual(valoresContidosNoArquivoCsvLido);
-                        graficoIndividual.Refresh();
+                            graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
+                            graficoIndividual.Show();
+                            graficoIndividual.PlotagemIndividual(valoresContidosNoArquivoCsvLido);
+                            graficoIndividual.Refresh();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Erro ao mostrar Gráfico Individual");
+                    }
 
                 }
             };
         }
         #endregion PlotagemGraficoPCA
-
     }
 }

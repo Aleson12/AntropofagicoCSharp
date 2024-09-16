@@ -61,7 +61,7 @@ namespace AntropofagicoCSharp.Forms
                 }
                 else
                 {
-                    // remove, "limpa", cada ponto sombreado pelo ponteiro do mouse:
+                    // remove, "limpa", cada ponto sombreado pelo ponteiro do mouse (para que a caixa de texto que indica o arquivo .csv correspondente ao ponto suma quando o ponto deixar de estar sobreposto com o cursor do mouse):
                     formsPlot1.Plot.Remove<ScottPlot.Plottables.Callout>();
 
                     // correlacionando cada ponto a cada arquivo .csv:
@@ -101,8 +101,9 @@ namespace AntropofagicoCSharp.Forms
                 {
                     Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
 
-                    if (graficoIndividual == null || graficoIndividual.IsDisposed)
-                        graficoIndividual = new GraficoDeCadaPonto();
+                    // se o objeto que representa o gráfico for nulo ou descartado, será instanciado um novo (para que a aplicação não quebre quando o usuário fechar o gráfico menor e tentar abri-lo de novo, clicando em outro ponto).
+                   /* if (graficoIndividual == null || graficoIndividual.IsDisposed)
+                        graficoIndividual = new GraficoDeCadaPonto();*/
                     
                     try
                     {
@@ -116,9 +117,9 @@ namespace AntropofagicoCSharp.Forms
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Erro ao mostrar Gráfico Individual");
+                        // "Task.Run()" usado para que, ao fechar o message.box, o cursor do mouse não fique agarrado no ponto clicado
+                        Task.Run(() => MessageBox.Show("Não foi possível renderizar o gráfico individual do ponto", "Configuração", MessageBoxButtons.OK, MessageBoxIcon.Exclamation));
                     }
-
                 }
             };
         }

@@ -102,8 +102,8 @@ namespace AntropofagicoCSharp.Forms
                     Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
 
                     // se o objeto que representa o gráfico for nulo ou descartado, será instanciado um novo (para que a aplicação não quebre quando o usuário fechar o gráfico menor e tentar abri-lo de novo, clicando em outro ponto).
-                   /* if (graficoIndividual == null || graficoIndividual.IsDisposed)
-                        graficoIndividual = new GraficoDeCadaPonto();*/
+                   if (graficoIndividual == null || graficoIndividual.IsDisposed)
+                        graficoIndividual = new GraficoDeCadaPonto();
                     
                     try
                     {

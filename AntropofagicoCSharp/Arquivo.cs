@@ -9,15 +9,15 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Accord.Statistics.Kernels;
-using Accord;
-using Accord.Statistics.Models.Regression.Linear;
-using Accord.Statistics.Analysis.Base;
+using Accord.Statistics.Models.Regression;
+using Microsoft.ML.Transforms;
 
 namespace AntropofagicoCSharp
 {
     public static class Arquivo
     {
         #region Propriedades
+
         private static List<string> arquivosTxtsDaPasta;
         private static List<string> caminhosDosArquivosTxtDaPasta;
         private static List<string> arquivosTxtsDaPastaOrdenados;
@@ -399,6 +399,7 @@ namespace AntropofagicoCSharp
             double[][] componentes = pca.Transform(matrizTranspostaJaggedArray); // aplicando uma Transformação à Matriz Transposta
 
             MatrizTransformadaJaggedEmBidimensional(componentes);
+            PercentualDeCadaComponente(pca);
         }
         #endregion TransformacaoDeMatrizTransposta
 
@@ -432,6 +433,7 @@ namespace AntropofagicoCSharp
             if (colunasA != linhasB)
                 throw new InvalidOperationException("O número de colunas da matriz A deve ser igual ao número de linhas da matriz B.");
 
+
             // Criando a matriz resultante
             double[,] matrizResultante = new double[linhasA, colunasB];
 
@@ -452,11 +454,12 @@ namespace AntropofagicoCSharp
                     matrizResultante[i, j] *= escalar;
             }
 
+            AutosValoresEVetores(matrizResultante);
             return matrizResultante;
         }
         #endregion ProdutoDasMatrizesTranspostaECovariância
 
-        /*  #region AutoValores e AutoVetores
+        #region AutoValores e AutoVetores
 
         public static void AutosValoresEVetores(double[,] produtoMatrizCovariancia)
         {
@@ -503,7 +506,12 @@ namespace AntropofagicoCSharp
             foreach (System.Numerics.Complex valor in ListaDosAutoValoresInvertidos) // listaInvertidaDeAutoValores
                 autoValoresInvertidosEmReal.Add(valor.Real);
 
-            Variancia(autoValoresInvertidosEmReal);
+            double totalVariance = autoValoresInvertidosEmReal.Sum();
+            double[] razãoDeVarianciaExplicada = autoValoresInvertidosEmReal.Select(e => e / totalVariance).ToArray();
+
+            Console.WriteLine(razãoDeVarianciaExplicada);
+
+           // Variancia(autoValoresInvertidosEmReal);
         }
 
         #endregion AutoValoresEmNumeraçãoReal
@@ -523,27 +531,19 @@ namespace AntropofagicoCSharp
 
         #endregion AutoVetoresEmNumeraçãoReal
 
-        #region variância
+        #region PercentualDeCadaComponente
 
-        public static void Variancia(List<double> autoValoresInvertidosEmReal)
+        public static void PercentualDeCadaComponente(Accord.Statistics.Analysis.PrincipalComponentAnalysis pca)
         {
-            List<double> var_pcs = new List<double>();
+            double[] autovalores = pca.Eigenvalues; // obtendo os autovalores
+            double varianciaTotal = autovalores.Sum(); // somando todos os autovalores
+            double[] varianciaExplicada = autovalores.Select(e => e / varianciaTotal).ToArray();
 
-            double soma = autoValoresInvertidosEmReal.Sum(); // "soma" contém o somatório de todos os valores em autoValoresInvertidosEmReal
-
-            // porcentagem dos auto-valores em formato real:
-
-            for (int i = 0; i < autoValoresInvertidosEmReal.Count; i++)
-            {
-                var result = ((autoValoresInvertidosEmReal[i] / soma) * 100);
-                var_pcs.Add(result);
-            }
-
-            Console.WriteLine(var_pcs);
-
+            string C1 = (Math.Round(varianciaExplicada[0] * 100).ToString() + "%"); // porcentagem do primeiro componente
+            string C2 = (Math.Round(varianciaExplicada[1] * 100).ToString() + "%"); // porcentagem do segundo componente
         }
 
-        #endregion variância
+        #endregion PercentualDeCadaComponente
 
         #region transformandoArrayUnidimensionalEmBi
 
@@ -626,33 +626,12 @@ namespace AntropofagicoCSharp
         #endregion NormalizaçãoDosDados
 
         #region VariânciaDosComponentes
-        /*
-        public static void Teste()
-        {
-
-            var pca = new Accord.Statistics.Analysis.PrincipalComponentAnalysis()
-            {
-                Method = PrincipalComponentMethod.Center
-            };
-
-            double pc = pca.ExplainedVariance;
-
-            double[] PCs = new double[2];
-            PCs.Add(pc);
-
-            string C1 = (Math.Round(PCs[0] * 100,0).ToString() + "%");
-            string C2 = (Math.Round(PCs[1] * 100, 0).ToString() + "%");
-
-        }*/
 
         #endregion VariânciaDosComponentes
 
         #region PlotagemDoGrafico
         public static void PlotagemGraficoPCA(double[,] arrayNormalizado)
         {
-
-            //Teste();
-
             int numLinhas = arrayNormalizado.GetLength(0);
 
             double[] x = new double[numLinhas];
@@ -665,7 +644,9 @@ namespace AntropofagicoCSharp
             }
 
             PCA_grafico pcaGrafico = new PCA_grafico();
-             
+
+
+
             pcaGrafico.Text = "Análise de Componentes Principais (PCA)";
             pcaGrafico.Show(); // renderiza a interface do gráfico em si.
 

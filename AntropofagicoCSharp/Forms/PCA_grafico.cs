@@ -1,6 +1,8 @@
 ﻿using Accord;
 using Accord.Math;
+using Accord.Statistics.Analysis;
 using ScottPlot;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AntropofagicoCSharp.Forms
 {
@@ -123,6 +125,14 @@ namespace AntropofagicoCSharp.Forms
                 }
             };
         }
+
+        public void AtualizaLabel(string c1, string c2)
+        {
+            // mostrando o percentual de variância de cada componente principal:
+            formsPlot1.Plot.XLabel("PC 2 " + "(" + c1 + ")"); // eixo x;
+            formsPlot1.Plot.YLabel("PC 1 " + "(" + c2 + ")"); // eixo y
+        }
+
         #endregion PlotagemGraficoPCA
     }
 }

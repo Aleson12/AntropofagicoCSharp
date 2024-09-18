@@ -1,19 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Serialization;
-using Accord.Math;
-using ScottPlot;
-using ScottPlot.Plottables;
-using ScottPlot.WinForms;
-
-namespace AntropofagicoCSharp.Forms
+﻿namespace AntropofagicoCSharp.Forms
 {
     public partial class GraficoDeCadaPonto : Form
     {
@@ -47,7 +32,6 @@ namespace AntropofagicoCSharp.Forms
             formsPlot2.Plot.Clear();
             myScatter = formsPlot2.Plot.Add.Scatter(arrayX, arrayY); // armazenando os pontos na variável "myScatter"
             myScatter.LineWidth = 0; // 0 linhas que ligam os pontos
-                        
         }
     }
 }

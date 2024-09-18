@@ -38,14 +38,14 @@
             formsPlot2.Dock = DockStyle.Fill;
             formsPlot2.Location = new Point(0, 0);
             formsPlot2.Name = "formsPlot2";
-            formsPlot2.Size = new Size(655, 425);
+            formsPlot2.Size = new Size(1055, 639);
             formsPlot2.TabIndex = 0;
             // 
             // GraficoDeCadaPonto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(655, 425);
+            ClientSize = new Size(1055, 639);
             Controls.Add(formsPlot2);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "GraficoDeCadaPonto";

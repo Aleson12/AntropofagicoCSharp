@@ -14,9 +14,7 @@
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
             base.Dispose(disposing);
         }
 
@@ -37,9 +35,9 @@
             // 
             formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             formsPlot1.DisplayScale = 1F;
-            formsPlot1.Location = new Point(-2, 1);
+            formsPlot1.Location = new Point(12, 12);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(905, 680);
+            formsPlot1.Size = new Size(1028, 715);
             formsPlot1.TabIndex = 0;
             formsPlot1.Load += formsPlot1_Load;
             // 
@@ -56,7 +54,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(900, 678);
+            ClientSize = new Size(1067, 739);
             Controls.Add(label2);
             Controls.Add(formsPlot1);
             Icon = (Icon)resources.GetObject("$this.Icon");

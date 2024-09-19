@@ -1,8 +1,5 @@
-﻿using Accord;
-using Accord.Math;
-using Accord.Statistics.Analysis;
+﻿using Accord.Math;
 using ScottPlot;
-using System.Security.Cryptography.X509Certificates;
 
 namespace AntropofagicoCSharp.Forms
 {

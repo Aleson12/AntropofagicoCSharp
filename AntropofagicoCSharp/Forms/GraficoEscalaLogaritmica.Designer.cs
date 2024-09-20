@@ -29,24 +29,25 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GraficoEscalaLogaritmica));
-            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+            formsPlot3 = new ScottPlot.WinForms.FormsPlot();
             SuspendLayout();
             // 
-            // formsPlot1
+            // formsPlot3
             // 
-            formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            formsPlot1.DisplayScale = 1F;
-            formsPlot1.Location = new Point(0, -3);
-            formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(802, 453);
-            formsPlot1.TabIndex = 0;
+            formsPlot3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            formsPlot3.DisplayScale = 1F;
+            formsPlot3.Location = new Point(0, -3);
+            formsPlot3.Name = "formsPlot3";
+            formsPlot3.Size = new Size(802, 453);
+            formsPlot3.TabIndex = 0;
+            formsPlot3.Load += formsPlot3_Load;
             // 
             // GraficoEscalaLogaritmica
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(formsPlot1);
+            Controls.Add(formsPlot3);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "GraficoEscalaLogaritmica";
             Text = "Gráfico em Escala Logarítmica";
@@ -55,6 +56,6 @@
 
         #endregion
 
-        private ScottPlot.WinForms.FormsPlot formsPlot1;
+        private ScottPlot.WinForms.FormsPlot formsPlot3;
     }
 }

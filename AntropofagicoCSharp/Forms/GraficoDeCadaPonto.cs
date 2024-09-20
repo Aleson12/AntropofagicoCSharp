@@ -11,17 +11,16 @@ namespace AntropofagicoCSharp.Forms
         // instanciando o formulário de escala logarítmica:
         GraficoEscalaLogaritmica graficoLog = new GraficoEscalaLogaritmica();
 
+        double[] arrayX; 
+        double[] arrayY;
 
         public GraficoDeCadaPonto()
         {
             InitializeComponent();
-
-
         }
 
         public void PlotagemIndividual(List<double> valoresContidosNoArquivoCsvLido)
         {
-           // Button button1 = new Button();
 
             List<double> Lista_X = new List<double>();
             List<double> Lista_Y = new List<double>();
@@ -36,23 +35,17 @@ namespace AntropofagicoCSharp.Forms
                 cont++;
             });
 
-            double[] arrayX = Lista_X.ToArray();
-            double[] arrayY = Lista_Y.ToArray();
+            arrayX = Lista_X.ToArray();
+            arrayY = Lista_Y.ToArray();
 
             this.BringToFront(); // fazendo sobrepor este gráfico aos demais
             formsPlot2.Plot.Clear();
-            
+
             var myScatter = formsPlot2.Plot.Add.Scatter(arrayX, arrayY); // armazenando o resultado da plotagem numa variável
 
             myScatter.MarkerSize = 0; // definindo zero marcadores
 
             formsPlot2.Refresh(); // atualizando o gráfico
-
-           /* button1.MouseHover += (s, e) => { 
-            
-                Cursor = Cursors.Hand;            
-            
-            };*/
         }
 
         // método para mostrar o gráfico com os dados em escala logarítmica:
@@ -67,8 +60,9 @@ namespace AntropofagicoCSharp.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
+            GraficoEscalaLogaritmica.CalculoLogaritmico(arrayX, arrayY);
+            graficoLog.formsPlot3_Load(sender, e);
             MostrarGraficoEmEscalaLogaritmica(sender, e);
-            button1.Cursor = Cursors.Hand;
         }
     }
 }

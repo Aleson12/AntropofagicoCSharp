@@ -34,22 +34,22 @@
             // 
             // formsPlot1
             // 
+            formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             formsPlot1.DisplayScale = 1F;
-            formsPlot1.Dock = DockStyle.Fill;
-            formsPlot1.Location = new Point(0, 0);
+            formsPlot1.Location = new Point(0, -3);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(963, 541);
+            formsPlot1.Size = new Size(802, 453);
             formsPlot1.TabIndex = 0;
             // 
             // GraficoEscalaLogaritmica
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(963, 541);
+            ClientSize = new Size(800, 450);
             Controls.Add(formsPlot1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "GraficoEscalaLogaritmica";
-            Text = "Grafico em escala logarítmica";
+            Text = "Gráfico em Escala Logarítmica";
             ResumeLayout(false);
         }
 

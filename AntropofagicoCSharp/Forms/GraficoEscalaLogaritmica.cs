@@ -16,8 +16,5 @@ namespace AntropofagicoCSharp.Forms
         {
             InitializeComponent();
         }
-
-
-
     }
 }

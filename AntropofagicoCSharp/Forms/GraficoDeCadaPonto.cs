@@ -13,8 +13,8 @@ namespace AntropofagicoCSharp.Forms
         public GraficoDeCadaPonto()
         {
             InitializeComponent();
-        }
 
+        }
         public void PlotagemIndividual(List<double> valoresContidosNoArquivoCsvLido)
         {
 
@@ -42,11 +42,16 @@ namespace AntropofagicoCSharp.Forms
         // método para mostrar o gráfico com os dados em escala logarítmica:
         private void MostrarGraficoEmEscalaLogaritmica(object sender, EventArgs e)
         {
-            if(graficoLog == null || graficoLog.IsDisposed) // se o objeto referente ao Gráfico de Logarítmo for nulo ou tiver sido descartado, 
+            if (graficoLog == null || graficoLog.IsDisposed) // se o objeto referente ao Gráfico de Logarítmo for nulo ou tiver sido descartado, 
                 graficoLog = new GraficoEscalaLogaritmica(); // instancie um novo objeto
 
             graficoLog.Show(); // mostrar formulário
             graficoLog.TopMost = true; // força a sobreposição deste formulário em detrimento dos outros
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MostrarGraficoEmEscalaLogaritmica(sender, e);
         }
     }
 }

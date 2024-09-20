@@ -84,8 +84,8 @@ namespace AntropofagicoCSharp.Forms
                 }
             };
 
-            formsPlot1.MouseDown += (s, e) => // ao clicar em um ponto no gráfico, faça:
-            {
+           formsPlot1.MouseDown += (s, e) => // ao clicar em um ponto no gráfico, faça:
+           {
                 Pixel mousePixel = new(e.Location.X, e.Location.Y);
                 Coordinates localizacaoDoMouse = formsPlot1.Plot.GetCoordinates(mousePixel);
                 DataPoint nearest = MyScatter.Data.GetNearest(localizacaoDoMouse, formsPlot1.Plot.LastRender);
@@ -101,26 +101,26 @@ namespace AntropofagicoCSharp.Forms
                     Cursor = Cursors.Hand; // ponteiro do mouse definido como "hand" ao sobrepor um ponto no gráfico
 
                     // se o objeto que representa o gráfico for nulo ou descartado, será instanciado um novo (para que a aplicação não quebre quando o usuário fechar o gráfico menor e tentar abri-lo de novo, clicando em outro ponto).
-                   if (graficoIndividual == null || graficoIndividual.IsDisposed)
-                        graficoIndividual = new GraficoDeCadaPonto();
-                    
-                    try
-                    {
-                        // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
-                        if (nearest.IsReal)
+                    if (graficoIndividual == null || graficoIndividual.IsDisposed)
+                          graficoIndividual = new GraficoDeCadaPonto();
 
-                            graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
-                            graficoIndividual.Show();
-                            graficoIndividual.PlotagemIndividual(valoresContidosNoArquivoCsvLido);
-                            graficoIndividual.Refresh();
-                    }
-                    catch (Exception ex)
-                    {
-                        // "Task.Run()" usado para que, ao fechar o message.box, o cursor do mouse não fique agarrado no ponto clicado
-                        Task.Run(() => MessageBox.Show("Não foi possível renderizar o gráfico individual do ponto", "Configuração", MessageBoxButtons.OK, MessageBoxIcon.Exclamation));
-                    }
+                        try
+                        {
+                            // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
+                            if (nearest.IsReal)
+
+                                graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
+                                graficoIndividual.Show();
+                                graficoIndividual.PlotagemIndividual(valoresContidosNoArquivoCsvLido);
+                                graficoIndividual.Refresh();
+                        }
+                        catch (Exception ex)
+                        {
+                            // "Task.Run()" usado para que, ao fechar o message.box, o cursor do mouse não fique agarrado no ponto clicado
+                            Task.Run(() => MessageBox.Show("Não foi possível renderizar o gráfico individual do ponto", "Configuração", MessageBoxButtons.OK, MessageBoxIcon.Exclamation));
+                        }
                 }
-            };
+           };
         }
 
         public void AtualizaLabel(string c1, string c2)

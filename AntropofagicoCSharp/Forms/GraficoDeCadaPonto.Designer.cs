@@ -52,7 +52,6 @@
             button1.TabIndex = 1;
             button1.Text = "Mostrar este gráfico em escala logarítmica";
             button1.UseVisualStyleBackColor = true;
-            button1.UseWaitCursor = true;
             button1.Click += button1_Click;
             // 
             // GraficoDeCadaPonto

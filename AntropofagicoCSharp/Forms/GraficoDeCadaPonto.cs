@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 using ScottPlot.WinForms;
+using System.ComponentModel;
 
 namespace AntropofagicoCSharp.Forms
 {
@@ -10,14 +11,17 @@ namespace AntropofagicoCSharp.Forms
         // instanciando o formulário de escala logarítmica:
         GraficoEscalaLogaritmica graficoLog = new GraficoEscalaLogaritmica();
 
+
         public GraficoDeCadaPonto()
         {
             InitializeComponent();
 
 
         }
+
         public void PlotagemIndividual(List<double> valoresContidosNoArquivoCsvLido)
         {
+           // Button button1 = new Button();
 
             List<double> Lista_X = new List<double>();
             List<double> Lista_Y = new List<double>();
@@ -43,6 +47,12 @@ namespace AntropofagicoCSharp.Forms
             myScatter.MarkerSize = 0; // definindo zero marcadores
 
             formsPlot2.Refresh(); // atualizando o gráfico
+
+           /* button1.MouseHover += (s, e) => { 
+            
+                Cursor = Cursors.Hand;            
+            
+            };*/
         }
 
         // método para mostrar o gráfico com os dados em escala logarítmica:
@@ -58,6 +68,7 @@ namespace AntropofagicoCSharp.Forms
         private void button1_Click(object sender, EventArgs e)
         {
             MostrarGraficoEmEscalaLogaritmica(sender, e);
+            button1.Cursor = Cursors.Hand;
         }
     }
 }

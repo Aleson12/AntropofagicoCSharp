@@ -14,6 +14,7 @@ namespace AntropofagicoCSharp.Forms
         {
             InitializeComponent();
 
+
         }
         public void PlotagemIndividual(List<double> valoresContidosNoArquivoCsvLido)
         {
@@ -34,11 +35,16 @@ namespace AntropofagicoCSharp.Forms
             double[] arrayX = Lista_X.ToArray();
             double[] arrayY = Lista_Y.ToArray();
 
-            this.BringToFront();
+            this.BringToFront(); // fazendo sobrepor este gráfico aos demais
             formsPlot2.Plot.Clear();
-            formsPlot2.Plot.Add.Scatter(arrayX, arrayY); // armazenando os pontos na variável "myScatter"
-            formsPlot2.Refresh();
+            
+            var myScatter = formsPlot2.Plot.Add.Scatter(arrayX, arrayY); // armazenando o resultado da plotagem numa variável
+
+            myScatter.MarkerSize = 0; // definindo zero marcadores
+
+            formsPlot2.Refresh(); // atualizando o gráfico
         }
+
         // método para mostrar o gráfico com os dados em escala logarítmica:
         private void MostrarGraficoEmEscalaLogaritmica(object sender, EventArgs e)
         {

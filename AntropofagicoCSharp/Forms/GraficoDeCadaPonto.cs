@@ -46,6 +46,16 @@ namespace AntropofagicoCSharp.Forms
             myScatter.MarkerSize = 0; // definindo zero marcadores
 
             formsPlot2.Refresh(); // atualizando o gráfico
+
+
+
+            this.FormClosed += GraficoDeCadaPonto_FormClosed;
+
+        }
+
+        private void GraficoDeCadaPonto_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            graficoLog.Close();
         }
 
         public void button1_Click(object sender, EventArgs e)
@@ -57,7 +67,7 @@ namespace AntropofagicoCSharp.Forms
             graficoLog.CalculoLogaritmico(arrayX, arrayY); // faz o cálculo do gráfico de logarítmo
             graficoLog.formsPlot3_Load(sender, e); // invocação do método que plota os dados no gráfico
             graficoLog.Show(); // apresenta o gráfico
-            graficoLog.Refresh(); 
+            graficoLog.Refresh();
         }
     }
 }

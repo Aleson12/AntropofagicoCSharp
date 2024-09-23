@@ -48,21 +48,16 @@ namespace AntropofagicoCSharp.Forms
             formsPlot2.Refresh(); // atualizando o gráfico
         }
 
-        // método para mostrar o gráfico com os dados em escala logarítmica:
-        private void MostrarGraficoEmEscalaLogaritmica(object sender, EventArgs e)
+        public void button1_Click(object sender, EventArgs e)
         {
-            if (graficoLog == null || graficoLog.IsDisposed) // se o objeto referente ao Gráfico de Logarítmo for nulo ou tiver sido descartado, 
-                graficoLog = new GraficoEscalaLogaritmica(); // instancie um novo objeto
-
-            graficoLog.Show(); // mostrar formulário
-            graficoLog.TopMost = true; // força a sobreposição deste formulário em detrimento dos outros
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            GraficoEscalaLogaritmica.CalculoLogaritmico(arrayX, arrayY);
-            graficoLog.formsPlot3_Load(sender, e);
-            MostrarGraficoEmEscalaLogaritmica(sender, e);
+            if (graficoLog == null || graficoLog.IsDisposed) //  se o objeto instanciado do gráfico de logarítmico for nulo ou se já tiver sido usado
+                graficoLog = new GraficoEscalaLogaritmica(); // instancia um novo objeto do gráfico de logarítmico
+            
+            graficoLog.TopMost = true; // sobrepõe o gráfico atual em detrimento dos outros 
+            graficoLog.CalculoLogaritmico(arrayX, arrayY); // faz o cálculo do gráfico de logarítmo
+            graficoLog.formsPlot3_Load(sender, e); // invocação do método que plota os dados no gráfico
+            graficoLog.Show(); // apresenta o gráfico
+            graficoLog.Refresh(); 
         }
     }
 }

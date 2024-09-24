@@ -1,3 +1,4 @@
+using Accord.Math;
 using AntropofagicoCSharp.Forms;
 using System.Globalization;
 
@@ -5,6 +6,7 @@ namespace AntropofagicoCSharp
 {
     public partial class FrmPrincipal : Form
     {
+        public GraficoDeCadaPonto graficoDeCadaPonto;
 
         public static string diretorio;
 
@@ -67,7 +69,7 @@ namespace AntropofagicoCSharp
 
         private void btn_AplicarPCA_Click(object sender, EventArgs e)
         {
-            Arquivo.PCA();
+            Arquivo.PCA();            
         }
     }
 }

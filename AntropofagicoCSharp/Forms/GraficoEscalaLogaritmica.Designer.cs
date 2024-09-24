@@ -40,7 +40,6 @@
             formsPlot3.Name = "formsPlot3";
             formsPlot3.Size = new Size(802, 453);
             formsPlot3.TabIndex = 0;
-            formsPlot3.Load += formsPlot3_Load;
             // 
             // GraficoEscalaLogaritmica
             // 

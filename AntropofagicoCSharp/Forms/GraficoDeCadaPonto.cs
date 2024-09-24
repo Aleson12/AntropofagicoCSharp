@@ -8,6 +8,9 @@ namespace AntropofagicoCSharp.Forms
 {
     public partial class GraficoDeCadaPonto : Form
     {
+
+
+
         // instanciando o formulário de escala logarítmica:
         GraficoEscalaLogaritmica graficoLog = new GraficoEscalaLogaritmica();
 
@@ -47,15 +50,13 @@ namespace AntropofagicoCSharp.Forms
 
             formsPlot2.Refresh(); // atualizando o gráfico
 
-
-
-            this.FormClosed += GraficoDeCadaPonto_FormClosed;
+            this.FormClosed += GraficoDeCadaPonto_FormClosed; // ao fechar o formulário, execute o método
 
         }
 
         private void GraficoDeCadaPonto_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            graficoLog.Close();
+            graficoLog.Close(); // fecha o gráfico de logarítmo
         }
 
         public void button1_Click(object sender, EventArgs e)
@@ -64,8 +65,7 @@ namespace AntropofagicoCSharp.Forms
                 graficoLog = new GraficoEscalaLogaritmica(); // instancia um novo objeto do gráfico de logarítmico
             
             graficoLog.TopMost = true; // sobrepõe o gráfico atual em detrimento dos outros 
-            graficoLog.CalculoLogaritmico(arrayX, arrayY); // faz o cálculo do gráfico de logarítmo
-            graficoLog.formsPlot3_Load(sender, e); // invocação do método que plota os dados no gráfico
+            graficoLog.CalculoLogaritmico(arrayX,arrayY); // faz o cálculo do gráfico de logarítmo
             graficoLog.Show(); // apresenta o gráfico
             graficoLog.Refresh();
         }

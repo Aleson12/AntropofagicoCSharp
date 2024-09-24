@@ -28,9 +28,6 @@ namespace AntropofagicoCSharp.Forms
 
         public void CalculoLogaritmico(double[] arrayX, double[] arrayY)
         {
-            logX = new double[arrayX.Length];
-            logY = new double[arrayY.Length];
-
             List<double> valoresDeXFiltrados = new List<double>();
             List<double> valoresDeYFiltrados = new List<double>();
 
@@ -38,22 +35,27 @@ namespace AntropofagicoCSharp.Forms
             {
                 // Filtrar valores de X < 100 (para que os valores abaixo de 100 do eixo X não sejam exibidos):
                 if (arrayX[i] >= 100)
-                    valoresDeXFiltrados.Add(arrayX[i]);
+                {
+                    valoresDeXFiltrados.Add(arrayX[i]); // valores filtrados (maiores que 100) adicionados à lista
 
-                    if (arrayY[i] > 0)
-                        valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i]));
+                    if (arrayY[i] > 0) // valores negativos não são considerados no eixo Y
+                        valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i])); 
                     else
                         valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero
+                }
             }
 
+            // Converter as listas filtradas para arrays
             logX = valoresDeXFiltrados.ToArray();
             logY = valoresDeYFiltrados.ToArray();
 
+            // Limpar o gráfico e plotar os novos valores
             formsPlot3.Plot.Clear();
 
-            var myScatter = formsPlot3.Plot.Add.Scatter(logX,logY);
-            myScatter.MarkerSize = 0;
+            var myScatter = formsPlot3.Plot.Add.Scatter(logX, logY); // plotagem dos valores no gráfico
+            myScatter.MarkerSize = 0; // sem marcadores na linha
 
+            // Atualizar o gráfico
             formsPlot3.Refresh();
         }
     }

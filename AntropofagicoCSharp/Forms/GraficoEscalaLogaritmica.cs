@@ -31,22 +31,30 @@ namespace AntropofagicoCSharp.Forms
             logX = new double[arrayX.Length];
             logY = new double[arrayY.Length];
 
+            List<double> valoresDeXFiltrados = new List<double>();
+            List<double> valoresDeYFiltrados = new List<double>();
+
             for (int i = 0; i < arrayY.Length; i++)
             {
-                if (arrayY[i] > 0)
-                    logY[i] = Math.Log10((double)arrayY[i]);
-                else
-                    logX[i] = double.NaN;
+                // Filtrar valores de X < 100 (para que os valores abaixo de 100 do eixo X não sejam exibidos):
+                if (arrayX[i] >= 100)
+                    valoresDeXFiltrados.Add(arrayX[i]);
+
+                    if (arrayY[i] > 0)
+                        valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i]));
+                    else
+                        valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero
             }
-            
+
+            logX = valoresDeXFiltrados.ToArray();
+            logY = valoresDeYFiltrados.ToArray();
+
             formsPlot3.Plot.Clear();
 
-            var myScatter = formsPlot3.Plot.Add.Scatter(arrayX,logY);
+            var myScatter = formsPlot3.Plot.Add.Scatter(logX,logY);
             myScatter.MarkerSize = 0;
 
-          //  formsPlot3.Plot.Axes.AutoScale(true);
             formsPlot3.Refresh();
-
         }
     }
 }

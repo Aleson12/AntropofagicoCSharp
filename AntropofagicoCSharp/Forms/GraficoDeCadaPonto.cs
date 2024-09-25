@@ -8,9 +8,6 @@ namespace AntropofagicoCSharp.Forms
 {
     public partial class GraficoDeCadaPonto : Form
     {
-
-
-
         // instanciando o formulário de escala logarítmica:
         GraficoEscalaLogaritmica graficoLog = new GraficoEscalaLogaritmica();
 

@@ -10,8 +10,10 @@ using System.Windows.Forms;
 using Accord.Math;
 using AntropofagicoCSharp;
 using LiveCharts.Wpf;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.VisualBasic.Logging;
 using ScottPlot;
+using ScottPlot.Colormaps;
 using ScottPlot.WinForms;
 
 namespace AntropofagicoCSharp.Forms
@@ -23,7 +25,7 @@ namespace AntropofagicoCSharp.Forms
 
         public GraficoEscalaLogaritmica()
         {
-            InitializeComponent(); 
+            InitializeComponent();
         }
 
         public void CalculoLogaritmico(double[] arrayX, double[] arrayY)
@@ -39,7 +41,7 @@ namespace AntropofagicoCSharp.Forms
                     valoresDeXFiltrados.Add(arrayX[i]); // valores filtrados (maiores que 100) adicionados à lista
 
                     if (arrayY[i] > 0) // valores negativos não são considerados no eixo Y
-                        valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i])); 
+                        valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i]));
                     else
                         valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero
                 }
@@ -57,6 +59,53 @@ namespace AntropofagicoCSharp.Forms
 
             // Atualizar o gráfico
             formsPlot3.Refresh();
+            
+            Teste(logX, logY);
+        }
+
+        public void Teste(double[] logX, double[] logY)
+        {
+            ScottPlot.Plottables.Scatter MyScatter;
+
+            ScottPlot.Color color = new ScottPlot.Color();
+            
+            MyScatter = formsPlot3.Plot.Add.Scatter(logX, logY);
+
+
+            MyScatter.MarkerSize = 0;
+            //MyScatter.Color = color.;
+
+            formsPlot3.MouseMove += (s, e) =>
+            {
+                Pixel mousePixel = new(e.Location.X, e.Location.Y);
+                Coordinates localizacaoDoMouse = formsPlot3.Plot.GetCoordinates(mousePixel);
+                DataPoint pontoMaisProximo = MyScatter.Data.GetNearest(localizacaoDoMouse, formsPlot3.Plot.LastRender);
+
+                if (pontoMaisProximo.Equals(DataPoint.None))
+                {
+                    Cursor = Cursors.Default;
+                    return;
+                }
+                else
+                {
+                    Cursor = Cursors.Hand;
+
+                    formsPlot3.Plot.Remove<ScottPlot.Plottables.Callout>();
+
+                    formsPlot3.Plot.Add.Callout($" X:{pontoMaisProximo.X}\n Y:{pontoMaisProximo.Y}",
+                        
+                        textLocation: pontoMaisProximo.Coordinates,
+                        tipLocation: pontoMaisProximo.Coordinates
+                       
+                    );
+
+                    formsPlot3.Refresh(); // esta instrução faz com que as caixas de texto (que informam as coordenadas da região da linha sombreada)
+                                          // sejam renderizadas dinamicamente, exatamente no momento
+                                          // em que o cursor do mouse sombreia
+                                          // a linha do gráfico.
+                }
+
+            };
         }
     }
 }

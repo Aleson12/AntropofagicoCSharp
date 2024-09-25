@@ -43,7 +43,6 @@ namespace AntropofagicoCSharp.Forms
 
             MyCrosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
             MyCrosshair.IsVisible = false;
-            MyCrosshair.MarkerShape = MarkerShape.OpenCircle;
             List<double> valoresContidosNoArquivoCsvLido = new List<double>();
 
             formsPlot1.MouseMove += (s, e) => // ao sobrepor um ponto no gráfico, faça:

@@ -1,14 +1,14 @@
 ﻿using Accord.Math;
+using Accord.Statistics.Analysis;
+using Accord.Statistics.Kernels;
 using AntropofagicoCSharp.Forms;
 using CsvHelper;
 using CsvHelper.Configuration;
 using MathNet.Numerics.LinearAlgebra.Double;
 using System.Data;
-using Accord.Statistics.Analysis;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Accord.Statistics.Kernels;
 
 namespace AntropofagicoCSharp
 {
@@ -29,11 +29,13 @@ namespace AntropofagicoCSharp
         private static readonly int _linhas = 2048;
         private static bool _validaPrimeiroCaso = false; // variável no escopo da classe vira campo/atributo
         public static string _caminhoDaPastaDosArquivosCSVPosTratamento; // membro da classe definido como "público" para ser possível acessá-lo na classe principal da Interface
+        public static string _caminhoDaPastaComOsArquivosTXTsAgrupados;
         public static string _caminhosCsv;
         public static string _caminhoComONomeDoArquivoCSVFinal;
         public static int qtdLinhasEmMatrizFinal;
         private static double[] varianciaExplicada;
         private static int colunaAtual = 0;
+        public static string[] valores;
 
         public static string C1;
         public static string C2;
@@ -66,6 +68,7 @@ namespace AntropofagicoCSharp
             string comparaNome = string.Empty;
             object MatrizVAR = new object[_linhas, caminhosDosArquivosTxtDaPasta.Count];
             // extraindo apenas o nome do arquivo .txt (sem a extensão e o seu caminho de diretório) 
+
             caminhosDosArquivosTxtDaPasta.ToList().ForEach(caminho =>
             {
                 if (Path.GetDirectoryName(caminho) != " ")
@@ -107,7 +110,6 @@ namespace AntropofagicoCSharp
         #region ProcessamentoDosTxtsAgrupados
         private static void ProcessamentoDosTxtsAgrupados()
         {
-
             int divisorParaMediaEQuantidadeDeColunasDaMatriz = arquivosAgrupados.Count;
 
             int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
@@ -119,14 +121,20 @@ namespace AntropofagicoCSharp
 
             for (int i = 0; i < colunas; i++)
             {
-                string[] valores = File.ReadAllLines(FrmPrincipal.diretorio + "\\" + arquivosAgrupados[i] + ".txt".ToString());
+                string[] valores = File.ReadAllLines(FrmPrincipal.diretorio + "\\" + arquivosAgrupados[i] + ".txt".ToString()); // o conteúdo de cada arquivo .txt lido (primeira e segunda colunas) é inserido nesse array de strings chamado "valores"
                 for (int j = 0; j < valores.Length; j++)
                     if (!double.TryParse(valores[j].Split(";")[1].Trim(), out matriz[j, i]))
                         matriz[j, i] = double.MinValue; // Caso o parse gere uma exceção
+    
+              //  GraficoEscalaLogaritmica.TratamentoDeDadosTxts(valores);
+
             }
+
             nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];
 
             GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetros para este método para que ele seja capaz de manipulá-los
+            GerarUmArquivoTXT(matriz, nomeDoArquivoCsv);
+
             colunaDaMatriz += 1;
         }
         #endregion ProcessamentoDosTxtsAgrupados
@@ -157,6 +165,7 @@ namespace AntropofagicoCSharp
             }
             return medias;
         }
+        
         #endregion ObterMedias
 
         #region GerarSomenteUmArquivoPorClasse
@@ -184,6 +193,45 @@ namespace AntropofagicoCSharp
             GerandoMatrizMedias();
         }
         #endregion GerarSomenteUmArquivoPorClasse
+
+        #region GerarUmArquiTXT
+
+        public static void GerarUmArquivoTXT(double[,] matriz, string nomeDoArquivoTXT) 
+        {
+            List<string> valoresEixoX = new List<string>();
+            List<string> valoresEixoY = new List<string>();
+
+            List<double> valoresEixoX_Doubles = new List<double>();
+            List<int> valoresEixoY_Inteiros = new List<int>();
+
+            string nomeComTipo = string.Empty; // nome do arquivo
+            string caminhoComNomeDoTxt;
+
+            _caminhoDaPastaComOsArquivosTXTsAgrupados = Path.Combine($"{FrmPrincipal.diretorio}\\Txt's Agrupados");
+            Directory.CreateDirectory(_caminhoDaPastaComOsArquivosTXTsAgrupados);
+
+            caminhoComNomeDoTxt = Path.Combine($"{_caminhoDaPastaComOsArquivosTXTsAgrupados}\\{nomeDoArquivoTXT}.txt");
+            
+            using (StreamWriter writer = new StreamWriter(caminhoComNomeDoTxt))
+            {
+                foreach (string vlr in caminhosDosArquivosTxtDaPasta) //aqui eu devo ler os valores de Rom1-4, Rom1-5, Rom1-6
+                {
+                    writer.WriteLine($"{vlr}");
+
+                    string[] partes = vlr.Split(';');
+
+                    valoresEixoX.Add(partes[0].Trim());
+                    valoresEixoX.Add(partes[1].Trim());
+
+                    valoresEixoX_Doubles = valoresEixoX.ConvertAll(double.Parse);
+                    valoresEixoY_Inteiros = valoresEixoY.ConvertAll(int.Parse);
+                }
+            }
+
+            AgrupandoOsTxtsPorClasse();
+        }
+
+        #endregion GerarUmArquivoTXT
 
         #region GerandoMatrizMedias
         public static void GerandoMatrizMedias()
@@ -279,10 +327,10 @@ namespace AntropofagicoCSharp
                     // para cada arquivo, é instanciado um Objeto da classe MatrizRelCSV, com seus valores e nome de arquivo, e, após,
                     // inserido na lista "listaMatrizRelCSV":
 
-                    listaMatrizRelCSV.Add(new MatrizRelCSV {ValoresInternosCSV = records.ToList(), NomeArqCSV = Path.GetFileName(arq)});
+                    listaMatrizRelCSV.Add(new MatrizRelCSV { ValoresInternosCSV = records.ToList(), NomeArqCSV = Path.GetFileName(arq) });
 
                     arquivos.Add(Path.GetFileName(arq));
-                               
+
                 }
             }
 
@@ -331,7 +379,7 @@ namespace AntropofagicoCSharp
 
                 // Soma os valores de cada linha na coluna atual
                 for (int linha = 0; linha < numLinhas; linha++)
-                    
+
                     soma += matrizMedias[linha, coluna];
 
                 // Armazena a soma da coluna no array unidimensional
@@ -569,7 +617,7 @@ namespace AntropofagicoCSharp
 
         #region produtoDeMatrizes
 
-        public static void ProdutoDeMatrizes(double[,] matrizMedias, double[,]autoVetoresRealArrayBidimensional)
+        public static void ProdutoDeMatrizes(double[,] matrizMedias, double[,] autoVetoresRealArrayBidimensional)
         {
             double[,] resultado = new double[matrizMedias.GetLength(0), autoVetoresRealArrayBidimensional.GetLength(1)];
 
@@ -647,7 +695,7 @@ namespace AntropofagicoCSharp
             pcaGrafico.BringToFront(); // traz o formulário atual para frente, sobrepondo outros que estiverem na frente
             pcaGrafico.AtualizarGrafico(x, y); // plota os pontos no gráfico, efetivamente.
             PercentualDeCadaComponente(pca);
-            pcaGrafico.AtualizaLabel(C1,C2);
+            pcaGrafico.AtualizaLabel(C1, C2);
         }
 
         #endregion PlotagemDoGrafico

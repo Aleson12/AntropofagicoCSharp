@@ -28,6 +28,7 @@
     <PackageReference Include="PrincipalComponentAnalysisThatActuallyWorks" Version="1.0.0" />
     <PackageReference Include="ScottPlot" Version="5.0.37" />
     <PackageReference Include="ScottPlot.WinForms" Version="5.0.37" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
     <PackageReference Include="WinForms.DataVisualization" Version="1.9.2" />
     <PackageReference Include="ZedGraph" Version="5.1.7" />
   </ItemGroup>

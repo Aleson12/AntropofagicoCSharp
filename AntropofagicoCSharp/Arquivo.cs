@@ -5,6 +5,7 @@ using AntropofagicoCSharp.Forms;
 using CsvHelper;
 using CsvHelper.Configuration;
 using MathNet.Numerics.LinearAlgebra.Double;
+using Plotly.NET.ConfigObjects;
 using System.Data;
 using System.Globalization;
 using System.Text;
@@ -24,6 +25,8 @@ namespace AntropofagicoCSharp
         private static List<double> mediaDosValoresDaMatriz;
         private static List<double[]> todasAsColunasDeMatrizFinal = []; // uma lista de arrays
         public static List<MatrizRelCSV> listaMatrizRelCSV = new List<MatrizRelCSV>();
+        public static List<string> valoresEixoX = new List<string>();
+        public static List<string> valoresEixoY = new List<string>();
 
         private static double[,] matrizMedias; // Matriz com todas as médias dos valores
         private static readonly int _linhas = 2048;
@@ -110,6 +113,8 @@ namespace AntropofagicoCSharp
         #region ProcessamentoDosTxtsAgrupados
         private static void ProcessamentoDosTxtsAgrupados()
         {
+            string[] valores;
+
             int divisorParaMediaEQuantidadeDeColunasDaMatriz = arquivosAgrupados.Count;
 
             int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
@@ -121,19 +126,23 @@ namespace AntropofagicoCSharp
 
             for (int i = 0; i < colunas; i++)
             {
-                string[] valores = File.ReadAllLines(FrmPrincipal.diretorio + "\\" + arquivosAgrupados[i] + ".txt".ToString()); // o conteúdo de cada arquivo .txt lido (primeira e segunda colunas) é inserido nesse array de strings chamado "valores"
+                nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0]; 
+                valores = File.ReadAllLines(FrmPrincipal.diretorio + "\\" + arquivosAgrupados[i] + ".txt".ToString()); // o conteúdo de cada arquivo .txt lido (primeira e segunda colunas) é inserido nesse array de strings chamado "valores"
+
+                valores.ToList();
+                
                 for (int j = 0; j < valores.Length; j++)
                     if (!double.TryParse(valores[j].Split(";")[1].Trim(), out matriz[j, i]))
                         matriz[j, i] = double.MinValue; // Caso o parse gere uma exceção
-    
-              //  GraficoEscalaLogaritmica.TratamentoDeDadosTxts(valores);
+
+                //  GraficoEscalaLogaritmica.TratamentoDeDadosTxts(valores);
+                      GerarUmArquivoTXT(valores, nomeDoArquivoCsv);
 
             }
-
+            
             nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];
 
             GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetros para este método para que ele seja capaz de manipulá-los
-            GerarUmArquivoTXT(matriz, nomeDoArquivoCsv);
 
             colunaDaMatriz += 1;
         }
@@ -194,41 +203,51 @@ namespace AntropofagicoCSharp
         }
         #endregion GerarSomenteUmArquivoPorClasse
 
-        #region GerarUmArquiTXT
-
-        public static void GerarUmArquivoTXT(double[,] matriz, string nomeDoArquivoTXT) 
+        #region GerarUmArquivoTXT
+        
+        public static void GerarUmArquivoTXT(string[] valoresNosArquivosTxts0, string nomeDoArquivoTXT) 
         {
-            List<string> valoresEixoX = new List<string>();
-            List<string> valoresEixoY = new List<string>();
-
-            List<double> valoresEixoX_Doubles = new List<double>();
-            List<int> valoresEixoY_Inteiros = new List<int>();
+         //   List<double> valoresEixoX_Doubles = new List<double>();
+            //List<int> valoresEixoY_Inteiros = new List<int>();
 
             string nomeComTipo = string.Empty; // nome do arquivo
             string caminhoComNomeDoTxt;
 
+            foreach (string valor in valoresNosArquivosTxts0)
+            {
+                // Divide a string usando o ponto-e-vírgula como delimitador
+                string[] partes = valor.Split(';');
+
+                // Adiciona o valor à esquerda na lista "valoresEixoX" e o valor à direita na lista "valoresEixoY"
+                valoresEixoX.Add(partes[0].Trim()); // retirando os espaços da string
+                valoresEixoY.Add(partes[1].Trim()); // retirando os espaços da string
+
+                // valoresEixoX_Doubles = valoresEixoX.ConvertAll(double.Parse);
+               // valoresEixoY_Inteiros = valoresEixoY.ConvertAll(int.Parse);
+
+            }
+                        
             _caminhoDaPastaComOsArquivosTXTsAgrupados = Path.Combine($"{FrmPrincipal.diretorio}\\Txt's Agrupados");
             Directory.CreateDirectory(_caminhoDaPastaComOsArquivosTXTsAgrupados);
 
             caminhoComNomeDoTxt = Path.Combine($"{_caminhoDaPastaComOsArquivosTXTsAgrupados}\\{nomeDoArquivoTXT}.txt");
-            
+
             using (StreamWriter writer = new StreamWriter(caminhoComNomeDoTxt))
             {
-                foreach (string vlr in caminhosDosArquivosTxtDaPasta) //aqui eu devo ler os valores de Rom1-4, Rom1-5, Rom1-6
+                for (int i = 0; i < valoresEixoX.Count; i++)
                 {
-                    writer.WriteLine($"{vlr}");
-
-                    string[] partes = vlr.Split(';');
-
-                    valoresEixoX.Add(partes[0].Trim());
-                    valoresEixoX.Add(partes[1].Trim());
-
-                    valoresEixoX_Doubles = valoresEixoX.ConvertAll(double.Parse);
-                    valoresEixoY_Inteiros = valoresEixoY.ConvertAll(int.Parse);
+                    writer.WriteLine($"{valoresEixoX[i]}; {valoresEixoY[i]}");
                 }
             }
 
-            AgrupandoOsTxtsPorClasse();
+           /* using (StreamWriter writer = new StreamWriter(caminhoComNomeDoTxt))
+            {
+                 foreach (string vlr in valoresEixoX) 
+                     writer.WriteLine($"{vlr}");
+
+                 
+                 
+            }*/
         }
 
         #endregion GerarUmArquivoTXT
@@ -423,7 +442,6 @@ namespace AntropofagicoCSharp
 
             double[,] produtoMatrizCovariancia = ProdutoDeTranspostaECovarianciaMatrizes(matrizTranspostaArray, matrizMedias, escalar);
 
-            //AutosValoresEVetores(produtoMatrizCovariancia);
             TransformacaoDeMatrizTransposta(matrizTranspostaArray);
 
             return matrizTranspostaArray;

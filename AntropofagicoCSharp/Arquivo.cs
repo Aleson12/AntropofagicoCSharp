@@ -1,4 +1,5 @@
-﻿using Accord.Math;
+﻿using Accord;
+using Accord.Math;
 using Accord.Statistics.Analysis;
 using Accord.Statistics.Kernels;
 using AntropofagicoCSharp.Forms;
@@ -117,7 +118,7 @@ namespace AntropofagicoCSharp
 
             int divisorParaMediaEQuantidadeDeColunasDaMatriz = arquivosAgrupados.Count;
 
-            int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
+            int colunas = divisorParaMediaEQuantidadeDeColunasDaMatriz * 2; // a quantidade de colunas da Matriz será a igual ao tamanho da Lista_dos_arquivos_agrupados
             string nomeDoArquivoCsv;
             int colunaDaMatriz = 0;
 
@@ -126,20 +127,16 @@ namespace AntropofagicoCSharp
 
             for (int i = 0; i < colunas; i++)
             {
-                nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0]; 
+                nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];
                 valores = File.ReadAllLines(FrmPrincipal.diretorio + "\\" + arquivosAgrupados[i] + ".txt".ToString()); // o conteúdo de cada arquivo .txt lido (primeira e segunda colunas) é inserido nesse array de strings chamado "valores"
 
                 valores.ToList();
-                
+
                 for (int j = 0; j < valores.Length; j++)
                     if (!double.TryParse(valores[j].Split(";")[1].Trim(), out matriz[j, i]))
                         matriz[j, i] = double.MinValue; // Caso o parse gere uma exceção
-
-                //  GraficoEscalaLogaritmica.TratamentoDeDadosTxts(valores);
-                      GerarUmArquivoTXT(valores, nomeDoArquivoCsv);
-
             }
-            
+
             nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];
 
             GerarSomenteUmArquivoPorClasse(matriz, nomeDoArquivoCsv); // passando a matriz e o nome de cada arquivo CSV como parâmetros para este método para que ele seja capaz de manipulá-los
@@ -174,7 +171,6 @@ namespace AntropofagicoCSharp
             }
             return medias;
         }
-        
         #endregion ObterMedias
 
         #region GerarSomenteUmArquivoPorClasse
@@ -202,55 +198,6 @@ namespace AntropofagicoCSharp
             GerandoMatrizMedias();
         }
         #endregion GerarSomenteUmArquivoPorClasse
-
-        #region GerarUmArquivoTXT
-        
-        public static void GerarUmArquivoTXT(string[] valoresNosArquivosTxts0, string nomeDoArquivoTXT) 
-        {
-         //   List<double> valoresEixoX_Doubles = new List<double>();
-            //List<int> valoresEixoY_Inteiros = new List<int>();
-
-            string nomeComTipo = string.Empty; // nome do arquivo
-            string caminhoComNomeDoTxt;
-
-            foreach (string valor in valoresNosArquivosTxts0)
-            {
-                // Divide a string usando o ponto-e-vírgula como delimitador
-                string[] partes = valor.Split(';');
-
-                // Adiciona o valor à esquerda na lista "valoresEixoX" e o valor à direita na lista "valoresEixoY"
-                valoresEixoX.Add(partes[0].Trim()); // retirando os espaços da string
-                valoresEixoY.Add(partes[1].Trim()); // retirando os espaços da string
-
-                // valoresEixoX_Doubles = valoresEixoX.ConvertAll(double.Parse);
-               // valoresEixoY_Inteiros = valoresEixoY.ConvertAll(int.Parse);
-
-            }
-                        
-            _caminhoDaPastaComOsArquivosTXTsAgrupados = Path.Combine($"{FrmPrincipal.diretorio}\\Txt's Agrupados");
-            Directory.CreateDirectory(_caminhoDaPastaComOsArquivosTXTsAgrupados);
-
-            caminhoComNomeDoTxt = Path.Combine($"{_caminhoDaPastaComOsArquivosTXTsAgrupados}\\{nomeDoArquivoTXT}.txt");
-
-            using (StreamWriter writer = new StreamWriter(caminhoComNomeDoTxt))
-            {
-                for (int i = 0; i < valoresEixoX.Count; i++)
-                {
-                    writer.WriteLine($"{valoresEixoX[i]}; {valoresEixoY[i]}");
-                }
-            }
-
-           /* using (StreamWriter writer = new StreamWriter(caminhoComNomeDoTxt))
-            {
-                 foreach (string vlr in valoresEixoX) 
-                     writer.WriteLine($"{vlr}");
-
-                 
-                 
-            }*/
-        }
-
-        #endregion GerarUmArquivoTXT
 
         #region GerandoMatrizMedias
         public static void GerandoMatrizMedias()
@@ -642,14 +589,10 @@ namespace AntropofagicoCSharp
             if (matrizMedias.GetLength(1) == autoVetoresRealArrayBidimensional.GetLength(0)) // condição necessária para multiplicar matrizes
             {
                 // Realizando a multiplicação das matrizes:
-                for (int i = 0; i < matrizMedias.GetLength(0); i++)
-                {
-                    for (int j = 0; j < autoVetoresRealArrayBidimensional.GetLength(1); j++)
-                    {
+                for (int i = 0; i < matrizMedias.GetLength(0); i++)                
+                    for (int j = 0; j < autoVetoresRealArrayBidimensional.GetLength(1); j++)                    
                         for (int k = 0; k < autoVetoresRealArrayBidimensional.GetLength(0); k++)
-                            resultado[i, j] += matrizMedias[i, k] * autoVetoresRealArrayBidimensional[k, j];
-                    }
-                }
+                            resultado[i, j] += matrizMedias[i, k] * autoVetoresRealArrayBidimensional[k, j]; 
             }
         }
 

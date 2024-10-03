@@ -39,7 +39,7 @@ namespace AntropofagicoCSharp.Forms
             arrayY = Lista_Y.ToArray();
 
             this.BringToFront(); // fazendo sobrepor este gráfico aos demais
-            formsPlot2.Plot.Clear(); 
+            formsPlot2.Plot.Clear();
 
             var myScatter = formsPlot2.Plot.Add.Scatter(arrayX, arrayY); // armazenando o resultado da plotagem numa variável
 

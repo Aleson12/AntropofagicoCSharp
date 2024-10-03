@@ -38,8 +38,8 @@ namespace AntropofagicoCSharp.Forms
                 valoresEixoY_Inteiros = valoresEixoY.ConvertAll(int.Parse);
 
             }
-           // Console.WriteLine(valoresEixoX_Doubles);
-           // Console.WriteLine(valoresEixoY_Inteiros);
+            // Console.WriteLine(valoresEixoX_Doubles);
+            // Console.WriteLine(valoresEixoY_Inteiros);
         }
 
         public void CalculoLogaritmico(double[] arrayX, double[] arrayY)
@@ -63,10 +63,10 @@ namespace AntropofagicoCSharp.Forms
 
 
                     });
-                        if (arrayY[i] > 0) // valores negativos não são considerados no eixo Y
-                            valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i]));
-                        else
-                            valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero
+                    if (arrayY[i] > 0) // valores negativos não são considerados no eixo Y
+                        valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i]));
+                    else
+                        valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero
                 }
             }
 
@@ -84,7 +84,7 @@ namespace AntropofagicoCSharp.Forms
 
             // Atualizar o gráfico
             formsPlot3.Refresh();
-                        
+
             PlotagemGraficoLogaritmico(eixoXEmEnergia, logY);
         }
 

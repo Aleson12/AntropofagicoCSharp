@@ -23,7 +23,8 @@ namespace AntropofagicoCSharp
         private static List<string> arquivosTxtsDaPastaOrdenados;
         private static List<string> arquivosAgrupados;
         private static List<double> valoresDoArquivoMatrizPCA;
-        private static List<double> mediaDosValoresDaMatriz;
+        private static double[,] mediaDosValoresDaMatriz;
+        //private static List<double> mediaDosValoresDaMatriz;
         private static List<double[]> todasAsColunasDeMatrizFinal = []; // uma lista de arrays
         public static List<MatrizRelCSV> listaMatrizRelCSV = new List<MatrizRelCSV>();
         public static List<string> valoresEixoX = new List<string>();
@@ -151,28 +152,31 @@ namespace AntropofagicoCSharp
         #endregion ProcessamentoDosTxtsAgrupados
 
         #region ObterMedias
-        private static List<double> ObterMedias(double[,] matriz)
+        private static double[,] ObterMedias(double[,] matriz)
         {
             int linhas = matriz.GetLength(0); // obtendo a quantidade de linhas
-            int colunas = matriz.GetLength(1); // obtendo a quantidade de colunas
+            int colunas = arquivosAgrupados.Count; // obtendo a quantidade de colunas (3)
 
-            List<double> medias = [];
+            double[,] medias = new double[linhas, 2];
 
             for (int i = 0; i < linhas; i++)
             {
                 double soma = 0d;
 
-                for (int j = 0; j < colunas; j++)
+                // Percorrer apenas as colunas de índice 3, 4 e 5
+                for (int j = 3; j <= 5; j++)
                     soma += matriz[i, j];
-                double media;
 
-                if (soma > 0)
-                    media = (soma / colunas);
-                else
-                    media = 0;
+                double mediaColunasEsquerdaArquivosTXT = soma > 0 ? (soma / 3) : 0; // média das três colunas
 
-                var resultadoArredondado = Math.Round(media, 5); // arredondando o resultado da divisão para cinco casas decimais
-                medias.Add(resultadoArredondado);
+                for (int k = 0; k <= 2; k++)
+                    soma += matriz[i, k];
+
+                double mediaColunasDireitaArquivosTXT = soma > 0 ? (soma / 3) : 0;
+
+                //var resultadoArredondado = Math.Round(media, 5); // arredondando o resultado da divisão para cinco casas decimais
+                medias[i, 0] = mediaColunasEsquerdaArquivosTXT;
+                medias[i, 1] = mediaColunasDireitaArquivosTXT;
             }
             return medias;
         }
@@ -193,8 +197,10 @@ namespace AntropofagicoCSharp
             // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
             using (StreamWriter writer = new StreamWriter(caminhoComNomeDoCsv))
 
-                foreach (double vlr in mediaDosValoresDaMatriz)
+                foreach (double vlr in mediaDosValoresDaMatriz.GetColumn(0))
+                {                    
                     writer.WriteLine($"{vlr}".Replace('.', ','));
+                }
 
             // criada uma nova variável que irá receber cada valor da variável "caminhoComNomeDoCsv" e 
             // concatenar com uma quebra de linha
@@ -211,7 +217,7 @@ namespace AntropofagicoCSharp
             {
                 string[] arquivosCsv = Directory.GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento); // extrair dessa pasta os arquivos contidos nela e inserir no array unidimensional "arquivosCsv";
 
-                int numeroDeLinhas = mediaDosValoresDaMatriz.Count; // obtendo o número de valores total em "mediaDosValoresDaMatriz" (uma lista);
+                int numeroDeLinhas = mediaDosValoresDaMatriz.Length; // obtendo o número de valores total em "mediaDosValoresDaMatriz" (uma lista);
                 int numeroDeColunas = arquivosCsv.Length; // obtendo a quantidade total de arquivos contidos no array "arquivosCsv";
 
                 // Inicializa ou redimensiona a matriz se necessário
@@ -233,9 +239,9 @@ namespace AntropofagicoCSharp
                 // desta forma, a cada nova lista de valores em "mediaDosValoresDaMatriz", o laço de repetição irá para a próxima coluna:
                 for (int linha = 0; linha < numeroDeLinhas; linha++)
                 {
-                    if (indiceValor < mediaDosValoresDaMatriz.Count)
+                    if (indiceValor < mediaDosValoresDaMatriz.Length)
                     {
-                        matrizMedias[linha, colunaAtual] = mediaDosValoresDaMatriz[indiceValor];
+                     //   matrizMedias[linha, colunaAtual] = mediaDosValoresDaMatriz[indiceValor];
                         indiceValor++;
                     }
                     else

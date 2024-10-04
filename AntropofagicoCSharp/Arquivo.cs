@@ -125,16 +125,21 @@ namespace AntropofagicoCSharp
             // criação de matriz com 2048 linhas e "n" colunas
             double[,] matriz = new double[_linhas, colunas];
 
-            for (int i = 0; i < colunas; i++)
+            for (int i = 0; i < arquivosAgrupados.Count; i++)
             {
                 nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];
                 valores = File.ReadAllLines(FrmPrincipal.diretorio + "\\" + arquivosAgrupados[i] + ".txt".ToString()); // o conteúdo de cada arquivo .txt lido (primeira e segunda colunas) é inserido nesse array de strings chamado "valores"
 
                 valores.ToList();
 
+                // obtendo os valores dos três arquivos .txt que são manipulados:
                 for (int j = 0; j < valores.Length; j++)
-                    if (!double.TryParse(valores[j].Split(";")[1].Trim(), out matriz[j, i]))
+                {
+                    if (!double.TryParse(valores[j].Split(";")[1].Trim(), out matriz[j, i])) // obtendo os valores da coluna à direita de cada arquivo .txt (que vai ser o eixo Y do gráfico logarítmico)
                         matriz[j, i] = double.MinValue; // Caso o parse gere uma exceção
+                    if (!double.TryParse(valores[j].Split(";")[0].Trim(), out matriz[j, i + arquivosAgrupados.Count])) // obtendo os valores da coluna à esquerda de cada arquivo .txt (que vai ser o eixo X do gráfico logarítmico)
+                        matriz[j, i] = double.MinValue; // Caso o parse gere uma exceção
+                }
             }
 
             nomeDoArquivoCsv = arquivosAgrupados.First().Split("-")[0];

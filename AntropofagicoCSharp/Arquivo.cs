@@ -216,7 +216,7 @@ namespace AntropofagicoCSharp
             {
                 string[] arquivosCsv = Directory.GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento); // extrair dessa pasta os arquivos contidos nela e inserir no array unidimensional "arquivosCsv";
 
-                int numeroDeLinhas = mediaDosValoresDaMatriz.Length; // obtendo o número de valores total em "mediaDosValoresDaMatriz" (uma lista);
+                int numeroDeLinhas = mediaDosValoresDaMatriz.GetLength(0); // obtendo o número de valores total em "mediaDosValoresDaMatriz" (uma lista);
                 int numeroDeColunas = arquivosCsv.Length; // obtendo a quantidade total de arquivos contidos no array "arquivosCsv";
 
                 // Inicializa ou redimensiona a matriz se necessário
@@ -233,12 +233,15 @@ namespace AntropofagicoCSharp
                 // Preenche a coluna atual com os valores;
                 // desta forma, a cada nova lista de valores em "mediaDosValoresDaMatriz", o laço de repetição irá para a próxima coluna:
                 for (int linha = 0; linha < numeroDeLinhas; linha++)
-                    if (indiceValor < mediaDosValoresDaMatriz.Length)                    
-                     //   matrizMedias[linha, colunaAtual] = mediaDosValoresDaMatriz[indiceValor];
+                    if (indiceValor < mediaDosValoresDaMatriz.Length)
+                    {
+                      //  matrizMedias[linha, colunaAtual] = mediaDosValoresDaMatriz[indiceValor, colunaAtual];
                         indiceValor++;                    
+                    }          
                     else
                         matrizMedias[linha, colunaAtual] = 0;
-                
+              
+
                 // Incrementa para a próxima coluna
                 colunaAtual++;
 

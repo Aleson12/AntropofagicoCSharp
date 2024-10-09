@@ -197,10 +197,8 @@ namespace AntropofagicoCSharp
             // criando o arquivo .csv, acessando-o, abrindo-o e escrevendo nele os novos valores
             using (StreamWriter writer = new StreamWriter(caminhoComNomeDoCsv))
 
-                foreach (double vlr in mediaDosValoresDaMatriz.GetColumn(0))
-                {                    
-                    writer.WriteLine($"{vlr}".Replace('.', ','));
-                }
+            for (int i = 0; i < mediaDosValoresDaMatriz.GetLength(0); i++) // percorrendo a quantidade de linhas em "mediaDosValoresDaMatriz" (2048)
+                writer.WriteLine($"{mediaDosValoresDaMatriz[i, 0]};{mediaDosValoresDaMatriz[i,1]}"); // obtendo os valores na coluna 0 e escrevendo na coluna 0 do arquivo .csv; obtendo os valores na coluna 1 e escrevendo na coluna 1 do arquivo .csv
 
             // criada uma nova variável que irá receber cada valor da variável "caminhoComNomeDoCsv" e 
             // concatenar com uma quebra de linha
@@ -226,11 +224,9 @@ namespace AntropofagicoCSharp
 
                 else
                 {
-                    if (matrizMedias.GetLength(0) != numeroDeLinhas || matrizMedias.GetLength(1) != numeroDeColunas) // se as dimensões estiverem erradas, 
-                    {
+                    if (matrizMedias.GetLength(0) != numeroDeLinhas || matrizMedias.GetLength(1) != numeroDeColunas) // se as dimensões estiverem erradas,
                         matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a com as dimensões certas
                         colunaAtual = 0; // Redefine a coluna atual ao redimensionar a matriz
-                    }
                 }
 
                 int indiceValor = 0;
@@ -239,11 +235,9 @@ namespace AntropofagicoCSharp
                 // desta forma, a cada nova lista de valores em "mediaDosValoresDaMatriz", o laço de repetição irá para a próxima coluna:
                 for (int linha = 0; linha < numeroDeLinhas; linha++)
                 {
-                    if (indiceValor < mediaDosValoresDaMatriz.Length)
-                    {
+                    if (indiceValor < mediaDosValoresDaMatriz.Length)                    
                      //   matrizMedias[linha, colunaAtual] = mediaDosValoresDaMatriz[indiceValor];
-                        indiceValor++;
-                    }
+                        indiceValor++;                    
                     else
                         matrizMedias[linha, colunaAtual] = 0;
                 }

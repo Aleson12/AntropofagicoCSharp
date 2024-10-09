@@ -11,6 +11,7 @@ using System.Data;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using AntropofagicoCSharp;
 
 namespace AntropofagicoCSharp
 {
@@ -223,25 +224,21 @@ namespace AntropofagicoCSharp
                     matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a
 
                 else
-                {
                     if (matrizMedias.GetLength(0) != numeroDeLinhas || matrizMedias.GetLength(1) != numeroDeColunas) // se as dimensões estiverem erradas,
                         matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a com as dimensões certas
                         colunaAtual = 0; // Redefine a coluna atual ao redimensionar a matriz
-                }
-
+                
                 int indiceValor = 0;
 
                 // Preenche a coluna atual com os valores;
                 // desta forma, a cada nova lista de valores em "mediaDosValoresDaMatriz", o laço de repetição irá para a próxima coluna:
                 for (int linha = 0; linha < numeroDeLinhas; linha++)
-                {
                     if (indiceValor < mediaDosValoresDaMatriz.Length)                    
                      //   matrizMedias[linha, colunaAtual] = mediaDosValoresDaMatriz[indiceValor];
                         indiceValor++;                    
                     else
                         matrizMedias[linha, colunaAtual] = 0;
-                }
-
+                
                 // Incrementa para a próxima coluna
                 colunaAtual++;
 
@@ -290,18 +287,21 @@ namespace AntropofagicoCSharp
                 if (!File.Exists(arq))
                     continue;
 
-                using (var csv = new CsvReader(new StreamReader(arq), config))
+                using (var csv = new CsvReader(new StreamReader(arq), config)) // inicializando o leitor e "escritor" de arquivo .csv
                 {
-                    double[] records = csv.GetRecords<double>().ToArray(); // obtendo os valores de cada arquivo .csv, inserindo-os num array unidimensional
-                    todasAsColunasDeMatrizFinal.Add(records); // e, em seguida, inserindo esse array de valores em uma lista
+                    // Mapeia os registros CSV para a classe CsvRecord
+                    var registros = csv.GetRecords<CsvRecord>().ToList(); 
 
-                    // para cada arquivo, é instanciado um Objeto da classe MatrizRelCSV, com seus valores e nome de arquivo, e, após,
-                    // inserido na lista "listaMatrizRelCSV":
+                    // Extrai apenas os valores da Coluna1
+                    double[] valoresColuna1 = registros.Select(registro => registro.Coluna1).ToArray();
 
-                    listaMatrizRelCSV.Add(new MatrizRelCSV { ValoresInternosCSV = records.ToList(), NomeArqCSV = Path.GetFileName(arq) });
+                    // Adiciona os valores da coluna 1 à lista
+                    todasAsColunasDeMatrizFinal.Add(valoresColuna1);
+
+                    // Cria e adiciona um objeto da classe MatrizRelCSV com os valores da coluna 1 e o nome do arquivo
+                    listaMatrizRelCSV.Add(new MatrizRelCSV { ValoresInternosCSV = valoresColuna1.ToList(), NomeArqCSV = Path.GetFileName(arq) });
 
                     arquivos.Add(Path.GetFileName(arq));
-
                 }
             }
 

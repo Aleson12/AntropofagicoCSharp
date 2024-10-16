@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using AntropofagicoCSharp;
+using System.Linq;
 
 namespace AntropofagicoCSharp
 {
@@ -205,15 +206,21 @@ namespace AntropofagicoCSharp
             // concatenar com uma quebra de linha
             _caminhosCsv += caminhoComNomeDoCsv + '\n';
 
-            GerandoMatrizMedias();
+            GerandoMatrizMedias(mediaDosValoresDaMatriz);
         }
         #endregion GerarSomenteUmArquivoPorClasse
 
         #region GerandoMatrizMedias
-        public static void GerandoMatrizMedias()
+        public static void GerandoMatrizMedias(double[,] mediaDosValoresDaMatriz)
         {
             if (Directory.Exists(_caminhoDaPastaDosArquivosCSVPosTratamento)) // se a pasta com os arquivos .csv's existe, 
             {
+                List<double> mediaDosValoresDoEixoYDaMatrizEmLista = new List<double>();
+                List<double> mediaDosValoresDaMatrizEmLista = mediaDosValoresDaMatriz.Cast<double>().ToList();
+
+                for (int i = 1; i < mediaDosValoresDaMatrizEmLista.Count; i += 2)
+                    mediaDosValoresDoEixoYDaMatrizEmLista.Add(mediaDosValoresDaMatrizEmLista[i]);              
+
                 string[] arquivosCsv = Directory.GetFiles(_caminhoDaPastaDosArquivosCSVPosTratamento); // extrair dessa pasta os arquivos contidos nela e inserir no array unidimensional "arquivosCsv";
 
                 int numeroDeLinhas = mediaDosValoresDaMatriz.GetLength(0); // obtendo o número de valores total em "mediaDosValoresDaMatriz" (uma lista);
@@ -225,22 +232,21 @@ namespace AntropofagicoCSharp
 
                 else
                     if (matrizMedias.GetLength(0) != numeroDeLinhas || matrizMedias.GetLength(1) != numeroDeColunas) // se as dimensões estiverem erradas,
-                        matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a com as dimensões certas
-                        colunaAtual = 0; // Redefine a coluna atual ao redimensionar a matriz
-                
+                    matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a com as dimensões certas
+                colunaAtual = 0; // Redefine a coluna atual ao redimensionar a matriz
+
                 int indiceValor = 0;
 
                 // Preenche a coluna atual com os valores;
                 // desta forma, a cada nova lista de valores em "mediaDosValoresDaMatriz", o laço de repetição irá para a próxima coluna:
                 for (int linha = 0; linha < numeroDeLinhas; linha++)
-                    if (indiceValor < mediaDosValoresDaMatriz.Length)
+                    if (indiceValor < mediaDosValoresDoEixoYDaMatrizEmLista.Count)
                     {
-                      //  matrizMedias[linha, colunaAtual] = mediaDosValoresDaMatriz[indiceValor, colunaAtual];
-                        indiceValor++;                    
-                    }          
+                        matrizMedias[linha, colunaAtual] = mediaDosValoresDoEixoYDaMatrizEmLista[indiceValor];
+                        indiceValor++;
+                    }
                     else
                         matrizMedias[linha, colunaAtual] = 0;
-              
 
                 // Incrementa para a próxima coluna
                 colunaAtual++;

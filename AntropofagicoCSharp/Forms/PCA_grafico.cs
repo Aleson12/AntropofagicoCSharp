@@ -21,6 +21,7 @@ namespace AntropofagicoCSharp.Forms
 
         public void AtualizarGrafico(double[] x, double[] y)
         {
+
             if (x.Count() == y.Count())
                 formsPlot1.Plot.Add.ScatterPoints(x, y);
             formsPlot1.Plot.Axes.AutoScale(); // ajustando automaticamente a escala dos pontos de dispersão no gráfico
@@ -33,6 +34,7 @@ namespace AntropofagicoCSharp.Forms
             ScottPlot.Plottables.Crosshair MyCrosshair;
             ScottPlot.Plottables.Scatter MyScatter;
 
+            MatrizRelCSV matrizRelCSV = new MatrizRelCSV();
             GraficoDeCadaPonto graficoIndividual = new GraficoDeCadaPonto();
 
             MyScatter = formsPlot1.Plot.Add.Scatter(x, y);
@@ -78,8 +80,9 @@ namespace AntropofagicoCSharp.Forms
 
                     // renderiza, na parte superior da interface do gráfico, as coordenadas (X e Y) dos pontos e o seu respectivo arquivo .csv de origem:
                     if (nearest.IsReal)
-                        valoresContidosNoArquivoCsvLido = Arquivo.listaMatrizRelCSV[nearest.Index].ValoresInternosCSV;
-                    Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}"; // texto que será exibido na borda superior do gráfico
+
+                        //valoresContidosNoArquivoCsvLido = Arquivo.listaMatrizRelCSV[nearest.Index].ValoresInternosCSV;
+                        Text = $"Coordenadas: Y={nearest.X:0.##}, X={nearest.Y:0.##}; Origem:{Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV}"; // texto que será exibido na borda superior do gráfico
                 }
             };
 
@@ -110,7 +113,9 @@ namespace AntropofagicoCSharp.Forms
 
                             graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
                             graficoIndividual.Show();
-                            graficoIndividual.PlotagemIndividual(valoresContidosNoArquivoCsvLido);
+                            graficoIndividual.PlotagemIndividual(matrizRelCSV.ValoresInternosCSV);
+
+
                             graficoIndividual.Refresh();
                     }
                     catch (Exception ex)

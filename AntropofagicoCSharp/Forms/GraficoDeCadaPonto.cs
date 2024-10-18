@@ -19,7 +19,7 @@ namespace AntropofagicoCSharp.Forms
             InitializeComponent();
         }
 
-        public void PlotagemIndividual(List<double> valoresContidosNoArquivoCsvLido)
+        public void PlotagemIndividual(double[,] valoresContidosNoArquivoCsvLido)
         {
 
             List<double> Lista_X = new List<double>();
@@ -27,13 +27,13 @@ namespace AntropofagicoCSharp.Forms
 
             int cont = 0; // equivale à variável "canais" no código em python
 
-            valoresContidosNoArquivoCsvLido.ForEach(valor =>
+           /* valoresContidosNoArquivoCsvLido.ForEach(valor =>
             {
                 Lista_X.Add(cont);
                 Lista_Y.Add(valor);
 
                 cont++;
-            });
+            });*/
 
             arrayX = Lista_X.ToArray();
             arrayY = Lista_Y.ToArray();

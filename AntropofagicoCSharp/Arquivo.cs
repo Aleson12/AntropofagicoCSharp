@@ -27,7 +27,7 @@ namespace AntropofagicoCSharp
         private static List<double> valoresDoArquivoMatrizPCA;
         private static double[,] mediaDosValoresDaMatriz;
         //private static List<double> mediaDosValoresDaMatriz;
-        private static List<double[]> todasAsColunasDeMatrizFinal = []; // uma lista de arrays
+        private static List<double[,]> todasAsColunasDeMatrizFinal = []; // uma lista de arrays
         public static List<MatrizRelCSV> listaMatrizRelCSV = new List<MatrizRelCSV>();
         public static List<string> valoresEixoX = new List<string>();
         public static List<string> valoresEixoY = new List<string>();
@@ -303,18 +303,33 @@ namespace AntropofagicoCSharp
 
                 using (var csv = new CsvReader(new StreamReader(arq), config)) // inicializando o leitor e "escritor" de arquivo .csv
                 {
+
                     // Mapeia os registros CSV para a classe CsvRecord
-                    var registros = csv.GetRecords<CsvRecord>().ToList(); 
+                    var registros = csv.GetRecords<CsvRecord>().ToList();
 
                     // Extrai apenas os valores da Coluna1
+                    double[] valoresColuna0 = registros.Select(registro => registro.Coluna0).ToArray();
                     double[] valoresColuna1 = registros.Select(registro => registro.Coluna1).ToArray();
 
-                    // Adiciona os valores da coluna 1 à lista
-                    todasAsColunasDeMatrizFinal.Add(valoresColuna1);
+                    // Verifica se as duas colunas têm o mesmo tamanho para formar um array bidimensional
+                    if (valoresColuna0.Length != valoresColuna1.Length)
+                        throw new InvalidOperationException("As colunas têm tamanhos diferentes");
+
+                    // Criar um array bidimensional [n, 2] onde n é o número de registros
+                    double[,] matrizUnida = new double[valoresColuna1.Length, 2];
+
+                    // Preencher o array bidimensional
+                    for (int j = 0; j < valoresColuna1.Length; j++)
+                    {
+                        matrizUnida[j, 0] = valoresColuna0[j]; // Coluna 0
+                        matrizUnida[j, 1] = valoresColuna1[j]; // Coluna 1
+                    }
+
+                    // Adiciona a matriz bidimensional à lista de todas as colunas da Matriz Final (ajustar conforme a estrutura do seu projeto)
+                     todasAsColunasDeMatrizFinal.Add(matrizUnida);
 
                     // Cria e adiciona um objeto da classe MatrizRelCSV com os valores da coluna 1 e o nome do arquivo
-                    listaMatrizRelCSV.Add(new MatrizRelCSV { ValoresInternosCSV = valoresColuna1.ToList(), NomeArqCSV = Path.GetFileName(arq) });
-
+                    listaMatrizRelCSV.Add(new MatrizRelCSV { ValoresInternosCSV = matrizUnida, NomeArqCSV = Path.GetFileName(arq) });
                     arquivos.Add(Path.GetFileName(arq));
                 }
             }
@@ -333,14 +348,13 @@ namespace AntropofagicoCSharp
                 for (int i = 0; i < _linhas; i++)
                 {
                     sb.Clear(); // limpando o objeto para poder utilizá-lo de novo, mas para escrever novo valor
-                    foreach (var a in todasAsColunasDeMatrizFinal)
-                    {
+                    foreach (var matriz in todasAsColunasDeMatrizFinal)
                         try
                         {
-                            sb.Append(a[i].ToString().Replace(".", ",") + ";");
+                            sb.Append(matriz[i,0].ToString().Replace(".", ",") + ";");
+                            sb.Append(matriz[i,1].ToString().Replace(".", ",") + ";");
                         }
                         catch { }
-                    }
                     csvMatriz.WriteLine(sb);
                 }
             }
@@ -364,9 +378,7 @@ namespace AntropofagicoCSharp
 
                 // Soma os valores de cada linha na coluna atual
                 for (int linha = 0; linha < numLinhas; linha++)
-
                     soma += matrizMedias[linha, coluna];
-
                 // Armazena a soma da coluna no array unidimensional
                 somaColunas[coluna] = soma;
 

@@ -17,31 +17,6 @@ namespace AntropofagicoCSharp.Forms
             InitializeComponent();
         }
 
-        public static void TratamentoDeDadosTxts(string[] medias)
-        {
-            List<string> valoresEixoX = new List<string>();
-            List<string> valoresEixoY = new List<string>();
-
-            List<double> valoresEixoX_Doubles = new List<double>();
-            List<int> valoresEixoY_Inteiros = new List<int>();
-
-            foreach (string valor in medias)
-            {
-                // Divide a string usando o ponto-e-vírgula como delimitador
-                string[] partes = valor.Split(';');
-
-                // Adiciona o valor à esquerda na lista "valoresEixoX" e o valor à direita na lista "valoresEixoY"
-                valoresEixoX.Add(partes[0].Trim());
-                valoresEixoY.Add(partes[1].Trim());
-
-                valoresEixoX_Doubles = valoresEixoX.ConvertAll(double.Parse);
-                valoresEixoY_Inteiros = valoresEixoY.ConvertAll(int.Parse);
-
-            }
-            // Console.WriteLine(valoresEixoX_Doubles);
-            // Console.WriteLine(valoresEixoY_Inteiros);
-        }
-
         public void CalculoLogaritmico(double[] arrayX, double[] arrayY)
         {
             List<double> valoresDeXFiltrados = new List<double>();
@@ -51,8 +26,7 @@ namespace AntropofagicoCSharp.Forms
             for (int i = 0; i < arrayX.Length; i++)
             {
                 // Filtrar valores de X < 100 (para que os valores abaixo de 100 do eixo X não sejam exibidos):
-                if (arrayX[i] >= 100)
-                {
+                if (arrayX[i] >= 100)                
                     valoresDeXFiltrados.Add(arrayX[i]); // valores filtrados (maiores que 100) adicionados à lista
 
                     valoresDeXFiltrados.ForEach(valorEixoX => {
@@ -66,8 +40,7 @@ namespace AntropofagicoCSharp.Forms
                     if (arrayY[i] > 0) // valores negativos não são considerados no eixo Y
                         valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i]));
                     else
-                        valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero
-                }
+                        valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero                
             }
 
             valoresDeXEmEnergia.Sort();

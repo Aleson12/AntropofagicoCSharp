@@ -231,15 +231,20 @@ namespace AntropofagicoCSharp
                     matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a
 
                 else
+                {
                     if (matrizMedias.GetLength(0) != numeroDeLinhas || matrizMedias.GetLength(1) != numeroDeColunas) // se as dimensões estiverem erradas,
-                    matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a com as dimensões certas
-                colunaAtual = 0; // Redefine a coluna atual ao redimensionar a matriz
+                    {
+                        matrizMedias = new double[numeroDeLinhas, numeroDeColunas]; // crie-a com as dimensões certas
+                        colunaAtual = 0; // Redefine a coluna atual ao redimensionar a matriz
+                    }
+                }
 
                 int indiceValor = 0;
 
                 // Preenche a coluna atual com os valores;
                 // desta forma, a cada nova lista de valores em "mediaDosValoresDaMatriz", o laço de repetição irá para a próxima coluna:
                 for (int linha = 0; linha < numeroDeLinhas; linha++)
+                {
                     if (indiceValor < mediaDosValoresDoEixoYDaMatrizEmLista.Count)
                     {
                         matrizMedias[linha, colunaAtual] = mediaDosValoresDoEixoYDaMatrizEmLista[indiceValor];
@@ -247,7 +252,7 @@ namespace AntropofagicoCSharp
                     }
                     else
                         matrizMedias[linha, colunaAtual] = 0;
-
+                }
                 // Incrementa para a próxima coluna
                 colunaAtual++;
 

@@ -113,8 +113,7 @@ namespace AntropofagicoCSharp.Forms
 
                             graficoIndividual.Text = Arquivo.listaMatrizRelCSV[nearest.Index].NomeArqCSV; // apresentar o gráfico tendo como título o nome do arquivo .csv 
                             graficoIndividual.Show();
-                            graficoIndividual.PlotagemIndividual(matrizRelCSV.ValoresInternosCSV);
-
+                            graficoIndividual.PlotagemIndividual(Arquivo.listaMatrizRelCSV[nearest.Index].ValoresInternosCSV);
 
                             graficoIndividual.Refresh();
                     }

@@ -14,6 +14,9 @@ namespace AntropofagicoCSharp.Forms
         double[] arrayX;
         double[] arrayY;
 
+        List<double> Lista_X = new List<double>();
+        List<double> Lista_Y = new List<double>();
+
         public GraficoDeCadaPonto()
         {
             InitializeComponent();
@@ -21,22 +24,14 @@ namespace AntropofagicoCSharp.Forms
 
         public void PlotagemIndividual(double[,] valoresContidosNoArquivoCsvLido)
         {
-
-            List<double> Lista_X = new List<double>();
-            List<double> Lista_Y = new List<double>();
-
-            int cont = 0; // equivale à variável "canais" no código em python
-
-           /* valoresContidosNoArquivoCsvLido.ForEach(valor =>
+            for (int i = 0; i < valoresContidosNoArquivoCsvLido.GetLength(0); i++)
             {
-                Lista_X.Add(cont);
-                Lista_Y.Add(valor);
+                Lista_X.Add(valoresContidosNoArquivoCsvLido[i, 0]); // obtendo os valores da coluna à esquerda (X) e inserindo numa Lista
+                Lista_Y.Add(valoresContidosNoArquivoCsvLido[i, 1]); // obtendo os valores da colunas à direita (Y) e inserindo numa lista
+            }
 
-                cont++;
-            });*/
-
-            arrayX = Lista_X.ToArray();
-            arrayY = Lista_Y.ToArray();
+            arrayX = Lista_X.ToArray(); // transformando a lista de valores em array
+            arrayY = Lista_Y.ToArray(); // transformando a lista de valores em array
 
             this.BringToFront(); // fazendo sobrepor este gráfico aos demais
             formsPlot2.Plot.Clear();

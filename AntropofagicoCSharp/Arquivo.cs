@@ -329,7 +329,7 @@ namespace AntropofagicoCSharp
                      todasAsColunasDeMatrizFinal.Add(matrizUnida);
 
                     // Cria e adiciona um objeto da classe MatrizRelCSV com os valores da coluna 1 e o nome do arquivo
-                    listaMatrizRelCSV.Add(new MatrizRelCSV { ValoresInternosCSV = matrizUnida, NomeArqCSV = Path.GetFileName(arq) });
+                    listaMatrizRelCSV.Add(new MatrizRelCSV {ValoresInternosCSV = matrizUnida, NomeArqCSV = Path.GetFileName(arq) });
                     arquivos.Add(Path.GetFileName(arq));
                 }
             }
@@ -351,8 +351,7 @@ namespace AntropofagicoCSharp
                     foreach (var matriz in todasAsColunasDeMatrizFinal)
                         try
                         {
-                            sb.Append(matriz[i,0].ToString().Replace(".", ",") + ";");
-                            sb.Append(matriz[i,1].ToString().Replace(".", ",") + ";");
+                            sb.Append(matriz[i, 1].ToString().Replace(".", ",") + ";");
                         }
                         catch { }
                     csvMatriz.WriteLine(sb);

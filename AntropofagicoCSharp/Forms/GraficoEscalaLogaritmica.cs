@@ -20,34 +20,62 @@ namespace AntropofagicoCSharp.Forms
         public void CalculoLogaritmico(double[] arrayX, double[] arrayY)
         {
             List<double> valoresDeXFiltrados = new List<double>();
+            List<double> valoresDeXFiltradosAcimaDeZero = new List<double>();
+
             List<double> valoresDeYFiltrados = new List<double>();
+            List<double> valoresDeYFiltradosAcimaDeZero = new List<double>();
+
             List<double> valoresDeXEmEnergia = new List<double>();
+
+            /*for (int i = 0; i < arrayY.Length; i++)
+            {
+                // Filtrar valores de X < 100 (para que os valores abaixo de 100 do eixo X não sejam exibidos):
+                if (arrayY[i] >= 100)
+                    valoresDeYFiltrados.Add(arrayY[i]); // valores filtrados (maiores que 100) adicionados à lista
+
+                valoresDeYFiltrados.ForEach(valorEixoY => {
+
+                    var x = ((valorEixoY * 0.02) - 0.0053);
+
+                    valoresDeYEmEnergia.Add(x);
+
+
+                });
+
+                if (arrayX[i] > 0) // valores negativos não são considerados no eixo Y
+                    valoresDeXFiltrados.Add(Math.Log10((double)arrayX[i]));
+                else
+                    valoresDeXFiltrados.Add(double.NaN); // Substitui valores negativos ou zero                
+            }*/
 
             for (int i = 0; i < arrayX.Length; i++)
             {
                 // Filtrar valores de X < 100 (para que os valores abaixo de 100 do eixo X não sejam exibidos):
-                if (arrayX[i] >= 100)                
-                    valoresDeXFiltrados.Add(arrayX[i]); // valores filtrados (maiores que 100) adicionados à lista
+                valoresDeXFiltrados.Add(arrayX[i]); // valores filtrados (maiores que 100) adicionados à lista
+                    
+                valoresDeXFiltrados.ForEach(valorEixoX => {
 
-                    valoresDeXFiltrados.ForEach(valorEixoX => {
+                    var x = ((valorEixoX * 0.02) - 0.0053);
 
-                        var x = ((valorEixoX * 0.02) - 0.0053);
+                    valoresDeXEmEnergia.Add(x);
 
-                        valoresDeXEmEnergia.Add(x);
+                });
 
+                if (arrayY[i] > 0) // valores negativos não são considerados no eixo Y
+                    valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i]));
 
-                    });
-                    if (arrayY[i] > 0) // valores negativos não são considerados no eixo Y
-                        valoresDeYFiltrados.Add(Math.Log10((double)arrayY[i]));
-                    else
-                        valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero                
+                else
+                    valoresDeYFiltrados.Add(double.NaN); // Substitui valores negativos ou zero                
             }
 
             valoresDeXEmEnergia.Sort();
 
             // Converter as listas filtradas para arrays
             eixoXEmEnergia = valoresDeXEmEnergia.ToArray();
-            logY = valoresDeYFiltrados.ToArray();
+
+            valoresDeYFiltrados.ForEach(valorEixoY => { if (valorEixoY > 0) { valoresDeYFiltradosAcimaDeZero.Add(valorEixoY);}}); // retirando os valores negativos
+
+            logY = valoresDeYFiltradosAcimaDeZero.ToArray();
 
             // Limpar o gráfico e plotar os novos valores
             formsPlot3.Plot.Clear();
